@@ -1,0 +1,85 @@
+<?xml version='1.0'?>
+<window 
+  id="hello"  
+  title="Tree" 
+  width="500" 
+  height="300" 
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul" >
+
+<tree flex="1" onselect="selecting(currentIndex);" >
+	<treecols >
+		<treecol primary="true"  label="CDU BU-P8" width="150" />
+		<treecol  label="TimeLine"  width="150" />
+		<treecol label="KML"  width="150" />
+            <treecol label="IEML"  width="150" />		
+	</treecols>
+	<treechildren>
+		<treeitem container="true" open="true" >
+			<treerow>
+				<treecell label="Cote CDU 1" />
+			</treerow>
+			<treechildren>
+				<treeitem container="true" open="true">
+					<treerow>
+						<treecell label="" />					
+						<treecell label="Valeur_TimeLine_1" />
+						<treecell label="Valeur_Kml_1" />
+                                    <treecell label="Valeur_Ieml_1" />
+					</treerow>
+				</treeitem>
+				
+			</treechildren>
+		</treeitem>
+		<treeitem container="true" open="true" >
+			<treerow>
+				<treecell label="Cote CDU 2" />
+			</treerow>
+			<treechildren>
+				<treeitem container="true" open="true">
+					<treerow>
+						<treecell label="" />					
+						<treecell label="Valeur_TimeLine_2" />
+						<treecell label="Valeur_Kml_2" />
+                                    <treecell label="Valeur_Ieml_2" />
+					</treerow>
+				</treeitem>
+			</treechildren>
+		</treeitem>
+	</treechildren>
+
+<box>
+		<vbox>
+			<label control="tb" value="Expression Timeline:" />
+			<textbox id="timeline" rows="1" size="40" multiline="true"  value="vide"  />
+		</vbox>
+            <vbox>
+			<label control="tb" value="Expression KML:" />
+			<textbox id="kml" rows="1" size="40" multiline="true"  value="vide"  />
+		</vbox>
+            <vbox>
+			<label control="tb" value="Expression IEML:" />
+			<textbox id="ieml" rows="1" size="40" multiline="true"  value="vide"  />
+		</vbox>
+	</box>	
+
+
+</tree>
+
+
+
+
+
+
+<script>
+
+function selecting(idx)
+{
+	
+document.getElementById('timeline').value=idx;
+
+
+}
+
+</script>
+
+</window>
