@@ -31,15 +31,43 @@ class Site{
 		
     }
 
-  function RequeteSelect($function,$var1,$var2,$val1,$val2){
+//  function RequeteSelect($function,$var1,$var2,$val1,$val2){
+   	 
+//   	   $Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='".$function."']";
+//	   $Q = $this->XmlParam->GetElements($Xpath);
+	   
+//	   $from=str_replace($var1, $val1, $Q[0]->from);
+//	   $from=str_replace($var2, $val2, $from);
+//	   $where=str_replace($var1, $val1, $Q[0]->where);
+//	   $where=str_replace($var2, $val2,$where);
+	   
+//	   $sql = $Q[0]->select.$from.$where;
+//	   $db = new mysql ($this->infos["SQL_HOST"], $this->infos["SQL_LOGIN"], $this->infos["SQL_PWD"], $this->infos["SQL_DB"]);
+//	   $link=$db->connect();   
+//	   $result = $db->query($sql);
+//	   $db->close($link);
+	   
+//	   return ($result);
+   	
+//   }
+
+
+  function RequeteSelect($function,$arrVarVal){
    	 
    	   $Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='".$function."']";
 	   $Q = $this->XmlParam->GetElements($Xpath);
 	   
-	   $from=str_replace($var1, $val1, $Q[0]->from);
-	   $from=str_replace($var2, $val2, $from);
-	   $where=str_replace($var1, $val1, $Q[0]->where);
-	   $where=str_replace($var2, $val2,$where);
+           $from=$Q[0]->from;
+           $where=$Q[0]->where;
+
+           foreach($arrVarVal as $VarVal){
+     	   $from=str_replace($VarVal[0], $VarVal[1],$from);
+          // $where=str_replace($VarVal[0], $VarVal[1],$where);	
+   	   }
+	   
+           foreach($arrVarVal as $VarVal){
+           $where=str_replace($VarVal[0], $VarVal[1],$where);	
+   	   }
 	   
 	   $sql = $Q[0]->select.$from.$where;
 	   $db = new mysql ($this->infos["SQL_HOST"], $this->infos["SQL_LOGIN"], $this->infos["SQL_PWD"], $this->infos["SQL_DB"]);
@@ -50,6 +78,7 @@ class Site{
 	   return ($result);
    	
    }
+
    function RequeteInsert($function,$arrVarVal){
    
    	 $Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='".$function."']";
@@ -484,9 +513,106 @@ class Site{
 		return $sResult;
 		
 	}
+
+}//fin de la classe site 
+
+class depute extends site{
+
+public $nom_depute;
+public $prenom_depute;
+public $num_depart_depute;
+public $mail_depute;
+public $url_depute;
+
+// définition du constructeur 
+
+public function depute ($url) 
+
+{
+
+//$this->nom_depute = $nom;
+//$this->prenom_depute = $prénom;
+//$this->num_depart_depute = $num_depart;
+//$this->mail_depute = $mail;
+$this->url_depute = $url;
+
+}
+public function recup_fiche_deput ($url)
+{
+
+  $result = $this->GetCurl ($url);
+  return $result;
+
+}
+public function recup_nom_deput ($result)
+{
+
+  $nom = "touibi";
+  return $nom;
+}
+public function recup_prenom_deput ($result)
+{
+
+  $prenom = "mehdi";
+  return $prenom;
+}
+public function recup_mail_deput ($result)
+{
+  $mail = "xxxx";
+  return $mail;
+}
+public function recup_lien_AN_deput ($result)
+{
+  $lien_AN_deput = "yyyy";
+  return $lien_AN_deput;
+}
+public function recup_lien_questions_deput ($result)
+{
+}
+public function recup_num_depart_deput ($url)
+{
+  $num_depart = "1";
+  return $num_depart;
+}
+public function insert_table_depute ($nom,$prenom,$mail,$lien_AN_deput,$num_depart)
+{
+  $db=new mysql ('localhost','root','','evalactipol');
+  $link=$db->connect();
+  $sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `lien_AN_depute` , `num_depart_depute` ) VALUES ('', '$nom', '$prenom', '$mail', '$lien_AN_deput', '$num_depart')";     
+  $result = $db->query($sql);
+  $db->close($link);
+}
+public function recup_questions_deput ($lien_questions_deput)
+{
+}
+public function recup_date_publi_questions_deput ($result_question)
+{
+}
+public function recup_date_rep_questions_deput ($result_question)
+{
+}
+public function insert_questions_deput ($num,$date_pub,$date_rep)
+{
+}
+public function recup_motsclefs_deput ($result_question)
+{
+}
+public function insert_motsclefs_deput ($motclef)
+{
+}
+public function recup_rubriques_deput ($result_question)
+{
+}
+public function insert_rubriques_deput ($rubrique)
+{
+}
+
+
+
+}
 	
 	
-  }
+  
 
 
 ?>
