@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2007 sp2 (http://www.altova.com) by samszo (lsd) -->
+<XmlParams>
+	<StarIEML>
+		<go copy="!" opening="˜"/>
+		<slo union="|" difference="^" intersection="&amp;"/>
+		<Mark name="seme" layer="6" closing="_" gted="5"/>
+		<Mark name="phrase" layer="5" closing="," gted="4" gtor="6"/>
+		<Mark name="idea" layer="4" closing="'" gted="3" gtor="5"/>
+		<Mark name="relation" layer="3" closing="-" gted="2" gtor="4"/>
+		<Mark name="event" layer="2" closing="." gted="1" gtor="3"/>
+		<Mark name="primitive" layer="1" closing=":" gtor="2"/>
+	</StarIEML>
+		
+
+
+
+      
+      <XmlParam nom="Insert_table" >
+		<Querys>
+			<Query fonction="insert_table_depute">
+				<insert> INSERT INTO depute (id_depute,nom_depute,prenom_depute,mail_depute,lien_AN_depute,num_depart_depute)</insert>
+				<values> (' ', '-nom-', '-prenom-', '-mail-', '-lien_AN_deput-', '-num_depart-')</values>
+			</Query>
+			
+			<Query fonction="insert_table_geoname">
+				<insert> INSERT INTO geoname (id_geoname,nom_geoname,type_geoname,circonscriptions_geoname,lat_geoname,lng_geoname,alt_geoname,kml_geoname)</insert>
+				<values> VALUES(' ', '-nomgeoname-', '-typegeoname-', '-circonsgeoname-', '-latgeoname-', '-lnggeoname-', '-altgeoname-', '-kmlgeoname-')  </values>
+			</Query>
+			<Query fonction="insert_table_motclef">
+				<insert> INSERT INTO mot-clef (id_motclef,valeur_motclef)</insert>
+				<values> VALUES(' ', '-valeurmotclef-')  </values>
+			</Query>
+			
+			<Query fonction="insert_table_questions">
+				<insert> INSERT INTO questions (id_question,num_question,date_publication,date_reponse,num_legislature,id_depute,id_URL)</insert>
+				<values> VALUES (' ' , '-numquestion-', '-datepubliquestion-', '-daterepquestion-', '-numlegiquestion-')</values>
+			</Query>
+                 
+                  <Query fonction="insert_table_rubrique">
+				<insert> INSERT INTO rubrique (id_rubrique,valeur_rubrique)</insert>
+				<values> VALUES(' ', '-valeurrubrique-')  </values>
+			</Query>
+
+                  <Query fonction="insert_table_urls">
+				<insert> INSERT INTO urls (id_URL,valeur_URL,code_extract_URL)</insert>
+				<values> VALUES(' ', '-valeurURL-', '-codeextractURL-')  </values>
+			</Query>
+            </Querys>		
+        </XmlParam>
+
+	
+	</XmlParams>
