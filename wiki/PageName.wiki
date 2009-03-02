@@ -14,10 +14,10 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
     • III.4. Page des questions d'un député
 
 = I. Modèle Logique de Données Relationnel (MLDR) =
- http://www.mundilogiweb.com/evalactipol/documentation/MLDR_BD/MLD_officiel.bmp
+ http://code.google.com/p/evalactipol/source/browse/trunk/documentation/MLDR_BD/MLD_officiel.png
 
 = II. Diagramme d'activités =
- http://www.mundilogiweb.com/evalactipol/documentation/Diagramme_activites/Diagramme_activites.bmp
+ http://code.google.com/p/evalactipol/source/browse/trunk/documentation/Diagramme_activites/Diagramme_activites.png
 
 = III. Représentation avec FireShot =
 ==III.1Page==
