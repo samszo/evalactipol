@@ -5,8 +5,7 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
 = Plan =
 
   * I.  Modèle Logique de Données Relationnel (MLDR)
-  * II. Diagramme d'activités
-  [[#III.1Page des départements]]
+  * II. Diagramme d'activités 
   * III.Représentation avec FireShot
     • III.1. Page des départements<br>
     • III.2. Page des députés d'un département<br>
