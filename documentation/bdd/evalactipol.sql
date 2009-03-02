@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Serveur: localhost
--- Généré le : Samedi 28 Février 2009 à 16:10
+-- Généré le : Lundi 02 Mars 2009 à 23:08
 -- Version du serveur: 5.0.27
 -- Version de PHP: 5.2.0
 -- 
@@ -96,10 +96,11 @@ CREATE TABLE `depute` (
   `nom_depute` varchar(255) NOT NULL,
   `prenom_depute` varchar(255) NOT NULL,
   `mail_depute` varchar(255) NOT NULL,
+  `numphone_depute` varchar(255) NOT NULL,
   `lien_AN_depute` varchar(255) NOT NULL,
   `num_depart_depute` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`id_depute`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=137 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- 
 -- Contenu de la table `depute`
@@ -311,10 +312,3 @@ ALTER TABLE `quest-mc`
 ALTER TABLE `quest-rubr`
   ADD CONSTRAINT `quest-rubr_ibfk_1` FOREIGN KEY (`id_question`) REFERENCES `questions` (`id_question`),
   ADD CONSTRAINT `quest-rubr_ibfk_2` FOREIGN KEY (`id_rubrique`) REFERENCES `rubrique` (`id_rubrique`);
-
--- 
--- Contraintes pour la table `questions`
--- 
-ALTER TABLE `questions`
-  ADD CONSTRAINT `questions_ibfk_6` FOREIGN KEY (`id_depute`) REFERENCES `depute` (`id_depute`),
-  ADD CONSTRAINT `questions_ibfk_7` FOREIGN KEY (`id_URL`) REFERENCES `urls` (`id_URL`);
