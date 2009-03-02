@@ -27,10 +27,3 @@ http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Firesho
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page3.png
 == III.4  Page des questions d'un député ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page4.png
-
-
-
-Add your content here.  Format your content with:
-  * Text in *bold* or _italic_
-  * Headings, paragraphs, and lists
-  * Automatic links to other wiki pages
