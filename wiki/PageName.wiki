@@ -5,10 +5,13 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
 
 = Plan =
 
-  * Modèle Logique de Données Relationnel (MLDR)
-  * Diagramme d'activités
-  * Représentation avec FireShot
-
+  : Modèle Logique de Données Relationnel (MLDR)
+  : Diagramme d'activités
+  : Représentation avec FireShot
+  :: Page des départements
+  :: Page des députés d'un département
+  :: Page d'un député
+  :: Page des questions d'un député
 = I. Modèle Logique de Données Relationnel (MLDR) =
  http://www.mundilogiweb.com/evalactipol/documentation/MLDR_BD/MLD_officiel.bmp
 
