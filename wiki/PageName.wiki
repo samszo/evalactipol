@@ -3,10 +3,12 @@
 Cette page permet de présenter d'abord le modèle logique de données relationnel (MLDR) utile pour créer la base de données qui gère notre application ensuite le diagramme d'activités qui illustre les différents actions effectuées et le passage entre les différentes étapes et enfin une représentation graphique avec FireShot des différentes pages parées et des informations collectées durant ce parçage.
 
 
-= Details =
+= Plan =
 
   * Modèle Logique de Données Relationnel (MLDR)
-http://www.mundilogiweb.com/evalactipol/documentation/Representation_Fireshot/Page1.png
+  * Diagramme d'activités
+  * Représentation avec FireShot
+
  
 
 
