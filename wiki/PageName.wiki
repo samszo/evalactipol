@@ -6,7 +6,8 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
 = Details =
 
   * Modèle Logique de Données Relationnel (MLDR)
-[[Image:Page1.png]]  
+http://www.mundilogiweb.com/evalactipol/documentation/Representation_Fireshot/Page1.png
+ 
 
 
 
