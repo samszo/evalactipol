@@ -1,8 +1,7 @@
-#summary Cette page permet de présenter le modèle logique de données relationnel (MLDR), le diagramme d'activités et une représentation avec FireShot des pages parées de notre site.
 
 = Introduction =
 
-Add your content here.
+Cette page permet de présenter d'abord le modèle logique de données relationnel (MLDR) utile pour créer la base de données qui gère notre application ensuite le diagramme d'activités qui illustre les différents actions effectuées et le passage entre les différentes étapes et enfin une représentation graphique avec FireShot des différentes pages parées et des informations collectées durant ce parçage.
 
 
 = Details =
