@@ -16,7 +16,7 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
  http://evalactipol.googlecode.com/svn/trunk/documentation/MLDR_BD/MLD_officiel.png
 
 = II. Diagramme d'activités =
- http://evalactipol.googlecode.com/svn/trunk/documentation/Diagramme_activites/Diagramme_activites.png
+ http://code.google.com/p/evalactipol/source/browse/trunk/documentation/Diagramme_activites/Diagramme_activites.jpg
 
 = III. Représentation avec FireShot =
 ==III.1 Page des départements==
