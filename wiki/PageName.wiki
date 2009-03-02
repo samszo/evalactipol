@@ -6,7 +6,7 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
 
   * I.  Modèle Logique de Données Relationnel (MLDR)
   * II. Diagramme d'activités
-  [[#III.1  Page des départements|III.Représentation avec FireShot]]
+  [[#Page des départements]]
   * III.Représentation avec FireShot
     • III.1. Page des départements<br>
     • III.2. Page des députés d'un département<br>
