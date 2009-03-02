@@ -6,7 +6,7 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
 
   * I.  Modèle Logique de Données Relationnel (MLDR)
   * II. Diagramme d'activités
-  [#III.1  Page des départements|x]
+  [#III.1Page des départements|x]
   * III.Représentation avec FireShot
     • III.1. Page des départements<br>
     • III.2. Page des députés d'un département<br>
@@ -20,7 +20,7 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
  http://www.mundilogiweb.com/evalactipol/documentation/Diagramme_activites/Diagramme_activites.bmp
 
 = III. Représentation avec FireShot =
-== III.1  Page des départements ==
+==III.1Page des départements==
 http://www.mundilogiweb.com/evalactipol/documentation/Representation_Fireshot/Page1.png
 == III.2  Page des députés d'un département ==
 http://www.mundilogiweb.com/evalactipol/documentation/Representation_Fireshot/Page2.png
