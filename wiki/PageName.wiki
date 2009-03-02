@@ -1,6 +1,6 @@
 = Introduction =
 
-Cette page permet de présenter d'abord le modèle logique de données relationnel (MLDR) utile pour créer la base de données qui gère notre application ensuite le diagramme d'activités qui illustre les différents actions effectuées et le passage entre les différentes étapes et enfin une représentation graphique avec FireShot des différentes pages parées et des informations collectées durant ce parçage.
+Cette page permet de présenter d'abord le modèle logique de données relationnel (MLDR) utile pour créer la base de données qui gère notre application ensuite le diagramme d'activités qui illustre les différents actions effectuées et le passage entre les différentes étapes et enfin une représentation graphique avec FireShot des différentes pages parcées et des informations collectées durant ce parçage .
 
 = Plan =
 
@@ -19,11 +19,14 @@ Cette page permet de présenter d'abord le modèle logique de données relationn
  http://evalactipol.googlecode.com/svn/trunk/documentation/Diagramme_activites/Diagramme_activites.png
 
 = III. Représentation avec FireShot =
-==III.1Page==
+==III.1 Page des départements==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page1.png
-== III.2  Page des députés d'un département ==
+
+== III.2 Page des députés d'un département ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page2.png
-== III.3  Page d'un député ==
+
+== III.3 Page d'un député ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page3.png
-== III.4  Page des questions d'un député ==
+
+== III.4 Page des questions d'un député ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page4.png
