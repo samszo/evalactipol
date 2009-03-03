@@ -14,7 +14,7 @@ Cette page permet de présenter les schémas conceptuels pour le développement 
 = II. Diagramme d'activites =
  http://evalactipol.googlecode.com/svn/trunk/documentation/Diagramme_activites/Diagramme_activites.png
 
-= III. Reprsentation avec FireShot =
+= III. Reprsentation avec une depute =
 
 ==III.1 Page des dpartements==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page1.png
