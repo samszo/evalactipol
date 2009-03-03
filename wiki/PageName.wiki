@@ -1,6 +1,15 @@
 = Plan =
-
-  <wiki:toc max_depth="2">
+  
+  * Introduction
+  * I.  Modèle Logique de Données Relationnel (MLDR)
+  * II. Diagramme d'activités 
+  * III.Représentation avec FireShot
+    • III.1. Page des départements<br>
+    • III.2. Page des députés d'un département<br>
+    • III.3. Page d'un député<br>
+    • III.4. Page des questions d'un député
+  * IV. Bibliothèque PHP
+  
 
 = Introduction =
 
@@ -8,24 +17,24 @@ Cette page permet de présenter les schémas conceptuels pour le développement 
 
 
 
-=Modele Logique de Donnees Relationnel (MLDR)=
+=Modèle Logique de Données Relationnel (MLDR)=
  http://evalactipol.googlecode.com/svn/trunk/documentation/MLDR_BD/MLD_officiel.png
 
-= II. Diagramme d'activites =
+= II. Diagramme d'activités =
  http://evalactipol.googlecode.com/svn/trunk/documentation/Diagramme_activites/Diagramme_activites.png
 
-= III. Reprsentation avec [https://addons.mozilla.org/fr/firefox/addon/5648 FireShot] =
+= III. Représentation avec [https://addons.mozilla.org/fr/firefox/addon/5648 FireShot] =
 
-==III.1 Page des dpartements==
+==III.1 Page des départements==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page1.png
 
-== III.2 Page des deputes d'un departement ==
+== III.2 Page des députés d'un département ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page2.png
 
-== III.3 Page d'un depute ==
+== III.3 Page d'un député ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page3.png
 
-== III.4 Page des questions d'un depute ==
+== III.4 Page des questions d'un député ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page4.png
 
 = IV. Bibliothèques =
