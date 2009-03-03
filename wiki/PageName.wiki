@@ -4,7 +4,7 @@ Cette page permet de présenter les schémas conceptuels pour le développement 
 
 = Plan =
 
-  * [#Modèle_Logique_de_Données_Relationnel Modèle Logique de Données Relationnel]
+  * [#Modèle_Logique Modèle Logique]
   * II. Diagramme d'activités 
   * III.Représentation avec FireShot
     • III.1. Page des départements<br>
@@ -13,7 +13,7 @@ Cette page permet de présenter les schémas conceptuels pour le développement 
     • III.4. Page des questions d'un député
 
 
-=Modèle Logique de Données Relationnel=
+=Modèle Logique=
  http://evalactipol.googlecode.com/svn/trunk/documentation/MLDR_BD/MLD_officiel.png
 
 = II. Diagramme d'activités =
