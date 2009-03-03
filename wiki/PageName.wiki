@@ -1,36 +1,30 @@
+= Plan =
+
+  <wiki:toc max_depth="2">
+
 = Introduction =
 
 Cette page permet de présenter les schémas conceptuels pour le développement de l'outil. D'abord le modèle logique de données relationnelles (MLDR) utile pour créer la base de données qui gère notre application. Ensuite le diagramme d'activités qui illustre les différentes actions effectuées et le passage entre les différentes étapes. Enfin une représentation graphique faite avec [https://addons.mozilla.org/fr/firefox/addon/5648 FireShot] des différentes pages parsées et des informations collectées durant ce processus.
 
-= Plan =
 
-  [#Mod.C3.A8le_Logique_de_Donn.C3.A9es_Relationnel Modèle Logique de Données Relationnel]
- * I.  Modèle Logique de Données Relationnel (MLDR)
-  * II. Diagramme d'activités 
-  * III.Représentation avec FireShot
-    • III.1. Page des départements<br>
-    • III.2. Page des députés d'un département<br>
-    • III.3. Page d'un député<br>
-    • III.4. Page des questions d'un député
-  * IV. Bibliothèque PHP
 
-=Modèle Logique de Données Relationnel (MLDR)=
+=Modele Logique de Donnees Relationnel (MLDR)=
  http://evalactipol.googlecode.com/svn/trunk/documentation/MLDR_BD/MLD_officiel.png
 
-= II. Diagramme d'activités =
+= II. Diagramme d'activites =
  http://evalactipol.googlecode.com/svn/trunk/documentation/Diagramme_activites/Diagramme_activites.png
 
-= III. Représentation avec FireShot =
-==III.1 Page des départements==
+= III. Reprsentation avec FireShot =
+==III.1 Page des dpartements==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page1.png
 
-== III.2 Page des députés d'un département ==
+== III.2 Page des deputes d'un departement ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page2.png
 
-== III.3 Page d'un député ==
+== III.3 Page d'un depute ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page3.png
 
-== III.4 Page des questions d'un député ==
+== III.4 Page des questions d'un depute ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page4.png
 
 = IV. Bibliothèques =
