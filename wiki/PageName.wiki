@@ -8,7 +8,7 @@
     • III.2. Page des députés d'un département<br>
     • III.3. Page d'un député<br>
     • III.4. Page des questions d'un député
-  * IV. Bibliothèque PHP
+  * IV. Bibliothèques PHP
   
 
 = Introduction =
@@ -37,6 +37,6 @@ http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Firesho
 == III.4 Page des questions d'un député ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page4.png
 
-= IV. Bibliothèques =
+= IV. Bibliothèques PHP =
 
  * La bibliothèque [http://www.manuelphp.com/php/ref.curl.php#ref.curl libcurl] de PHP
