@@ -1,6 +1,6 @@
 = Introduction =
 
-Cette page permet de présenter d'abord le modèle logique de données relationnel (MLDR) utile pour créer la base de données qui gère notre application ensuite le diagramme d'activités qui illustre les différents actions effectuées et le passage entre les différentes étapes et enfin une représentation graphique avec FireShot des différentes pages parcées et des informations collectées durant ce parçage .
+Cette page permet de présenter les schémas conceptuels pour le développement de l'outil. D'abord le modèle logique de données relationnelles (MLDR) utile pour créer la base de données qui gère notre application. Ensuite le diagramme d'activités qui illustre les différentes actions effectuées et le passage entre les différentes étapes. Enfin une représentation graphique faite avec [https://addons.mozilla.org/fr/firefox/addon/5648 FireShot] des différentes pages parsées et des informations collectées durant ce processus.
 
 = Plan =
 
