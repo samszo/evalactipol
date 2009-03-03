@@ -35,4 +35,4 @@ http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Firesho
 
 = IV. Bibliothèque PHP =
 
-[La bibliothèque Curl PHP http://www.manuelphp.com/php/ref.curl.php#ref.curl]
+La bibliothèque Curl PHP [http://www.manuelphp.com/php/ref.curl.php#ref.curl]
