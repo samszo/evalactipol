@@ -4,7 +4,7 @@ Cette page permet de présenter les schémas conceptuels pour le développement 
 
 = Plan =
 
-  [#Modèle_Logique_de_Données_Relationnel Modèle Logique de Données Relationnel]
+  [#Mod.C3-A8le_Logique_de_Donn.C3-A9es_Relationnel Modèle Logique de Données Relationnel]
  * I.  Modèle Logique de Données Relationnel (MLDR)
   * II. Diagramme d'activités 
   * III.Représentation avec FireShot
@@ -13,7 +13,6 @@ Cette page permet de présenter les schémas conceptuels pour le développement 
     • III.3. Page d'un député<br>
     • III.4. Page des questions d'un député
   * IV. Bibliothèque PHP
-
 
 =Modèle Logique de Données Relationnel (MLDR)=
  http://evalactipol.googlecode.com/svn/trunk/documentation/MLDR_BD/MLD_officiel.png
@@ -34,4 +33,6 @@ http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Firesho
 == III.4 Page des questions d'un député ==
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page4.png
 
-== IV. Bibliothèque PHP ==
+= IV. Bibliothèque PHP =
+
+[La bibliothèque Curl PHP http://www.manuelphp.com/php/ref.curl.php#ref.curl]
