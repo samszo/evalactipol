@@ -24,8 +24,8 @@ function extract_canton ($htmlDept)
             {
             //Préciser que le type de geoname d'un canton est canton
             // avant d'insérer le canton dans la table geoname
-            $nom_geoname_canton1 = $value;
-             $nom_geoname_canton = filter ($nom_geoname_canton1);
+            $nom_geoname_canton = filter ($value);
+            $nom_geoname_canton = $value;
             $type_geoname_canton = "canton";
             //Extraction du numéro de circonscription du canton
             $circonscription_cantons = substr($ChaineCantons,5,1);    
