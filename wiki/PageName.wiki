@@ -40,3 +40,4 @@ http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Firesho
 = IV. Bibliothèques PHP =
 
  * La bibliothèque [http://www.manuelphp.com/php/ref.curl.php#ref.curl libcurl] de PHP
+ * La bibliothèque [http://sourceforge.net/search/?type_of_search=soft&words=simple_html_dom simple_htmp_dom]
