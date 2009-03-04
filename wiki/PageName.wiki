@@ -27,24 +27,26 @@ Cette page permet de présenter les schémas conceptuels pour le développement 
 
 ==III.1 Page des départements==
 
-[http://www.laquadrature.net/wiki/Deputes_par_departement Lien dans le site de l'Assemblée Nationale]
+[http://www.laquadrature.net/wiki/Deputes_par_departement Lien de la page dans le site de l'Assemblée Nationale]
 
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page1.png
 
 == III.2 Page des députés d'un département ==
 
-[http://www.laquadrature.net/wiki/Deputes_01 Lien dans le site de l'Assemblée Nationale]
+[http://www.laquadrature.net/wiki/Deputes_01 Lien de la dans le site de l'Assemblée Nationale]
 
 
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page2.png
 
 == III.3 Page d'un député ==
  
+[http://www.laquadrature.net/wiki/XavierBreton Lien de la dans le site de l'Assemblée Nationale]
+
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page3.png
 
 == III.4 Page des questions d'un député ==
 
-
+[http://recherche2.assemblee-nationale.fr/resultats_tribun.jsp?id_auteur=Breton%20Xavier&nom_auteur=Xavier%20Breton&legislature=13&typedoc=Questions Lien de la dans le site de l'Assemblée Nationale]
 
 http://evalactipol.googlecode.com/svn/trunk/documentation/Representation_Fireshot/Page4.png
 
