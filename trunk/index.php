@@ -33,10 +33,11 @@ require_once ("library/php/extract_departement.php");
  
   function insert_table_geoname ($nomGeo,$typeGeo,$circonscGeo)
     {
+  //$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
   $db=new mysql ('localhost','root','','evalactipol');
   $link=$db->connect();
-  $sql = "INSERT INTO `geoname` ( `id_geoname` , `nom_geoname`, `type_geoname`, `circonscriptions_geoname`, `lat_geoname`, `lng_geoname`, `alt_geoname`, `kml_geoname` ) VALUES ('', '$nomGeo', '$typeGeo', '$circonscGeo', '', '', '', '')";     
-  $result = $db->query($sql);
+  $sql = "INSERT INTO `geoname` ( `id_geoname` , `nom_geoname`, `type_geoname`, `circonscriptions_geoname`, `lat_geoname`, `lng_geoname`, `alt_geoname`, `kml_geoname` ) VALUES ('', \"$nomGeo\", \"$typeGeo\", \"$circonscGeo\", '', '', '', '')";     
+  $result = $db->query(utf8_decode($sql));
   $db->close($link);
    }
  function insert_table_depute ($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
@@ -75,7 +76,20 @@ require_once ("library/php/extract_departement.php");
    }
        	
    $baseUrl ="http://www.laquadrature.net";
-	$html = file_get_html($baseUrl."/wiki/Deputes_par_departement");
+      
+	/*
+   	$oCache = new Cache("Deputes_par_departement", LIFETIME,"",CACHEPATH);
+    if (!$oCache->Check()){
+		$html = file_get_html($baseUrl."/wiki/Deputes_par_departement");
+        $oCache->Set($html);
+    }else{
+		$oCache->Set(false);
+    }
+    $html = $oCache->Get();
+	*/
+	$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
+	
+	
 	//$ret = $html->find('a[title]');
 	$retours = $html->find('li a[title^=Deputes]');
 	
@@ -84,7 +98,7 @@ require_once ("library/php/extract_departement.php");
         
 	    $urlDept = $dept->attr["href"];
         $url =$baseUrl.$urlDept;
-        $htmlDept = file_get_html($url);       
+        $htmlDept = $cl_Output->call('file_get_html',$url);       
         
         //Extraction des noms des cantons
         //et insertion des cantons dans la table geoname 

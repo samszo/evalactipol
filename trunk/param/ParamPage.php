@@ -16,9 +16,18 @@ session_start();
 			
 	$scope = array(
 			"site" => $site
-			);	
+			,"FicXml" => PathRoot."/param/Param.xml"
+	);	
 	
 	$objSite = new Site($SITES, $site, $scope, false);
-	
 
+	// création de l'objet de cache
+	$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
+	//fonction utilisées pour le cache
+	/*
+	function cl_file_get_html($url){
+		return file_get_html($url);
+	}
+	*/
+	
 ?>
