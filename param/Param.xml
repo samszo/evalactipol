@@ -44,7 +44,7 @@
 
                   <Query fonction="insert_table_urls">
 				<insert> INSERT INTO urls (id_URL,valeur_URL,code_extract_URL)</insert>
-				<values> VALUES(' ', '-valeurURL-', '-codeextractURL-')  </values>
+				<values>VALUES(' ', '-valeurURL-', '-codeExtractURL-')</values>
 			</Query>
             </Querys>		
         </XmlParam>
