@@ -66,71 +66,43 @@ foreach($rslienLienANDepute as $lienANValue){
       return $lienANDepute; 
 }
 
+
 public function recup_mail_deput ($htmllienDepu)
 {
   $rsMailDepute = $htmllienDepu->find('li a[title^=mailto]');
-  $mailValue = "";
-  $mailValue1 = "";
+  $mailDepute2 = "";
+  //$mailValue1 = "";
         foreach($rsMailDepute as $mail)
                 {
-                  if ($mailValue != $mailValue1)                  
-                     {
-                  $mailValue2 = trim ($mail->attr["href"]);
-                  $mailDepute2 = substr($mailValue2,7);
-                     }
-                  else
-                  {                 
-                  $mailValue1 = trim ($mail->attr["href"]);
-                  $mailDepute1 = substr($mailValue1,7);
-                  $mailDepute1 = $mailDepute1;
-                  }  
+                  $mailValue = trim ($mail->attr["href"]);
+                  $mailDepute1 = substr($mailValue,7);
+                  $mailDepute2 = $mailDepute2.",".$mailDepute1;   
                 }
-                $mailDepute = $mailDepute1.",".$mailDepute2;
+          $mailDepute = substr($mailDepute2,1);      
                 
        return $mailDepute;
 }
 
+
 public function recup_Phone_deput ($htmllienDepu)
 {
   $rsNumPhoneDepute = $htmllienDepu->find('li a[title^=callto]');
-  $numPhoneValue = "";
-            $numPhoneValue1 = "";
+  $numPhoneDepute2_3 = "";
+            
               foreach($rsNumPhoneDepute as $numPhone)
-                {                 
-                  if ($numPhoneValue != $numPhoneValue1)                  
-                     {
+                    {
                      $numPhoneValue2 = $numPhone->attr["href"];
                      $numPhoneDepute2_1 = substr($numPhoneValue2,9);
-                     $numPhoneDepute2 = str_replace("+", "00", $numPhoneDepute2_1);           
+                     $numPhoneDepute2_2 = str_replace("+", "00", $numPhoneDepute2_1);
+                     $numPhoneDepute2_3 = $numPhoneDepute2_3.",".$numPhoneDepute2_2;
+     
                      }
-                  else
-                  {
-                  $numPhoneValue1 = $numPhone->attr["href"];
-                  $numPhoneDepute1_1 = substr($numPhoneValue1,9);
-                  //$numPhoneDepute1_1 = $numPhoneDepute1_1;
-                  $numPhoneDepute1 = str_replace("+", "00", $numPhoneDepute1_1);
-                  }             
-                }
-                $numPhoneDepute = $numPhoneDepute1.",".$numPhoneDepute2;
-return $numPhoneDepute;
+                   $numPhoneDepute = substr($numPhoneDepute2_3,1);
+                               
+                
+                return $numPhoneDepute;
 }
 
-public function recup_lien_questions_deput ($result)
-{
-}
-public function recup_num_depart_deput ($url)
-{
-  $num_depart = "1";
-  return $num_depart;
-}
-/*public function insert_table_depute ($nom,$prenom,$mail,$lien_AN_deput,$num_depart)
-{
-  $db=new mysql ('localhost','root','','evalactipol');
-  $link=$db->connect();
-  $sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `lien_AN_depute` , `num_depart_depute` ) VALUES ('', '$nom', '$prenom', '$mail', '$lien_AN_deput', '$num_depart')";     
-  $result = $db->query($sql);
-  $db->close($link);
-}*/
 
 public function extract_contenu_lienQuest ($quest)
 {
@@ -263,10 +235,7 @@ $this->insert_table_depute_url($result_id_deput,$result_id_url_Deput);
 
      $this->insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$result_id_url_Questions);
 //Fin ajouté
-
-
-           
-                          
+                                     
             }
            }
 
@@ -656,15 +625,6 @@ public function extract_id_url ($valeurURL,$codeExtractURL)
   $result1 = mysql_fetch_row( $result);
   return $result2 = $result1[0];
    }
-
-
-
-
-
-   
-
- 
- 
 
 
 
