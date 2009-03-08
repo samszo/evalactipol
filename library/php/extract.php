@@ -1,27 +1,21 @@
 <?php
 
 require_once(CLASS_BASE."AllClass.php");
-require_once ("C:/Program Files/EasyPHP 2.0b1/www/evalactipol/param/Constantes.php");
-require_once ("C:/Program Files/EasyPHP 2.0b1/www/evalactipol/param/ParamPage.php");
-//require_once ("AllClass.php");
+
 
 class extract extends site{
   public $nom_table;
   public $chaine;
   public $baseUrl;
-//  public $cl_Output;
   
   function __tostring() {
     return "Cette classe permet d'extraire le contenu d'un site.<br/>";
     }
 
   public function __construct($baseUrl) {
-    //echo "new Site $sites, $id, $scope<br/>";
-//    $this->nom_table = $nom_table;
-//    $this->chaine = $chaine;           
+    
       $this->$baseUrl = $baseUrl;
-      
-  //    $this->$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME)); 
+        
     }
 
   function extract_site ($baseUrl)
@@ -36,18 +30,19 @@ class extract extends site{
     
     $cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
     $html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
-   // $this->insert_table_urls ($baseUrlHtml,"file_get_html('$baseUrlHtml')");
-    //$ret = $html->find('a[title]');
+   
     $retours = $html->find('li a[title^=Deputes]');
     
     //boucle sur les départements
     foreach($retours as $dept){
         
         $urlDept = $dept->attr["href"];
-      //  $this->insert_table_urls ($urlDept,"find('li a[title^=Deputes]')");
+      
         
         $url =$baseUrl.$urlDept;
-        $htmlDept = $cl_Output->call('file_get_html',$url);       
+        $htmlDept = $cl_Output->call('file_get_html',$url);
+
+      //  $htmlDept = file_get_html($url);
      //   $this->insert_table_urls ($url,"file_get_html('$url')");
         $result_exist_url = $this->verif_exist_url ($url,"find('li a[title^=Deputes]')");
         if ($result_exist_url == NULL)
@@ -58,7 +53,7 @@ class extract extends site{
         //Extraction des noms des cantons
         //et insertion des cantons dans la table geoname 
       //  $this->extract_canton ($htmlDept); 
-        list ($nom_cantons,$circonscription_cantons,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantons) = $this->extract_canton ($htmlDept);
+        list ($nom_cantons,$circonscription_cantons,$numDepart_canton,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantons) = $this->extract_canton ($htmlDept,$urlDept);
 
         //Extraction des infos sur les départements
        // $this->extract_departement ($urlDept,$dept);
@@ -68,8 +63,10 @@ class extract extends site{
         $result_exist_geo = $this->verif_exist_geo ($nomGeo_Depart,$type_geoname);
         if ($result_exist_geo == NULL)
            {
-        $this->insert_table_geoname ($nomGeo_Depart,$type_geoname,$circonscriptions_depart);
+        $this->insert_table_geoname ($nomGeo_Depart,$type_geoname,$numDepartDepute,$circonscriptions_depart);
            }
+           
+      //  $result_id_geo = $this->extract_id_geo ($numDepartDepute);
                 
         //extraction des liens des infos des députées
         
@@ -79,7 +76,7 @@ class extract extends site{
         foreach($rsDept as $depu){
             
             $urlDepu = $depu->attr["href"]; 
-        //    $this->insert_table_urls ($urlDepu,"find('td a[href^=/wiki/]')");
+        
             //vérifie qu'on traite un député
             $nom = substr($urlDepu,6,7);
             if($nom!="Deputes"){
@@ -88,7 +85,7 @@ class extract extends site{
         //    $htmllienDepu = file_get_html($urlDepute);
 
             $htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
-        //    $this->insert_table_urls ($urlDepute,"file_get_html('$urlDepute')");
+        
             $result_exist_url = $this->verif_exist_url ($urlDepute,"find('td a[href^=/wiki/]')");
             if ($result_exist_url == NULL)
             {
@@ -96,80 +93,21 @@ class extract extends site{
             }
             $result_id_url_Deput = $this->extract_id_url ($urlDepute,"find('td a[href^=/wiki/]')");
       //extraction des info du député
-//           $this->extract_deput ($htmllienDepu,$depu);   
-      
-list ($rslienQuest,$NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute) = $this->extract_deput ($htmllienDepu,$depu);
-// Insertion dans la table depute
-$result_exist_depu = $this->verif_exist_depu ($NomDepute,$PrenomDepute,$lienANDepute);
-if ($result_exist_depu == NULL)
-{         
-$this->insert_table_depute ($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$numDepartDepute);              
-}
-$result_id_deput = $this->extract_id_depu ($NomDepute,$PrenomDepute,$lienANDepute);
-$this->insert_table_depute_url($result_id_deput,$result_id_url_Deput);
 
-    foreach($rslienQuest as $quest){
-            $urlQuestion = $quest->attr["href"];
-            $urlQuestionResult = str_replace("&amp;", "&", $urlQuestion);
-                        
-          //  $htmlLienQuestion = file_get_html($urlQuestionResult);
-            
-            $htmlLienQuestion = $cl_Output->call('file_get_html',$urlQuestionResult);
-         //   $this->insert_table_urls ($urlQuestionResult,"file_get_html('$urlQuestionResult')");
-            
-            $result_exist_url = $this->verif_exist_url ($urlQuestionResult,"find('li a[href$=Questions]')");
-            if ($result_exist_url == NULL)
-            {    
-            $this->insert_table_urls ($urlQuestionResult,"find('li a[href$=Questions]')");
-            }
-            $result_id_url_Questions = $this->extract_id_url ($urlQuestionResult,"find('li a[href$=Questions]')");
-            
-            // Récupérer les inforamations existantes dans tous les lignes 
-            // du tableux questions, chaque ligne contien des informations sur une question
-            
-            $rsQuest = $htmlLienQuestion->find('tbody tr[valign=top]');
-            //supprimer la première ligne qui représente le nom des colonnes
-            $rsQuest1 = array_shift($rsQuest);
-                  
-            //Boucler sur les questions
-            foreach($rsQuest as $info){
-            //Extraction des informations d'une question, des mots-clefs et des rubriques
-              $this->extract_infos_question ($info);
-              list ($numLegislature,$numQuestion,$tab_rubrique,$tab_motclef,$datePubliQuestion,$dateRepQuestion) = $this->extract_infos_question ($info);
+/*foreach ($result_id_geo as $id_geo)
+        {
+          $this->insert_table_depute_geo ($result_id_deput,$id_geo); 
+          $this->insert_table_geo_url ($id_geo,$result_id_url_Depart);
+        }*/
 
-              $result_exist_question = $this->verif_exist_question ($numQuestion,$datePubliQuestion);
-                if ($result_exist_question == NULL)
-                  {  
-          //  $this->insert_table_questions ($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature);
-          $this->insert_table_questions ($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature,$result_id_deput,$result_id_url_Questions);         
-                  }
-             $result_id_question = $this->extract_id_question ($numQuestion,$datePubliQuestion);
-            
-             foreach ($tab_motclef as $mot_clef)
-             {
-             $this->insert_table_motclef ($mot_clef);
-             $result_id_mc = $this->extract_id_mc ($mot_clef);
-             foreach ($result_id_mc as $id_mc)
-              {
-               $this->insert_table_depute_mc ($result_id_deput,$id_mc);
-               $this->insert_table_quest_mc ($result_id_question,$id_mc); 
-              }  
-             }
-            
-            foreach ($tab_rubrique as $rubrique)
-             {
-             $this->insert_table_rubrique ($rubrique);
-             $result_id_rubrique = $this->extract_id_rubrique ($rubrique);
-             foreach ($result_id_rubrique as $id_rubrique)
-              {
-               $this->insert_table_depute_rubr ($result_id_deput,$id_rubrique); 
-               $this->insert_table_quest_rubr ($result_id_question,$id_rubrique);
-              }  
-             }
-            
-                    
-            }
-           }
+
+// Début La partie ajoutée pour testet l'objet député
+
+$oDepute = new depute ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute);
+
+$oDepute->extrac_infos_depute ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output);
+
+
           }
          }
         }  
@@ -190,9 +128,11 @@ function extract_departement ($urlDept,$dept)
         return array ($numDepartDepute,$nomGeo_Depart,$type_geoname);
 }
     
-function extract_canton ($htmlDept)
+function extract_canton ($htmlDept,$urlDept)
 
-{
+ {          
+            $numDepart_canton1 = substr($urlDept,14);
+            $numDepart_canton = (int)$numDepart_canton1;
             $rsCantons = $htmlDept->find('tbody tr');
             //supprimer la première ligne qui représente le nom des colonnes
             $rsCantons1 = array_shift($rsCantons);
@@ -224,7 +164,7 @@ function extract_canton ($htmlDept)
             $result_exist_geo = $this->verif_exist_geo ($nom_geoname_canton,$type_geoname_canton);
             if ($result_exist_geo == NULL)
                   {
-                   $this->insert_table_geoname ($nom_geoname_canton,$type_geoname_canton,$circonscription_cantons);            
+                   $this->insert_table_geoname ($nom_geoname_canton,$type_geoname_canton,$numDepart_canton,$circonscription_cantons);            
                   }
             
            
@@ -239,120 +179,11 @@ function extract_canton ($htmlDept)
             $circonscriptions_depart = implode(",", $circonscriptions_depart3);
             
             $type_geoname = "Ville";
-         return array  ($nom_cantons,$circonscription_cantons,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantons);   
+         return array  ($nom_cantons,$circonscription_cantons,$numDepart_canton,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantons);   
             
         }
 
-    function extract_deput ($htmllienDepu,$depu)
-        {
-       //boucle sur les députés             
-           //Récupération du lien vers les questions d'un député
-              
-            $rslienQuest = $htmllienDepu->find('li a[href$=Questions]');                
-            $rslienLienANDepute = $htmllienDepu->find('li a[title^=http://www.assemblee-nationale.fr]');
-            $rslienLienANDepute1 = array_shift($rslienLienANDepute);
-            $rsNumPhoneDepute = $htmllienDepu->find('li a[title^=callto]');
-            $rsMailDepute = $htmllienDepu->find('li a[title^=mailto]');
-
-            $numPhoneValue = "";
-            $numPhoneValue1 = "";
-              foreach($rsNumPhoneDepute as $numPhone)
-                {                 
-                  if ($numPhoneValue != $numPhoneValue1)                  
-                     {
-                     $numPhoneValue2 = $numPhone->attr["href"];
-                     $numPhoneDepute2_1 = substr($numPhoneValue2,9);
-                     $numPhoneDepute2 = str_replace("+", "00", $numPhoneDepute2_1);           
-                     }
-                  else
-                  {
-                  $numPhoneValue1 = $numPhone->attr["href"];
-                  $numPhoneDepute1_1 = substr($numPhoneValue1,9);
-                  //$numPhoneDepute1_1 = $numPhoneDepute1_1;
-                  $numPhoneDepute1 = str_replace("+", "00", $numPhoneDepute1_1);
-                  }             
-                }
-                $numPhoneDepute = $numPhoneDepute1.",".$numPhoneDepute2;
-            $mailValue = "";
-            $mailValue1 = "";
-                foreach($rsMailDepute as $mail)
-                {
-                  if ($mailValue != $mailValue1)                  
-                     {
-                  $mailValue2 = trim ($mail->attr["href"]);
-                  $mailDepute2 = substr($mailValue2,7);
-                     }
-                  else
-                  {                 
-                  $mailValue1 = trim ($mail->attr["href"]);
-                  $mailDepute1 = substr($mailValue1,7);
-                  $mailDepute1 = $mailDepute1;
-                  }  
-                }
-                $mailDepute = $mailDepute1.",".$mailDepute2; 
-
-                  
-                $NomPrenom = $depu->nodes;
-                $ChaineNomPrenom = implode(";", $NomPrenom);
-                $NomDepute = $this->extractBetweenDelimeters($ChaineNomPrenom,""," ");
-            //    $NomDepute = $this->filter ($NomDepute1);
-                $pos = strpos ($ChaineNomPrenom," ");
-                $PrenomDepute = substr($ChaineNomPrenom,$pos+1);
-           //     $PrenomDepute = $this->filter ($PrenomDepute1);
-
-                foreach($rslienLienANDepute as $lienANValue){
-                $lienANDepute = $lienANValue->attr["href"];
-                
-                $result_exist_url = $this->verif_exist_url ($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
-                 if ($result_exist_url == NULL)
-                  {
-                $this->insert_table_urls ($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
-                  }                
-                }             
-      //          insert_table_depute ($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$numDepartDepute);
-                
-                return array  ($rslienQuest,$NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute);
- 
-              }
   
-function extract_infos_question ($info)
-
-{
-            $infosChildren = $info->children;
-            $Chaine = implode(";", $infosChildren);
-            $NewChaine = str_replace("", "é", $Chaine);
-            
-            $lienQuest = $this->extractBetweenDelimeters($NewChaine,"href=","class");
-            
-           //Extraction des informations sur une question, les mots clés et les  rubriques
-            $numLegislature1 = $this->extractBetweenDelimeters($lienQuest,".fr/q","/");
-            $numLegislature = (int)$numLegislature1;
-            
-            $numQuestion1 = $this->extractBetweenDelimeters($lienQuest,$numLegislature."-","Q");
-            $numQuestion = (int)$numQuestion1;
-            
-            $rubrique = $this->extractBetweenDelimeters($NewChaine,"Rubrique :","<br>");
-       //     $rubrique = $this->filter ($rubrique1);
-            $tab_rubrique = explode (",",$rubrique);
-            
-            $motclef = $this->extractBetweenDelimeters($NewChaine,"Mots clés :","</td>");
-            $tab_motclef = explode (".",$motclef);
-        //    $motclef = $this->filter ($motclef1);
-                
-        //    $chemindatePubliQuestion = $this->extractBetweenDelimeters($NewChaine,"$motclef1","</td>;<td");
-        $chemindatePubliQuestion = $this->extractBetweenDelimeters($NewChaine,"$motclef","</td>;<td");
-            
-            $datePubliQuestion1 = substr($chemindatePubliQuestion,31);
-            $datePubliQuestion2 = trim($datePubliQuestion1);
-            $datePubliQuestion = $this->convertToDateFormat($datePubliQuestion2);
-            
-            $dateRepQuestion1 = $this->extractBetweenDelimeters($NewChaine,"$datePubliQuestion1</td>;<td class='TexteColonne'>","</td>");
-            $dateRepQuestion2 = trim($dateRepQuestion1);
-            $dateRepQuestion = $this->convertToDateFormat($dateRepQuestion2);
-            
-      return array ($numLegislature,$numQuestion,$tab_rubrique,$tab_motclef,$datePubliQuestion,$dateRepQuestion);
-            
-       }
   
        
  // Fonction qui récupère une chaine inconnue entre deux chaines connues
@@ -363,9 +194,15 @@ function extract_infos_question ($info)
  }
  
  // Fnction qui supprime les caractères spéciaux
- function filter($in) { 
+ /*function filter($in) { 
     $search = array ('@[éèêëÊË]@i','@[áãàâäÂÄ]@i','@[ìíiiîïÎÏ]@i','@[úûùüÛÜ]@i','@[òóõôöÔÖ]@i','@[ñÑ]@i','@[ýÿÝ]@i','@[ç]@i','@[ ]@i','@[^a-zA-Z0-9_]@');    
     $replace = array ('e','a','i','u','o','n','y','c','_','');
+    return preg_replace($search, $replace, $in);  
+    }*/
+
+function filter($in) { 
+    $search = array ('@[éèêëÊË]@i','@[áãàâäÂÄ]@i','@[ìíiiîïÎÏ]@i','@[úûùüÛÜ]@i','@[òóõôöÔÖ]@i','@[ñÑ]@i','@[ýÿÝ]@i','@[ç]@i');    
+    $replace = array ('e','a','i','u','o','n','y','c');
     return preg_replace($search, $replace, $in);  
     }
     //Fonction qui convertie une chaine en format date
@@ -378,28 +215,17 @@ function extract_infos_question ($info)
     return $result;
    }
    
-   function insert_table_geoname ($nomGeo,$typeGeo,$circonscGeo)
+   function insert_table_geoname ($nomGeo,$typeGeo,$numDepartgeo,$circonscGeo)
     {
  // $objSite = new Site($SITES, $site, $scope, false);
  // $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
   $db=new mysql ('localhost','root','','evalactipol');
   //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);    
   $link=$db->connect();
-  $sql = "INSERT INTO `geoname` ( `id_geoname` , `nom_geoname`, `type_geoname`, `circonscriptions_geoname`, `lat_geoname`, `lng_geoname`, `alt_geoname`, `kml_geoname` ) VALUES ('', \"$nomGeo\", \"$typeGeo\", \"$circonscGeo\", '', '', '', '')";     
+  $sql = "INSERT INTO `geoname` ( `id_geoname` , `nom_geoname`, `type_geoname`, `num_depart_geoname`, `circonscriptions_geoname`, `lat_geoname`, `lng_geoname`, `alt_geoname`, `kml_geoname` ) VALUES ('', \"$nomGeo\", \"$typeGeo\", \"$numDepartgeo\", \"$circonscGeo\", '', '', '', '')";     
   $result = $db->query(utf8_decode($sql));
   $db->close($link);
    }
- function insert_table_depute ($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
-  {
-  $db=new mysql ('localhost','root','','evalactipol');
-  //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//  $objSite = new Site($SITES, $site, $scope, false);
-//  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-  $link=$db->connect();
-  $sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\")";     
-  $result = $db->query(utf8_decode($sql));
-  $db->close($link);
-}
 
  function insert_table_questions ($num_question,$date_publication,$date_reponse,$num_legislature,$id_deput,$id_url)
    {
@@ -528,19 +354,6 @@ function insert_table_quest_rubr ($id_quest,$id_rubr)
   $db->close($link);
    }
    
-function verif_exist_depu ($nom_depu,$prenom_depu,$lien_AN_depu)
-    {
-  $db=new mysql ('localhost','root','','evalactipol');
-  //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//  $objSite = new Site($SITES, $site, $scope, false);
-//  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-  $link=$db->connect();
-  $sql = "SELECT * FROM `depute` WHERE `nom_depute`=\"$nom_depu\" AND `prenom_depute`=\"$prenom_depu\" AND `lien_AN_depute`=\"$lien_AN_depu\" ";     
-  $result = $db->query(utf8_decode($sql));
-  $db->close($link);
-  return ($result1 = mysql_fetch_array( $result));
-   
-   }   
 function verif_exist_geo ($nom_geo,$type_geo)
     {
   $db=new mysql ('localhost','root','','evalactipol');
@@ -580,31 +393,96 @@ function verif_exist_url ($valeurURL,$codeExtractURL)
   return ($result1 = mysql_fetch_array( $result));
    }
 
-function extract_id_depu ($nom_depu,$prenom_depu,$lien_AN_depu)
+function verif_exist_deptMC ($id_deput,$id_MC)
     {
   $db=new mysql ('localhost','root','','evalactipol');
   //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
 //  $objSite = new Site($SITES, $site, $scope, false);
 //  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
   $link=$db->connect();
-  $sql = "SELECT `id_depute` FROM `depute` WHERE `nom_depute`=\"$nom_depu\" AND `prenom_depute`=\"$prenom_depu\" AND `lien_AN_depute`=\"$lien_AN_depu\" ";     
+  $sql = "SELECT * FROM `depute-mc` WHERE `id_depute`=\"$id_deput\" AND `id_motclef`=\"$id_MC\" ";     
   $result = $db->query(utf8_decode($sql));
   $db->close($link);
-  $result1 = mysql_fetch_row( $result);
-  return $result2 = $result1[0];
-   }   
-function extract_id_geo ($nom_geo,$type_geo)
+  return ($result1 = mysql_fetch_array( $result));
+   }
+
+function verif_exist_questMC ($id_quest,$id_MC)
     {
   $db=new mysql ('localhost','root','','evalactipol');
   //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
 //  $objSite = new Site($SITES, $site, $scope, false);
 //  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
   $link=$db->connect();
-  $sql = "SELECT `id_geoname` FROM `geoname` WHERE `nom_geoname`=\"$nom_geo\" AND `type_geoname`=\"$type_geo\" ";     
+  $sql = "SELECT * FROM `quest-mc` WHERE `id_question`=\"$id_quest\" AND `id_motclef`=\"$id_MC\" ";     
   $result = $db->query(utf8_decode($sql));
   $db->close($link);
-  $result1 = mysql_fetch_row( $result);
-  return $result2 = $result1[0];
+  return ($result1 = mysql_fetch_array( $result));
+   }
+
+function verif_exist_deptRubr ($id_deput,$id_rubr)
+    {
+  $db=new mysql ('localhost','root','','evalactipol');
+  //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
+//  $objSite = new Site($SITES, $site, $scope, false);
+//  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+  $link=$db->connect();
+  $sql = "SELECT * FROM `depute-rubr` WHERE `id_depute`=\"$id_deput\" AND `id_rubrique`=\"$id_rubr\" ";     
+  $result = $db->query(utf8_decode($sql));
+  $db->close($link);
+  return ($result1 = mysql_fetch_array( $result));
+   }
+
+function verif_exist_questRubr ($id_quest,$id_rubr)
+    {
+  $db=new mysql ('localhost','root','','evalactipol');
+  //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
+//  $objSite = new Site($SITES, $site, $scope, false);
+//  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+  $link=$db->connect();
+  $sql = "SELECT * FROM `quest-rubr` WHERE `id_question`=\"$id_quest\" AND `id_rubrique`=\"$id_rubr\" ";     
+  $result = $db->query(utf8_decode($sql));
+  $db->close($link);
+  return ($result1 = mysql_fetch_array( $result));
+   }
+function verif_exist_deputUrl ($id_deput,$id_url)
+    {
+  $db=new mysql ('localhost','root','','evalactipol');
+  //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
+//  $objSite = new Site($SITES, $site, $scope, false);
+//  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+  $link=$db->connect();
+  $sql = "SELECT * FROM `depute-url` WHERE `id_depute`=\"$id_deput\" AND `id_URL`=\"$id_url\" ";     
+  $result = $db->query(utf8_decode($sql));
+  $db->close($link);
+  return ($result1 = mysql_fetch_array( $result));
+   }
+
+
+
+//function extract_id_geo ($nom_geo,$type_geo)
+function extract_id_geo ($num_Depart_geo)
+    {
+  $db=new mysql ('localhost','root','','evalactipol');
+  //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
+//  $objSite = new Site($SITES, $site, $scope, false);
+//  $db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+  $link=$db->connect();
+ // $sql = "SELECT `id_geoname` FROM `geoname` WHERE `nom_geoname`=\"$nom_geo\" AND `type_geoname`=\"$type_geo\" ";
+  
+  $sql = "SELECT `id_geoname` FROM `geoname` WHERE `num_depart_geoname`=\"$num_Depart_geo\" ";     
+  $result = $db->query(utf8_decode($sql));
+// $result1 = mysql_query ($sql);
+  $result1 = mysql_fetch_row($result);
+ // $result4 = "";
+ // while ($result1)
+ // {  
+ // $result2 = $result1[0];
+ // $result4 = $result4.",".$result3;
+ // }  
+  $db->close($link);
+  $result2 = $result1[0];  
+  return $result2; 
+  
    }   
 
    function extract_id_question ($num_quest,$date_publi)
