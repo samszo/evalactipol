@@ -17,6 +17,7 @@
   
   define ("DEFSITE", "local");
   //define ("DEFSITE", "mundi");
+	define ("TRACE", false);
   
   $dbOptions = array (
 		'ERROR_DISPLAY' => true
