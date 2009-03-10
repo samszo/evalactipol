@@ -1,7 +1,7 @@
 <?php
 
 require_once ("param/ParamPage.php");
-require_once ("library/php/AllClass.php");
+require_once(CLASS_BASE."AllClass.php");
 
 $baseUrl ="http://www.laquadrature.net";
 $extract_object=new extract ($baseUrl);
