@@ -1,7 +1,5 @@
 <?php
 
-require_once(CLASS_BASE."AllClass.php");
-
 
 class depute extends site{
 
@@ -12,34 +10,39 @@ public $mail_depute;
 public $url_depute;
 public $url_html_depute;
 public $id_url_depute;
+public $cl_Output_depute;
+public $site;
 
 //définition du constructeur 
 
-public function __construct ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute) 
+public function __construct ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output_depute,$site) 
 {
 $this->url_depute = $htmllienDepu;
 $this->url_html_depute = $depu;
 $this->id_url_depute = $result_id_url_Deput;
 $this->num_depart_depute = $numDepartDepute;
+$this->cl_Output_depute = $cl_Output_depute;
+$this->site = $site;
 }
 
-public function recup_lien_questions ($htmllienDepu)
+//public function recup_lien_questions ($this->url_depute)
+public function recup_lien_questions ($urldepute)
 {
-$rslienQuest = $htmllienDepu->find('li a[href$=Questions]');
+$rslienQuest = $urldepute->find('li a[href$=Questions]');
 return $rslienQuest;
 }
 
-public function recup_nom_deput ($depu)
+public function recup_nom_deput ($urlhtml)
 {
-$NomPrenom = $depu->nodes;
+$NomPrenom = $urlhtml->nodes;
 $ChaineNomPrenom = implode(";", $NomPrenom);
 $NomDepute = $this->extractBetweenDelimeters($ChaineNomPrenom,""," ");
 return $NomDepute;
 }
 
-public function recup_prenom_deput ($depu)
+public function recup_prenom_deput ($urlhtml)
 {
-$NomPrenom = $depu->nodes;
+$NomPrenom = $urlhtml->nodes;
 $ChaineNomPrenom = implode(";", $NomPrenom);
 $NomDepute = $this->extractBetweenDelimeters($ChaineNomPrenom,""," ");
 $pos = strpos ($ChaineNomPrenom," ");
@@ -47,24 +50,25 @@ $PrenomDepute = substr($ChaineNomPrenom,$pos+1);
 return $PrenomDepute;
 }
 
-public function recup_lien_AN_deput ($htmllienDepu)
+public function recup_lien_AN_deput ($urldepute)
 {
-$rslienLienANDepute = $htmllienDepu->find('li a[title^=http://www.assemblee-nationale.fr]');
+$rslienLienANDepute = $urldepute->find('li a[title^=http://www.assemblee-nationale.fr]');
 	foreach($rslienLienANDepute as $lienANValue)
 	{
 	$lienANDepute = $lienANValue->attr["href"];
-	$result_exist_url = $this->verif_exist_url ($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
+	/*$result_exist_url = $this->verif_exist_url ($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
 		if ($result_exist_url == NULL)
 		{
 		$this->insert_table_urls ($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
-		}                
+		}*/
+		$this->SetUrl($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
 	}
 	return $lienANDepute; 
 }
 
-public function recup_mail_deput ($htmllienDepu)
+public function recup_mail_deput ($urldepute)
 {
-$rsMailDepute = $htmllienDepu->find('li a[title^=mailto]');
+$rsMailDepute = $urldepute->find('li a[title^=mailto]');
 $mailDepute2 = "";
 //$mailValue1 = "";
 	foreach($rsMailDepute as $mail)
@@ -77,9 +81,9 @@ $mailDepute2 = "";
 	return $mailDepute;
 }
 
-public function recup_Phone_deput ($htmllienDepu)
+public function recup_Phone_deput ($urldepute)
 {
-$rsNumPhoneDepute = $htmllienDepu->find('li a[title^=callto]');
+$rsNumPhoneDepute = $urldepute->find('li a[title^=callto]');
 $numPhoneDepute2_3 = "";
             
 	foreach($rsNumPhoneDepute as $numPhone)
@@ -156,26 +160,28 @@ return $dateRepQuestion;
 
 }
 
-public function extrac_infos_depute ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output)
+//public function extrac_infos_depute ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output)
+public function extrac_infos_depute ()
 {
-$rslienQuest = $this->recup_lien_questions($htmllienDepu);
-$NomDepute = $this->recup_nom_deput ($depu);
-$PrenomDepute = $this->recup_prenom_deput ($depu);
-$mailDepute = $this->recup_mail_deput ($htmllienDepu);
-$numPhoneDepute = $this->recup_Phone_deput ($htmllienDepu);
-$lienANDepute = $this->recup_lien_AN_deput ($htmllienDepu);
+$rslienQuest = $this->recup_lien_questions($this->url_depute);
+$NomDepute = $this->recup_nom_deput ($this->url_html_depute);
+$PrenomDepute = $this->recup_prenom_deput ($this->url_html_depute);
+$mailDepute = $this->recup_mail_deput ($this->url_depute);
+$numPhoneDepute = $this->recup_Phone_deput ($this->url_depute);
+$lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
 
-$result_exist_depu = $this->verif_exist_depu ($NomDepute,$PrenomDepute,$lienANDepute);
+/*$result_exist_depu = $this->verif_exist_depu ($NomDepute,$PrenomDepute,$lienANDepute);
 	if ($result_exist_depu == NULL)
 	{         
-	$this->insert_table_depute ($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$numDepartDepute);              
+	$this->insert_table_depute ($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);              
 	}
-	$result_id_deput = $this->extract_id_depu ($NomDepute,$PrenomDepute,$lienANDepute);
+	$result_id_deput = $this->extract_id_depu ($NomDepute,$PrenomDepute,$lienANDepute);*/
+	$result_id_deput = $this->SetDepute($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);
 
-	$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$result_id_url_Deput);
-	if ($result_exist_depu == NULL)
+	$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
+	if ($result_exist_depuUrl == NULL)
 	{         
-	$this->insert_table_depute_url($result_id_deput,$result_id_url_Deput);
+	$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
 	}
 
 
@@ -185,15 +191,15 @@ foreach($rslienQuest as $quest)
 {
 
 $urlQuestionResult = $this->extract_contenu_lienQuest ($quest);
-$htmlLienQuestion = $cl_Output->call('file_get_html',$urlQuestionResult);         
+$htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionResult);         
 
-$result_exist_url = $this->verif_exist_url ($urlQuestionResult,"find('li a[href$=Questions]')");
+/*$result_exist_url = $this->verif_exist_url ($urlQuestionResult,"find('li a[href$=Questions]')");
 	if ($result_exist_url == NULL)
 	{    
 	$this->insert_table_urls ($urlQuestionResult,"find('li a[href$=Questions]')");
 	}
-	$result_id_url_Questions = $this->extract_id_url ($urlQuestionResult,"find('li a[href$=Questions]')");
-
+	$result_id_url_Questions = $this->extract_id_url ($urlQuestionResult,"find('li a[href$=Questions]')");*/
+	$result_id_url_Questions = $this->SetUrl($urlQuestionResult,"find('li a[href$=Questions]')");
 	//Récupérer les inforamations existantes dans tous les lignes 
 	//du tableux questions, chaque ligne contien des informations sur une question
 
@@ -214,7 +220,6 @@ $result_exist_url = $this->verif_exist_url ($urlQuestionResult,"find('li a[href$
 
 		$this->insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$result_id_url_Questions);
 
-
 		}
 }
 
@@ -222,31 +227,31 @@ $result_exist_url = $this->verif_exist_url ($urlQuestionResult,"find('li a[href$
 
 public function insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$result_id_url_Questions)
 {
-$numLegislature = $this->extract_numlegis_question ($lienQuest);
-$numQuestion = $this->extract_num_question ($lienQuest,$numLegislature);
-$tab_rubrique = $this->extract_tabRubr_question ($NewChaine);
-$tab_motclef = $this->extract_tabMC_question ($NewChaine);
-$datePubliQuestion = $this->extract_datePubli_question ($NewChaine);
-$dateRepQuestion = $this->extract_dateRep_question ($NewChaine);
+	$numLegislature = $this->extract_numlegis_question ($lienQuest);
+	$numQuestion = $this->extract_num_question ($lienQuest,$numLegislature);
+	$tab_rubrique = $this->extract_tabRubr_question ($NewChaine);
+	$tab_motclef = $this->extract_tabMC_question ($NewChaine);
+	$datePubliQuestion = $this->extract_datePubli_question ($NewChaine);
+	$dateRepQuestion = $this->extract_dateRep_question ($NewChaine);
 
 
-$result_exist_question = $this->verif_exist_question ($numQuestion,$datePubliQuestion);
+	/*$result_exist_question = $this->verif_exist_question ($numQuestion,$datePubliQuestion);
 	if ($result_exist_question == NULL)
 	{  
-	//$this->insert_table_questions ($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature);
 	$this->insert_table_questions ($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature,$result_id_deput,$result_id_url_Questions);         
 	}
-	$result_id_question = $this->extract_id_question ($numQuestion,$datePubliQuestion);
-            
-		
+	$result_id_question = $this->extract_id_question ($numQuestion,$datePubliQuestion);*/
+	$result_id_question = $this->SetQuestion($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature,$result_id_deput,$result_id_url_Questions);
+            	
 		foreach ($tab_motclef as $mot_clef1)
 		{
 		$mot_clef = $this->filter ($mot_clef1);
 		$result_exist_mc = $this->verif_exist_mc ($mot_clef);
 		if ($result_exist_mc == NULL)
 		{
-		$this->insert_table_motclef ($mot_clef);
-		$result_id_mc = $this->extract_id_mc ($mot_clef);		
+		/*$this->insert_table_motclef ($mot_clef);
+		$result_id_mc = $this->extract_id_mc ($mot_clef);*/
+		$result_id_mc = $this->SetMotClef($mot_clef);
 		}  
 		else
 		{
@@ -275,8 +280,9 @@ $result_exist_question = $this->verif_exist_question ($numQuestion,$datePubliQue
 		$result_exist_rubrique = $this->verif_exist_rubrique ($rubrique);
 		if ($result_exist_rubrique == NULL)
 		{
-		$this->insert_table_rubrique ($rubrique);
-		$result_id_rubrique = $this->extract_id_rubrique ($rubrique);
+		/*$this->insert_table_rubrique ($rubrique);
+		$result_id_rubrique = $this->extract_id_rubrique ($rubrique);*/
+		$result_id_rubrique = $this->SetRubrique($rubrique);
 		}
 		else
 		{
@@ -293,9 +299,7 @@ $result_exist_question = $this->verif_exist_question ($numQuestion,$datePubliQue
 				{  
 				$this->insert_table_quest_rubr ($result_id_question,$result_id_rubrique);
 				}
-
 		}  
-
 }
 
 public function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight) {
@@ -314,82 +318,77 @@ $result = $annee . '-' . $mois . '-' . $jour;
 return $result;
 }
 
-public function verif_exist_depu ($nom_depu,$prenom_depu,$lien_AN_depu)
+function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `depute` WHERE `nom_depute`=\"$nom_depu\" AND `prenom_depute`=\"$prenom_depu\" AND `lien_AN_depute`=\"$lien_AN_depu\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-return ($result1 = mysql_fetch_array( $result));
-
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "DELETE FROM `depute` WHERE `nom_depute`=\"$nom\" AND `prenom_depute`=\"$prenom\" AND `lien_AN_depute`=\"$lien_AN_deput\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$db->close();
+	
+	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	//$db->connect();
+	$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\")";
+	$result = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	$db->close();
+	return $id;
 }
 
-public function insert_table_depute ($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
+function SetUrl($valeurURL, $codeExtractURL)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "DELETE FROM `urls` WHERE `valeur_url` =\"$valeurURL\" AND code_extract_URL=\"$codeExtractURL\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$db->close();
+	
+	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	//$db->connect();
+	$sql = "INSERT INTO `urls` ( `id_URL` , `valeur_url`, `code_extract_URL` ) VALUES ('', \"$valeurURL\", \"$codeExtractURL\")";     
+	$result = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	$db->close();
+	return $id;
 }
 
-public function extract_id_depu ($nom_depu,$prenom_depu,$lien_AN_depu)
+function SetQuestion($num_question,$date_publication,$date_reponse,$num_legislature,$id_deput,$id_url)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT `id_depute` FROM `depute` WHERE `nom_depute`=\"$nom_depu\" AND `prenom_depute`=\"$prenom_depu\" AND `lien_AN_depute`=\"$lien_AN_depu\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-$result1 = mysql_fetch_row( $result);
-return $result2 = $result1[0];
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "DELETE FROM `questions` WHERE `num_question`=\"$num_question\" AND `date_publication`=\"$date_publication\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$db->close();
+	
+	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	//$db->connect();
+	$sql = "INSERT INTO `questions` ( `id_question` , `num_question` , `date_publication` , `date_reponse` , `num_legislature` , `id_depute`, `id_URL` ) VALUES ('', \"$num_question\", \"$date_publication\", \"$date_reponse\", \"$num_legislature\", \"$id_deput\", \"$id_url\")";
+	$result = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	$db->close();
+	return $id;
 }
 
-public function verif_exist_url ($valeurURL,$codeExtractURL)
+function SetMotClef($valeur_MC)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `urls` WHERE `valeur_URL`=\"$valeurURL\" AND `code_extract_URL`=\"$codeExtractURL\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-return ($result1 = mysql_fetch_array( $result));
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";
+	$result = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	$db->close();
+	return $id;
 }
 
-public function insert_table_urls ($valeurURL,$codeExtractURL)
+function SetRubrique($valeurrubrique)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `urls` ( `id_URL` , `valeur_url`, `code_extract_URL` ) VALUES ('', \"$valeurURL\", \"$codeExtractURL\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-}
-
-public function verif_exist_question ($num_quest,$date_publi)
-{
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `questions` WHERE `num_question`=\"$num_quest\" AND `date_publication`=\"$date_publi\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-return ($result1 = mysql_fetch_array( $result));
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "INSERT INTO `rubrique` ( `id_rubrique` , `valeur_rubrique` ) VALUES ('', \"$valeurrubrique\")";
+	$result = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	$db->close();
+	return $id;
 }
 
 public function verif_exist_mc ($valeurmotclef)
@@ -418,20 +417,6 @@ $db->close($link);
 return ($result1 = mysql_fetch_array( $result));
 }
 
-
-public function insert_table_questions ($num_question,$date_publication,$date_reponse,$num_legislature,$id_deput,$id_url)
-{
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-//$sql = "INSERT INTO `questions` ( `id_question` , `num_question` , `date_publication` , `date_reponse` , `num_legislature` , `id_depute`, `id_URL` ) VALUES ('', \"$num_question\", \"$date_publication\", \"$date_reponse\", \"$num_legislature\", '', '')";
-$sql = "INSERT INTO `questions` ( `id_question` , `num_question` , `date_publication` , `date_reponse` , `num_legislature` , `id_depute`, `id_URL` ) VALUES ('', \"$num_question\", \"$date_publication\", \"$date_reponse\", \"$num_legislature\", \"$id_deput\", \"$id_url\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-}
-
 public function insert_table_motclef ($valeur_MC)
 {
 $db=new mysql ('localhost','root','','evalactipol');
@@ -442,20 +427,6 @@ $link=$db->connect();
 $sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";     
 $result = $db->query(utf8_decode($sql));
 $db->close($link);
-}
-
-public function extract_id_question ($num_quest,$date_publi)
-{
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT `id_question` FROM `questions` WHERE `num_question`=\"$num_quest\" AND `date_publication`=\"$date_publi\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-$result1 = mysql_fetch_row( $result);
-return $result2 = $result1[0];
 }
 
 public function extract_id_mc ($valeur_mc)
@@ -630,21 +601,6 @@ $sql = "INSERT INTO `depute-url` ( `id_depute` , `id_URL` ) VALUES (\"$id_deput\
 $result = $db->query(utf8_decode($sql));
 $db->close($link);
 }
-
-public function extract_id_url ($valeurURL,$codeExtractURL)
-{
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT `id_URL` FROM `urls` WHERE `valeur_URL`=\"$valeurURL\" AND `code_extract_URL`=\"$codeExtractURL\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-$result1 = mysql_fetch_row( $result);
-return $result2 = $result1[0];
-}
-
 
 }
 
