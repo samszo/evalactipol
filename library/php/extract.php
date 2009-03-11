@@ -1,33 +1,41 @@
 <?php
 
-require_once(CLASS_BASE."AllClass.php");
+class extract {
 
-class extract extends site{
 public $nom_table;
 public $chaine;
 public $baseUrl;
-  
+public $cl_Output;
+public $site;
+
+
 function __tostring() {
-return "Cette classe permet d'extraire le contenu d'un site.<br/>";
+	return "Cette classe permet d'extraire le contenu d'une collection de page HTML.<br/>";
 }
 
-public function __construct($baseUrl) {
-$this->$baseUrl = $baseUrl;
-
+public function __construct($site, $baseUrl, $cl_Output) {
+	$this->baseUrl = $baseUrl;
+	$this->cl_Output = $cl_Output;
+	$this->site = $site;
 }
 
-function extract_site ($baseUrl)
+function extract_site ()
 {
-$baseUrlHtml = $baseUrl."/wiki/Deputes_par_departement";
+	
+$baseUrlHtml = $this->baseUrl."/wiki/Deputes_par_departement";
+/*
 $result_exist_url = $this->verif_exist_url ($baseUrlHtml,"Url de départ");
 	if ($result_exist_url == NULL)
 	{  
-	$this->insert_table_urls ($baseUrlHtml,"Url de départ");
+	$this->SetUrl($baseUrlHtml,"Url de départ");
 	}
+*/
+$this->SetUrl($baseUrlHtml,"Url de départ");
+
 $result_id_url_ttDepart = $this->extract_id_url ($baseUrlHtml,"Url de départ");
 
-$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
-$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
+//$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
+$html = $this->cl_Output->call('file_get_html',$this->baseUrl."/wiki/Deputes_par_departement");
 
 $retours = $html->find('li a[title^=Deputes]');
 
@@ -35,8 +43,8 @@ $retours = $html->find('li a[title^=Deputes]');
 	foreach($retours as $dept)
 	{
 	$urlDept = $dept->attr["href"];
-	$url =$baseUrl.$urlDept;
-	$htmlDept = $cl_Output->call('file_get_html',$url);
+	$url =$this->baseUrl.$urlDept;
+	$htmlDept = $this->cl_Output->call('file_get_html',$url);
 //  $htmlDept = file_get_html($url);
 	$result_exist_url = $this->verif_exist_url ($url,"find('li a[title^=Deputes]')");
 		if ($result_exist_url == NULL)
@@ -185,15 +193,31 @@ $db->close($link);
 
 function insert_table_urls ($valeurURL,$codeExtractURL)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `urls` ( `id_URL` , `valeur_url`, `code_extract_URL` ) VALUES ('', \"$valeurURL\", \"$codeExtractURL\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+//$db=new mysql ('localhost','root','','evalactipol');
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "INSERT INTO `urls` ( `id_URL` , `valeur_url`, `code_extract_URL` ) VALUES ('', \"$valeurURL\", \"$codeExtractURL\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close();
 }
+
+function SetUrl($valeurURL, $codeExtractURL)
+{
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "DELETE FROM `urls` WHERE `valeur_url` =\"$valeurURL\" AND code_extract_URL=\"$codeExtractURL\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$db->close();
+	
+	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	//$db->connect();
+	$sql = "INSERT INTO `urls` ( `id_URL` , `valeur_url`, `code_extract_URL` ) VALUES ('', \"$valeurURL\", \"$codeExtractURL\")";     
+	$result = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	$db->close();
+	return $id;
+}
+
 
 function insert_table_depute_geo ($id_deput,$id_geo)
 {
@@ -235,6 +259,7 @@ return ($result1 = mysql_fetch_array( $result));
 function verif_exist_url ($valeurURL,$codeExtractURL)
 {
 $db=new mysql ('localhost','root','','evalactipol');
+
 //$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
 //$objSite = new Site($SITES, $site, $scope, false);
 //$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
