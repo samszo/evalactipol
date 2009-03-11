@@ -5,6 +5,7 @@ class Site{
   public $scope;
   public $XmlParam;
   public $trace;
+  public $infos;
   private $sites;
 
   function __tostring() {

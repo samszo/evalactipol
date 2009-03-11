@@ -8,18 +8,18 @@ session_start();
 
 	// vérification du site en cours
 	if(isset($_GET['site'])){
-		$site = $_GET['site'];
+		$idSite = $_GET['site'];
 	}else{
 		if(!session_is_registered("Site"))
-			$site = DEFSITE;
+			$idSite = DEFSITE;
 	}
 			
 	$scope = array(
-			"site" => $site
+			"site" => $idSite
 			,"FicXml" => PathRoot."/param/Param.xml"
 	);	
 	
-	$objSite = new Site($SITES, $site, $scope, false);
+	$objSite = new Site($SITES, $idSite, $scope, false);
 
 	// création de l'objet de cache
 	$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
