@@ -68,7 +68,8 @@ $retours = $html->find('li a[title^=Deputes]');
 		$this->insert_table_geoname ($nomGeo_Depart,$type_geoname,$numDepartDepute,$circonscriptions_depart);
 		}
 
-	//$result_id_geo = $this->extract_id_geo ($numDepartDepute);
+	$result_id_geo = $this->extract_id_geo ($numDepartDepute);
+	print_r($result_id_geo);
 
 	//extraction des liens des infos des députées
 
@@ -282,15 +283,17 @@ $link=$db->connect();
 $sql = "SELECT `id_geoname` FROM `geoname` WHERE `num_depart_geoname`=\"$num_Depart_geo\" ";     
 $result = $db->query(utf8_decode($sql));
 //$result1 = mysql_query ($sql);
-$result1 = mysql_fetch_row($result);
+//$num=mysql
+//$result1 = mysql_fetch_row($result);  $db->private_fetch_row($result);
+$result1 = $db->fetch_row($result);
 //$result4 = "";
-//while ($result1)
-//{  
-//$result2 = $result1[0];
+while ($result1)
+{  
+$result2 = $result1[0];
 //$result4 = $result4.",".$result3;
-//}  
-$db->close($link);
+}  
 $result2 = $result1[0];  
+$db->close($link);
 return $result2; 
 }   
 
