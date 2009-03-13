@@ -1,6 +1,5 @@
 <?php
 
-
 class depute extends site{
 
 public $nom_depute;
@@ -12,10 +11,11 @@ public $url_html_depute;
 public $id_url_depute;
 public $cl_Output_depute;
 public $site;
+public $nums_geoname;
 
 //définition du constructeur 
 
-public function __construct ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output_depute,$site) 
+public function __construct ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output_depute,$site,$result_id_geoCanton) 
 {
 $this->url_depute = $htmllienDepu;
 $this->url_html_depute = $depu;
@@ -23,6 +23,7 @@ $this->id_url_depute = $result_id_url_Deput;
 $this->num_depart_depute = $numDepartDepute;
 $this->cl_Output_depute = $cl_Output_depute;
 $this->site = $site;
+$this->nums_geoname = $result_id_geoCanton;
 }
 
 //public function recup_lien_questions ($this->url_depute)
@@ -161,7 +162,7 @@ return $dateRepQuestion;
 }
 
 //public function extrac_infos_depute ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output)
-public function extrac_infos_depute ()
+public function extrac_infos_depute ($infosCantonsDepute)
 {
 $rslienQuest = $this->recup_lien_questions($this->url_depute);
 $NomDepute = $this->recup_nom_deput ($this->url_html_depute);
@@ -169,6 +170,7 @@ $PrenomDepute = $this->recup_prenom_deput ($this->url_html_depute);
 $mailDepute = $this->recup_mail_deput ($this->url_depute);
 $numPhoneDepute = $this->recup_Phone_deput ($this->url_depute);
 $lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
+$NomPrenonDepute = $NomDepute." ".$PrenomDepute;
 
 /*$result_exist_depu = $this->verif_exist_depu ($NomDepute,$PrenomDepute,$lienANDepute);
 	if ($result_exist_depu == NULL)
@@ -183,6 +185,55 @@ $lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
 	{         
 	$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
 	}
+	
+	/*$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
+	if ($result_exist_depuUrl == NULL)
+	{         
+	$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
+	}*/
+	
+	$Result_id_geo1 = "";
+	$t_geo = "Canton";
+	foreach ($this->nums_geoname as $id_geo1)
+	{
+		$ResultnameGeo = $this->extract_name_geo ($id_geo1);
+			foreach ($ResultnameGeo as $nameGeo)
+			{
+				if ($infosCantonsDepute [$nameGeo] == $NomPrenonDepute)
+				//if ($infosCantonsDepute [$ResultnameGeo] == $NomPrenonDepute)
+				{
+				$Result_id_geo1 = $Result_id_geo1.";".$id_geo1;
+				}
+			}
+		//$ResultCantonDepute1 = $CantonsDepute [$NomPrenonDepute];
+		//$ResultCantonDepute = array_merge ($ResultCantonDepute,$ResultCantonDepute1);
+	
+	}
+	//$Result_id_geo2 = explode(";", $Result_id_geo1);
+	$Result_id_geo2 = substr($Result_id_geo1,1);
+	$Result_id_geo3 = explode(";", $Result_id_geo2);
+	
+	foreach ($Result_id_geo3 as $id_geo)
+	{
+	$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
+	if ($result_exist_depuGeo == NULL)
+	{         
+	$this->insert_table_deput_Geo($result_id_deput,$id_geo);
+	}
+	}
+	
+	
+	
+	
+	/*foreach ($this->nums_geoname as $id_geo)
+	{
+	$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
+	if ($result_exist_depuGeo == NULL)
+	{         
+	$this->insert_table_deput_Geo($result_id_deput,$id_geo);
+	}
+	}*/
+	
 
 
 // Fin La partie ajoutée pour testet l'objet député
@@ -222,6 +273,18 @@ $htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionRe
 
 		}
 }
+return $result_id_deput;
+
+}
+
+public function result_ids_deputes ($id_deput)
+{
+$result_ids_deputs1 = "";
+//$result_id_deput = this->
+$result_ids_deputs1 = $result_ids_deputs1."".$id_deput;
+$result_ids_deputs = substr ($result_ids_deputs1,1);
+return $result_ids_deputs;
+
 
 }
 
@@ -324,10 +387,6 @@ function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
 	$db->connect();
 	$sql = "DELETE FROM `depute` WHERE `nom_depute`=\"$nom\" AND `prenom_depute`=\"$prenom\" AND `lien_AN_depute`=\"$lien_AN_deput\" ";     
 	$result = $db->query(utf8_decode($sql));
-	//$db->close();
-	
-	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	//$db->connect();
 	$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\")";
 	$result = $db->query(utf8_decode($sql));
 	$id =  mysql_insert_id();
@@ -341,10 +400,6 @@ function SetUrl($valeurURL, $codeExtractURL)
 	$db->connect();
 	$sql = "DELETE FROM `urls` WHERE `valeur_url` =\"$valeurURL\" AND code_extract_URL=\"$codeExtractURL\" ";     
 	$result = $db->query(utf8_decode($sql));
-	//$db->close();
-	
-	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	//$db->connect();
 	$sql = "INSERT INTO `urls` ( `id_URL` , `valeur_url`, `code_extract_URL` ) VALUES ('', \"$valeurURL\", \"$codeExtractURL\")";     
 	$result = $db->query(utf8_decode($sql));
 	$id =  mysql_insert_id();
@@ -358,10 +413,6 @@ function SetQuestion($num_question,$date_publication,$date_reponse,$num_legislat
 	$db->connect();
 	$sql = "DELETE FROM `questions` WHERE `num_question`=\"$num_question\" AND `date_publication`=\"$date_publication\" ";     
 	$result = $db->query(utf8_decode($sql));
-	//$db->close();
-	
-	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	//$db->connect();
 	$sql = "INSERT INTO `questions` ( `id_question` , `num_question` , `date_publication` , `date_reponse` , `num_legislature` , `id_depute`, `id_URL` ) VALUES ('', \"$num_question\", \"$date_publication\", \"$date_reponse\", \"$num_legislature\", \"$id_deput\", \"$id_url\")";
 	$result = $db->query(utf8_decode($sql));
 	$id =  mysql_insert_id();
@@ -393,63 +444,48 @@ function SetRubrique($valeurrubrique)
 
 public function verif_exist_mc ($valeurmotclef)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `mot-clef` WHERE `valeur_motclef`=\"$valeurmotclef\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-return ($result1 = mysql_fetch_array( $result));
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "SELECT * FROM `mot-clef` WHERE `valeur_motclef`=\"$valeurmotclef\" ";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
+	return ($result1 = mysql_fetch_array( $result));
 }
 
 public function verif_exist_rubrique ($valeurrubrique)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `rubrique` WHERE `valeur_rubrique`=\"$valeurrubrique\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-return ($result1 = mysql_fetch_array( $result));
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "SELECT * FROM `rubrique` WHERE `valeur_rubrique`=\"$valeurrubrique\" ";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
+	return ($result1 = mysql_fetch_array( $result));
 }
 
 public function insert_table_motclef ($valeur_MC)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
 }
 
 public function extract_id_mc ($valeur_mc)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT `id_motclef` FROM `mot-clef` WHERE `valeur_motclef`=\"$valeur_mc\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-$result1 = mysql_fetch_row( $result);
-$result2 = $result1[0];
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "SELECT `id_motclef` FROM `mot-clef` WHERE `valeur_motclef`=\"$valeur_mc\" ";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
+	$result1 = mysql_fetch_row( $result);
+	$result2 = $result1[0];
 return $result2;
 }
 
 public function insert_table_rubrique ($valeurRubrique)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 $link=$db->connect();
 $sql = "INSERT INTO `rubrique` ( `id_rubrique` , `valeur_rubrique` ) VALUES ('', \"$valeurRubrique\")";     
 $result = $db->query(utf8_decode($sql));
@@ -458,10 +494,7 @@ $db->close($link);
 
 public function extract_id_rubrique ($valeur_rubr)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 $link=$db->connect();
 $sql = "SELECT `id_rubrique` FROM `rubrique` WHERE `valeur_rubrique`=\"$valeur_rubr\" ";     
 $result = $db->query(utf8_decode($sql));
@@ -479,10 +512,7 @@ return preg_replace($search, $replace, $in);
 
 public function verif_exist_deptMC ($id_deput,$id_MC)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 $link=$db->connect();
 $sql = "SELECT * FROM `depute-mc` WHERE `id_depute`=\"$id_deput\" AND `id_motclef`=\"$id_MC\" ";     
 $result = $db->query(utf8_decode($sql));
@@ -490,12 +520,28 @@ $db->close($link);
 return ($result1 = mysql_fetch_array( $result));
 }
 
+public function verif_exist_deputGeo ($id_deput,$id_Geo)
+{
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+$link=$db->connect();
+$sql = "SELECT * FROM `depute-geo` WHERE `id_depute`=\"$id_deput\" AND `id_geoname`=\"$id_Geo\" ";     
+$result = $db->query(utf8_decode($sql));
+$db->close($link);
+return ($result1 = mysql_fetch_array( $result));
+}
+
+public function insert_table_deput_Geo ($id_deput,$id_Geo)
+{
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `depute-geo` ( `id_depute` , `id_geoname` ) VALUES (\"$id_deput\", \"$id_Geo\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
+}
+
 public function verif_exist_questMC ($id_quest,$id_MC)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 $link=$db->connect();
 $sql = "SELECT * FROM `quest-mc` WHERE `id_question`=\"$id_quest\" AND `id_motclef`=\"$id_MC\" ";     
 $result = $db->query(utf8_decode($sql));
@@ -505,10 +551,7 @@ return ($result1 = mysql_fetch_array( $result));
 
 public function verif_exist_deptRubr ($id_deput,$id_rubr)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 $link=$db->connect();
 $sql = "SELECT * FROM `depute-rubr` WHERE `id_depute`=\"$id_deput\" AND `id_rubrique`=\"$id_rubr\" ";     
 $result = $db->query(utf8_decode($sql));
@@ -518,91 +561,97 @@ return ($result1 = mysql_fetch_array( $result));
 
 public function verif_exist_questRubr ($id_quest,$id_rubr)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `quest-rubr` WHERE `id_question`=\"$id_quest\" AND `id_rubrique`=\"$id_rubr\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-return ($result1 = mysql_fetch_array( $result));
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "SELECT * FROM `quest-rubr` WHERE `id_question`=\"$id_quest\" AND `id_rubrique`=\"$id_rubr\" ";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
+	return ($result1 = mysql_fetch_array( $result));
 }
 
 public function insert_table_depute_mc ($id_deput,$id_mc)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `depute-mc` ( `id_depute` , `id_motclef` ) VALUES (\"$id_deput\", \"$id_mc\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `depute-mc` ( `id_depute` , `id_motclef` ) VALUES (\"$id_deput\", \"$id_mc\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
 }
 
 public function insert_table_depute_rubr ($id_deput,$id_rubr)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `depute-rubr` ( `id_depute` , `id_rubrique` ) VALUES (\"$id_deput\", \"$id_rubr\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `depute-rubr` ( `id_depute` , `id_rubrique` ) VALUES (\"$id_deput\", \"$id_rubr\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
 }
 
 public function insert_table_quest_mc ($id_quest,$id_mc)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `quest-mc` ( `id_question` , `id_motclef` ) VALUES (\"$id_quest\", \"$id_mc\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `quest-mc` ( `id_question` , `id_motclef` ) VALUES (\"$id_quest\", \"$id_mc\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
 }
    
 public function insert_table_quest_rubr ($id_quest,$id_rubr)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `quest-rubr` ( `id_question` , `id_rubrique` ) VALUES (\"$id_quest\", \"$id_rubr\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `quest-rubr` ( `id_question` , `id_rubrique` ) VALUES (\"$id_quest\", \"$id_rubr\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
 }
 
 public function verif_exist_deputUrl ($id_deput,$id_url)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `depute-url` WHERE `id_depute`=\"$id_deput\" AND `id_URL`=\"$id_url\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "SELECT * FROM `depute-url` WHERE `id_depute`=\"$id_deput\" AND `id_URL`=\"$id_url\" ";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
 return ($result1 = mysql_fetch_array( $result));
 }
 
 public function insert_table_depute_url ($id_deput,$id_url)
 {
-$db=new mysql ('localhost','root','','evalactipol');
-//$db=new mysql ($this->infos["SQL_HOST"],$this->infos["SQL_LOGIN"],'',$this->infos["SQL_DB"]);
-//$objSite = new Site($SITES, $site, $scope, false);
-//$db=new mysql ($objSite->infos["SQL_HOST"],$objSite->infos["SQL_LOGIN"],'',$objSite->infos["SQL_DB"]);
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `depute-url` ( `id_depute` , `id_URL` ) VALUES (\"$id_deput\", \"$id_url\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
+}
+
+function extract_name_geo ($id_geo)
+{
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 $link=$db->connect();
-$sql = "INSERT INTO `depute-url` ( `id_depute` , `id_URL` ) VALUES (\"$id_deput\", \"$id_url\")";     
+$sql = "SELECT `nom_geoname` FROM `geoname` WHERE `id_geoname`=\"$id_geo\" ";     
 $result = $db->query(utf8_decode($sql));
+$num = $db->num_rows($result);
+//$result4 = "";
+//while ($result1)
+//{  
+//$result2 = $result1[0];
+//$result4 = $result4.",".$result3;
+//}
+
+for ($i=0;$i<=$num-1;$i++)
+{
+$result1 = $db->fetch_row($result);
+$result2[$i] = $result1[0];  
+}  
+//$result2 = $result1[0];  
 $db->close($link);
-}
+echo $result2; 
+return $result2;
 
 }
 
+
+
+}
 
 ?>
