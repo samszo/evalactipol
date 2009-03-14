@@ -25,8 +25,6 @@ $this->cl_Output_depute = $cl_Output_depute;
 $this->site = $site;
 $this->nums_geoname = $result_id_geoCanton;
 }
-
-//public function recup_lien_questions ($this->url_depute)
 public function recup_lien_questions ($urldepute)
 {
 $rslienQuest = $urldepute->find('li a[href$=Questions]');
@@ -71,7 +69,7 @@ public function recup_mail_deput ($urldepute)
 {
 $rsMailDepute = $urldepute->find('li a[title^=mailto]');
 $mailDepute2 = "";
-//$mailValue1 = "";
+
 	foreach($rsMailDepute as $mail)
 	{
 	$mailValue = trim ($mail->attr["href"]);
@@ -116,7 +114,6 @@ return $numLegislature;
 
 public function extract_num_question ($lienQuest,$numLegislature)
 {
-
 $numQuestion1 = $this->extractBetweenDelimeters($lienQuest,$numLegislature."-","Q");
 $numQuestion = (int)$numQuestion1;
 return $numQuestion;
@@ -160,8 +157,6 @@ $dateRepQuestion = $this->convertToDateFormat($dateRepQuestion2);
 return $dateRepQuestion;
 
 }
-
-//public function extrac_infos_depute ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output)
 public function extrac_infos_depute ($infosCantonsDepute)
 {
 $rslienQuest = $this->recup_lien_questions($this->url_depute);
@@ -186,30 +181,20 @@ $NomPrenonDepute = $NomDepute." ".$PrenomDepute;
 	$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
 	}
 	
-	/*$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
-	if ($result_exist_depuUrl == NULL)
-	{         
-	$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
-	}*/
-	
 	$Result_id_geo1 = "";
 	$t_geo = "Canton";
 	foreach ($this->nums_geoname as $id_geo1)
 	{
 		$ResultnameGeo = $this->extract_name_geo ($id_geo1);
 			foreach ($ResultnameGeo as $nameGeo)
-			{
+			{	
 				if ($infosCantonsDepute [$nameGeo] == $NomPrenonDepute)
-				//if ($infosCantonsDepute [$ResultnameGeo] == $NomPrenonDepute)
 				{
 				$Result_id_geo1 = $Result_id_geo1.";".$id_geo1;
 				}
 			}
-		//$ResultCantonDepute1 = $CantonsDepute [$NomPrenonDepute];
-		//$ResultCantonDepute = array_merge ($ResultCantonDepute,$ResultCantonDepute1);
-	
 	}
-	//$Result_id_geo2 = explode(";", $Result_id_geo1);
+	
 	$Result_id_geo2 = substr($Result_id_geo1,1);
 	$Result_id_geo3 = explode(";", $Result_id_geo2);
 	
@@ -221,20 +206,6 @@ $NomPrenonDepute = $NomDepute." ".$PrenomDepute;
 	$this->insert_table_deput_Geo($result_id_deput,$id_geo);
 	}
 	}
-	
-	
-	
-	
-	/*foreach ($this->nums_geoname as $id_geo)
-	{
-	$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
-	if ($result_exist_depuGeo == NULL)
-	{         
-	$this->insert_table_deput_Geo($result_id_deput,$id_geo);
-	}
-	}*/
-	
-
 
 // Fin La partie ajoutée pour testet l'objet député
 
@@ -274,17 +245,14 @@ $htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionRe
 		}
 }
 return $result_id_deput;
-
 }
 
 public function result_ids_deputes ($id_deput)
 {
 $result_ids_deputs1 = "";
-//$result_id_deput = this->
 $result_ids_deputs1 = $result_ids_deputs1."".$id_deput;
 $result_ids_deputs = substr ($result_ids_deputs1,1);
 return $result_ids_deputs;
-
 
 }
 
@@ -306,9 +274,9 @@ public function insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$
 	$result_id_question = $this->extract_id_question ($numQuestion,$datePubliQuestion);*/
 	$result_id_question = $this->SetQuestion($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature,$result_id_deput,$result_id_url_Questions);
             	
-		foreach ($tab_motclef as $mot_clef1)
+		foreach ($tab_motclef as $mot_clef)
 		{
-		$mot_clef = $this->filter ($mot_clef1);
+		//$mot_clef = $this->filter ($mot_clef1);
 		$result_exist_mc = $this->verif_exist_mc ($mot_clef);
 		if ($result_exist_mc == NULL)
 		{
@@ -337,9 +305,9 @@ public function insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$
 			  
 		}
 
-		foreach ($tab_rubrique as $rubrique1)
+		foreach ($tab_rubrique as $rubrique)
 		{
-		$rubrique = $this->filter ($rubrique1);
+		//$rubrique = $this->filter ($rubrique1);
 		$result_exist_rubrique = $this->verif_exist_rubrique ($rubrique);
 		if ($result_exist_rubrique == NULL)
 		{
@@ -381,8 +349,19 @@ $result = $annee . '-' . $mois . '-' . $jour;
 return $result;
 }
 
+public function toASCII($ch) { 
+$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
+$result=strtr($ch,$tableau_caracts_html);
+return $result;  
+}
+
 function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
-{
+{	
+	$nom = $this->toASCII($nom);
+	$prenom = $this->toASCII($prenom);
+	$mail = $this->toASCII($mail);
+	$lien_AN_deput = $this->toASCII($lien_AN_deput);
+	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "DELETE FROM `depute` WHERE `nom_depute`=\"$nom\" AND `prenom_depute`=\"$prenom\" AND `lien_AN_depute`=\"$lien_AN_deput\" ";     
@@ -395,7 +374,10 @@ function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
 }
 
 function SetUrl($valeurURL, $codeExtractURL)
-{
+{	
+	$valeurURL = $this->toASCII($valeurURL);
+	$codeExtractURL = $this->toASCII($codeExtractURL);
+	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "DELETE FROM `urls` WHERE `valeur_url` =\"$valeurURL\" AND code_extract_URL=\"$codeExtractURL\" ";     
@@ -421,7 +403,9 @@ function SetQuestion($num_question,$date_publication,$date_reponse,$num_legislat
 }
 
 function SetMotClef($valeur_MC)
-{
+{	
+	$valeur_MC = $this->toASCII($valeur_MC);
+	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";
@@ -432,7 +416,9 @@ function SetMotClef($valeur_MC)
 }
 
 function SetRubrique($valeurrubrique)
-{
+{	
+	$valeurrubrique = $this->toASCII($valeurrubrique);
+	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "INSERT INTO `rubrique` ( `id_rubrique` , `valeur_rubrique` ) VALUES ('', \"$valeurrubrique\")";
@@ -443,7 +429,9 @@ function SetRubrique($valeurrubrique)
 }
 
 public function verif_exist_mc ($valeurmotclef)
-{
+{	
+	$valeurmotclef = $this->toASCII($valeurmotclef);
+	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$link=$db->connect();
 	$sql = "SELECT * FROM `mot-clef` WHERE `valeur_motclef`=\"$valeurmotclef\" ";     
@@ -453,7 +441,9 @@ public function verif_exist_mc ($valeurmotclef)
 }
 
 public function verif_exist_rubrique ($valeurrubrique)
-{
+{	
+	$valeurrubrique = $this->toASCII($valeurrubrique);
+	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$link=$db->connect();
 	$sql = "SELECT * FROM `rubrique` WHERE `valeur_rubrique`=\"$valeurrubrique\" ";     
@@ -461,18 +451,10 @@ public function verif_exist_rubrique ($valeurrubrique)
 	$db->close($link);
 	return ($result1 = mysql_fetch_array( $result));
 }
-
-public function insert_table_motclef ($valeur_MC)
-{
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	$link=$db->connect();
-	$sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";     
-	$result = $db->query(utf8_decode($sql));
-	$db->close($link);
-}
-
 public function extract_id_mc ($valeur_mc)
-{
+{	
+	$valeur_mc = $this->toASCII($valeur_mc);
+	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$link=$db->connect();
 	$sql = "SELECT `id_motclef` FROM `mot-clef` WHERE `valeur_motclef`=\"$valeur_mc\" ";     
@@ -483,17 +465,10 @@ public function extract_id_mc ($valeur_mc)
 return $result2;
 }
 
-public function insert_table_rubrique ($valeurRubrique)
-{
-$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `rubrique` ( `id_rubrique` , `valeur_rubrique` ) VALUES ('', \"$valeurRubrique\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-}
-
 public function extract_id_rubrique ($valeur_rubr)
 {
+$valeur_rubr = $this->toASCII($valeur_rubr);
+
 $db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 $link=$db->connect();
 $sql = "SELECT `id_rubrique` FROM `rubrique` WHERE `valeur_rubrique`=\"$valeur_rubr\" ";     
@@ -502,12 +477,6 @@ $db->close($link);
 $result1 = mysql_fetch_row( $result);
 $result2 = $result1[0];
 return $result2;
-}
-
-public function filter($in) { 
-$search = array ('@[éèêëÊË]@i','@[áãàâäÂÄ]@i','@[ìíiiîïÎÏ]@i','@[úûùüÛÜ]@i','@[òóõôöÔÖ]@i','@[ñÑ]@i','@[ıÿİ]@i','@[ç]@i');    
-$replace = array ('e','a','i','u','o','n','y','c');
-return preg_replace($search, $replace, $in);  
 }
 
 public function verif_exist_deptMC ($id_deput,$id_MC)
@@ -631,26 +600,39 @@ $link=$db->connect();
 $sql = "SELECT `nom_geoname` FROM `geoname` WHERE `id_geoname`=\"$id_geo\" ";     
 $result = $db->query(utf8_decode($sql));
 $num = $db->num_rows($result);
-//$result4 = "";
-//while ($result1)
-//{  
-//$result2 = $result1[0];
-//$result4 = $result4.",".$result3;
-//}
 
 for ($i=0;$i<=$num-1;$i++)
 {
 $result1 = $db->fetch_row($result);
-$result2[$i] = $result1[0];  
+$result2[$i] = $result1[0];		
 }  
-//$result2 = $result1[0];  
 $db->close($link);
-echo $result2; 
 return $result2;
-
 }
 
+/*public function insert_table_motclef ($valeur_MC)
+{
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$link=$db->connect();
+	$sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";     
+	$result = $db->query(utf8_decode($sql));
+	$db->close($link);
+}
 
+public function insert_table_rubrique ($valeurRubrique)
+{
+$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+$link=$db->connect();
+$sql = "INSERT INTO `rubrique` ( `id_rubrique` , `valeur_rubrique` ) VALUES ('', \"$valeurRubrique\")";     
+$result = $db->query(utf8_decode($sql));
+$db->close($link);
+}
+
+public function filter($in) { 
+$search = array ('@[éèêëÊË]@i','@[áãàâäÂÄ]@i','@[ìíiiîïÎÏ]@i','@[úûùüÛÜ]@i','@[òóõôöÔÖ]@i','@[ñÑ]@i','@[ıÿİ]@i','@[ç]@i');    
+$replace = array ('e','a','i','u','o','n','y','c');
+return preg_replace($search, $replace, $in);  
+}*/
 
 }
 
