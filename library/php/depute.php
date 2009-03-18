@@ -1,11 +1,7 @@
 <?php
 
-class depute extends site{
+class depute {
 
-public $nom_depute;
-public $prenom_depute;
-public $num_depart_depute;
-public $mail_depute;
 public $url_depute;
 public $url_html_depute;
 public $id_url_depute;
