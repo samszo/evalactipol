@@ -205,6 +205,7 @@ $NomPrenonDepute = $NomDepute." ".$PrenomDepute;
 
 // Fin La partie ajoutée pour testet l'objet député
 
+
 foreach($rslienQuest as $quest)
 {
 
