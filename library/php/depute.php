@@ -2,6 +2,13 @@
 
 class depute {
 
+public $NomDepute;
+public $PrenomDepute;
+public $mailDepute;
+public $numPhoneDepute;
+public $lienANDepute;
+public $NomPrenonDepute;
+
 public $url_depute;
 public $url_html_depute;
 public $id_url_depute;
@@ -13,6 +20,7 @@ public $nums_geoname;
 
 public function __construct ($htmllienDepu,$depu,$result_id_url_Deput,$numDepartDepute,$cl_Output_depute,$site,$result_id_geoCanton) 
 {
+
 $this->url_depute = $htmllienDepu;
 $this->url_html_depute = $depu;
 $this->id_url_depute = $result_id_url_Deput;
@@ -23,8 +31,10 @@ $this->nums_geoname = $result_id_geoCanton;
 }
 public function recup_lien_questions ($urldepute)
 {
+//$rslienQuest = $urldepute->find('li a[href$=Questions]');
+//return $rslienQuest;
 $rslienQuest = $urldepute->find('li a[href$=Questions]');
-return $rslienQuest;
+return $rslienQuest[0];
 }
 
 public function recup_nom_deput ($urlhtml)
@@ -51,11 +61,7 @@ $rslienLienANDepute = $urldepute->find('li a[title^=http://www.assemblee-nationa
 	foreach($rslienLienANDepute as $lienANValue)
 	{
 	$lienANDepute = $lienANValue->attr["href"];
-	/*$result_exist_url = $this->verif_exist_url ($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
-		if ($result_exist_url == NULL)
-		{
-		$this->insert_table_urls ($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
-		}*/
+	
 		$this->SetUrl($lienANDepute,"find('li a[title^=http://www.assemblee-nationale.fr]')");
 	}
 	return $lienANDepute; 
@@ -156,20 +162,16 @@ return $dateRepQuestion;
 public function extrac_infos_depute ($infosCantonsDepute)
 {
 $rslienQuest = $this->recup_lien_questions($this->url_depute);
-$NomDepute = $this->recup_nom_deput ($this->url_html_depute);
-$PrenomDepute = $this->recup_prenom_deput ($this->url_html_depute);
-$mailDepute = $this->recup_mail_deput ($this->url_depute);
-$numPhoneDepute = $this->recup_Phone_deput ($this->url_depute);
-$lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
-$NomPrenonDepute = $NomDepute." ".$PrenomDepute;
+$this->NomDepute = $this->recup_nom_deput ($this->url_html_depute);
+$this->PrenomDepute = $this->recup_prenom_deput ($this->url_html_depute);
+$this->mailDepute = $this->recup_mail_deput ($this->url_depute);
+$this->numPhoneDepute = $this->recup_Phone_deput ($this->url_depute);
+$this->lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
+//$NomPrenonDepute = $NomDepute." ".$PrenomDepute;
+$NomPrenonDepute = $this->NomDepute." ".$this->PrenomDepute;
 
-/*$result_exist_depu = $this->verif_exist_depu ($NomDepute,$PrenomDepute,$lienANDepute);
-	if ($result_exist_depu == NULL)
-	{         
-	$this->insert_table_depute ($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);              
-	}
-	$result_id_deput = $this->extract_id_depu ($NomDepute,$PrenomDepute,$lienANDepute);*/
-	$result_id_deput = $this->SetDepute($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);
+	//$result_id_deput = $this->SetDepute($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);
+	$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute);
 
 	$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
 	if ($result_exist_depuUrl == NULL)
@@ -197,53 +199,35 @@ $NomPrenonDepute = $NomDepute." ".$PrenomDepute;
 	foreach ($Result_id_geo3 as $id_geo)
 	{
 	$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
-	if ($result_exist_depuGeo == NULL)
-	{         
-	$this->insert_table_deput_Geo($result_id_deput,$id_geo);
-	}
+		if ($result_exist_depuGeo == NULL)
+		{         
+		$this->insert_table_deput_Geo($result_id_deput,$id_geo);
+		}
 	}
 
 // Fin La partie ajoutée pour testet l'objet député
 
-
-foreach($rslienQuest as $quest)
+	$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
+		
+	return $result_id_deput;
+}
+public function insert_infos_tous_questions ($rslienQuest,$result_id_deput)
 {
-
-$urlQuestionResult = $this->extract_contenu_lienQuest ($quest);
+$urlQuestionResult = $this->extract_contenu_lienQuest ($rslienQuest);
 $htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionResult);         
-
-/*$result_exist_url = $this->verif_exist_url ($urlQuestionResult,"find('li a[href$=Questions]')");
-	if ($result_exist_url == NULL)
-	{    
-	$this->insert_table_urls ($urlQuestionResult,"find('li a[href$=Questions]')");
-	}
-	$result_id_url_Questions = $this->extract_id_url ($urlQuestionResult,"find('li a[href$=Questions]')");*/
-	$result_id_url_Questions = $this->SetUrl($urlQuestionResult,"find('li a[href$=Questions]')");
-	//Récupérer les inforamations existantes dans tous les lignes 
-	//du tableux questions, chaque ligne contien des informations sur une question
-
-	$rsQuest = $htmlLienQuestion->find('tbody tr[valign=top]');
-	//supprimer la première ligne qui représente le nom des colonnes
-	$rsQuest1 = array_shift($rsQuest);
-
-	//Boucler sur les questions
-
-		foreach($rsQuest as $info)
-		{
-		//Extraction des informations d'une question, des mots-clefs et des rubriques
-
+$result_id_url_Questions = $this->SetUrl($urlQuestionResult,"find('li a[href$=Questions]')");
+$rsQuest = $htmlLienQuestion->find('tbody tr[valign=top]');
+$rsQuest1 = array_shift($rsQuest);
+	foreach($rsQuest as $info)
+	{
 		$infosChildren = $info->children;
 		$Chaine = implode(";", $infosChildren);
 		$NewChaine = str_replace("", "é", $Chaine);
 		$lienQuest = $this->extractBetweenDelimeters($NewChaine,"href=","class");
+		$this->insert_infos_question ($lienQuest,$NewChaine,$result_id_deput,$result_id_url_Questions);
 
-		$this->insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$result_id_url_Questions);
-
-		}
+	}
 }
-return $result_id_deput;
-}
-
 public function result_ids_deputes ($id_deput)
 {
 $result_ids_deputs1 = "";
@@ -253,7 +237,7 @@ return $result_ids_deputs;
 
 }
 
-public function insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$result_id_url_Questions)
+public function insert_infos_question ($lienQuest,$NewChaine,$result_id_deput,$result_id_url_Questions)
 {
 	$numLegislature = $this->extract_numlegis_question ($lienQuest);
 	$numQuestion = $this->extract_num_question ($lienQuest,$numLegislature);
@@ -262,23 +246,14 @@ public function insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$
 	$datePubliQuestion = $this->extract_datePubli_question ($NewChaine);
 	$dateRepQuestion = $this->extract_dateRep_question ($NewChaine);
 
-
-	/*$result_exist_question = $this->verif_exist_question ($numQuestion,$datePubliQuestion);
-	if ($result_exist_question == NULL)
-	{  
-	$this->insert_table_questions ($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature,$result_id_deput,$result_id_url_Questions);         
-	}
-	$result_id_question = $this->extract_id_question ($numQuestion,$datePubliQuestion);*/
 	$result_id_question = $this->SetQuestion($numQuestion,$datePubliQuestion,$dateRepQuestion,$numLegislature,$result_id_deput,$result_id_url_Questions);
             	
 		foreach ($tab_motclef as $mot_clef)
 		{
-		//$mot_clef = $this->filter ($mot_clef1);
+		
 		$result_exist_mc = $this->verif_exist_mc ($mot_clef);
 		if ($result_exist_mc == NULL)
 		{
-		/*$this->insert_table_motclef ($mot_clef);
-		$result_id_mc = $this->extract_id_mc ($mot_clef);*/
 		$result_id_mc = $this->SetMotClef($mot_clef);
 		}  
 		else
@@ -304,12 +279,10 @@ public function insert_infos_questions ($lienQuest,$NewChaine,$result_id_deput,$
 
 		foreach ($tab_rubrique as $rubrique)
 		{
-		//$rubrique = $this->filter ($rubrique1);
 		$result_exist_rubrique = $this->verif_exist_rubrique ($rubrique);
 		if ($result_exist_rubrique == NULL)
 		{
-		/*$this->insert_table_rubrique ($rubrique);
-		$result_id_rubrique = $this->extract_id_rubrique ($rubrique);*/
+		
 		$result_id_rubrique = $this->SetRubrique($rubrique);
 		}
 		else
@@ -607,29 +580,6 @@ $db->close($link);
 return $result2;
 }
 
-/*public function insert_table_motclef ($valeur_MC)
-{
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	$link=$db->connect();
-	$sql = "INSERT INTO `mot-clef` ( `id_motclef` , `valeur_motclef` ) VALUES ('', \"$valeur_MC\")";     
-	$result = $db->query(utf8_decode($sql));
-	$db->close($link);
-}
-
-public function insert_table_rubrique ($valeurRubrique)
-{
-$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `rubrique` ( `id_rubrique` , `valeur_rubrique` ) VALUES ('', \"$valeurRubrique\")";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-}
-
-public function filter($in) { 
-$search = array ('@[éèêëÊË]@i','@[áãàâäÂÄ]@i','@[ìíiiîïÎÏ]@i','@[úûùüÛÜ]@i','@[òóõôöÔÖ]@i','@[ñÑ]@i','@[ıÿİ]@i','@[ç]@i');    
-$replace = array ('e','a','i','u','o','n','y','c');
-return preg_replace($search, $replace, $in);  
-}*/
 
 }
 

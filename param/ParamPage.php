@@ -16,7 +16,9 @@ session_start();
 			
 	$scope = array(
 			"site" => $idSite
-			,"FicXml" => PathRoot."/param/Param.xml"
+		//	,"FicXml" => PathRoot."/param/Param.xml"
+		,"FicXml" => PathRoot."/param/ParamXul.xml"
+	
 	);	
 	
 	$objSite = new Site($SITES, $idSite, $scope, false);

@@ -7,5 +7,6 @@ require_once(CLASS_BASE.'CacheLite/Lite.php');
 require_once(CLASS_BASE.'CacheLite/Lite/Function.php');
 require_once(CLASS_BASE.'extract.php');
 require_once(CLASS_BASE.'depute.php');
+require_once(CLASS_BASE.'Xul.php');
 
 ?>
