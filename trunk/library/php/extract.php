@@ -23,16 +23,7 @@ function extract_site ()
 {
 	
 $baseUrlHtml = $this->baseUrl."/wiki/Deputes_par_departement";
-/*
-$result_exist_url = $this->verif_exist_url ($baseUrlHtml,"Url de départ");
-	if ($result_exist_url == NULL)
-	{  
-	$this->SetUrl($baseUrlHtml,"Url de départ");
-	}
-*/
 $result_id_url_ttDepart = $this->SetUrl($baseUrlHtml,"Url de départ");
-
-//$result_id_url_ttDepart = $this->extract_id_url ($baseUrlHtml,"Url de départ");
 
 $html = $this->cl_Output->call('file_get_html',$this->baseUrl."/wiki/Deputes_par_departement");
 $retours = $html->find('li a[title^=Deputes]');
@@ -44,32 +35,15 @@ $retours = $html->find('li a[title^=Deputes]');
 	$urlDept = $dept->attr["href"];
 	$url =$this->baseUrl.$urlDept;
 	$htmlDept = $this->cl_Output->call('file_get_html',$url);
-//  $htmlDept = file_get_html($url);
-/*	$result_exist_url = $this->verif_exist_url ($url,"find('li a[title^=Deputes]')");
-		if ($result_exist_url == NULL)
-		{    
-		$this->insert_table_urls ($url,"find('li a[title^=Deputes]')");
-		}
-	$result_id_url_Depart = $this->extract_id_url ($url,"find('li a[title^=Deputes]')");*/
 	
 	$result_id_url_Depart = $this->SetUrl($url,"find('li a[title^=Deputes]')");
 	//Extraction des noms des cantons
 	//et insertion des cantons dans la table geoname 
-
-	//list ($nom_cantons,$circonscription_cantons,$numDepart_canton,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantons) = $this->extract_canton ($htmlDept,$urlDept);
 	$infosCantons = $this->extract_canton ($htmlDept,$urlDept);
 	//Extraction des infos sur les départements
-
-	//list ($numDepartDepute,$nomGeo_Depart,$type_geoname) = $this->extract_departement ($urlDept,$dept);
 	$infosDepartement = $this->extract_departement ($urlDept,$dept);
 	//Insertion dans la table geoname
 
-	/*$result_exist_geo = $this->verif_exist_geo ($nomGeo_Depart,$type_geoname);
-		if ($result_exist_geo == NULL)
-		{
-		//$this->insert_table_geoname ($nomGeo_Depart,$type_geoname,$numDepartDepute,$circonscriptions_depart);
-        $this->insert_table_geoname ($nomGeo_Depart,$type_geoname,$numDepartDepute,$infosCantons[3]);
-		}*/
 	$id_geo_departement = $this->SetGeoname($infosDepartement[1],$infosDepartement[2],$infosDepartement[0],$infosCantons[3]);
 	$result_id_geo = $this->extract_id_geo ($infosDepartement[0]);
 	
@@ -98,19 +72,12 @@ $retours = $html->find('li a[title^=Deputes]');
 			if($nom!="Deputes")
 			{
 			$urlDepute=$this->baseUrl.$urlDepu;
-			//$htmllienDepu = file_get_html($urlDepute);
+
 			$htmllienDepu = $this->cl_Output->call('file_get_html',$urlDepute);
-			/*$result_exist_url = $this->verif_exist_url ($urlDepute,"find('td a[href^=/wiki/]')");
-				if ($result_exist_url == NULL)
-				{
-				$this->insert_table_urls ($urlDepute,"find('td a[href^=/wiki/]')");
-				}
-			$result_id_url_Deput = $this->extract_id_url ($urlDepute,"find('td a[href^=/wiki/]')");*/
 			
 			$result_id_url_Deput = $this->SetUrl($urlDepute,"find('td a[href^=/wiki/]')");
 			
 			//extraction des info du député
-
 	
 			$oDepute = new depute ($htmllienDepu,$depu,$result_id_url_Deput,$infosDepartement[0],$this->cl_Output,$this->site,$result_id_geoCanton);
 			$id_deput = $oDepute->extrac_infos_depute ($infosCantons[6]);
@@ -184,11 +151,6 @@ $tabNomCantonsDepute = array();
 		//Extraction du numéro de circonscription du canton
 		$circonscription_cantons = substr($ChaineCantons,5,1);
 
-		/*$result_exist_geo = $this->verif_exist_geo ($nom_geoname_canton,$type_geoname_canton);
-			if ($result_exist_geo == NULL)
-			{
-			$this->insert_table_geoname ($nom_geoname_canton,$type_geoname_canton,$numDepart_canton,$circonscription_cantons);            
-			}*/
 		$this->SetGeoname($nom_geoname_canton,$type_geoname_canton,$numDepart_canton,$circonscription_cantons);
 
 		$x = $x.",".$circonscription_cantons;
@@ -213,17 +175,11 @@ $posRight = stripos($inputstr,$delimeterRight,$posLeft+1);
 return  substr($inputstr,$posLeft,$posRight-$posLeft);
 }
 
-/*public function filter($in) { 
-$search = array ('@[éèêëÊË]@i','@[áãàâäÂÄ]@i','@[ìíiiîïÎÏ]@i','@[úûùüÛÜ]@i','@[òóõôöÔÖ]@i','@[ñÑ]@i','@[ýÿÝ]@i','@[ç]@i');    
-$replace = array ('e','a','i','u','o','n','y','c');
-return preg_replace($search, $replace, $in);  
-}*/
 public function toASCII($ch) { 
 $tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
 $result=strtr($ch,$tableau_caracts_html);
 return $result;  
 }
-
 function SetUrl($valeurURL, $codeExtractURL)
 {	
 	$valeurURL = $this->toASCII($valeurURL);
@@ -336,25 +292,6 @@ public function insert_table_deput_Geo ($id_deput,$id_Geo)
 	$result = $db->query(utf8_decode($sql));
 	$db->close($link);
 }
-/*function insert_table_geoname ($nomGeo,$typeGeo,$numDepartgeo,$circonscGeo)
-{
-$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "INSERT INTO `geoname` ( `id_geoname` , `nom_geoname`, `type_geoname`, `num_depart_geoname`, `circonscriptions_geoname`, `lat_geoname`, `lng_geoname`, `alt_geoname`, `kml_geoname` ) VALUES ('', \"$nomGeo\", \"$typeGeo\", \"$numDepartgeo\", \"$circonscGeo\", '', '', '', '')";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-}
-
-function verif_exist_geo ($nom_geo,$type_geo)
-{
-$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-$link=$db->connect();
-$sql = "SELECT * FROM `geoname` WHERE `nom_geoname`=\"$nom_geo\" AND `type_geoname`=\"$type_geo\" ";     
-$result = $db->query(utf8_decode($sql));
-$db->close($link);
-return ($result1 = mysql_fetch_array( $result));
-}*/
-
 
 }//Fin de la classe extract
 
