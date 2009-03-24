@@ -575,42 +575,20 @@ class Xul{
 	//function GetTree($type,$id){
 	function GetTree(){
 		
-
-		
-		//$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetGeoname_".$type."']/col";
-		//$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/col";
-		//echo $Xpath;
-		//$Cols = $this->site->XmlParam->GetElements($Xpath);	
-		//print_r ($Cols);
-
-		//$Xpath = "/XmlParams/XmlParam[@nom='".$objSite->scope['ParamNom']."']/Querys/Query[@fonction='GetTreeChildren_".$type."']/js";
-		//$js = $this->site->GetJs($Xpath, array($type,$id));
-		
-		
-		/*$tree = "<tree flex=\"1\" 
-			id=\"tree".$type."\"
-			seltype='multiple'
-			".$js."
-			>";*/
 		$tree = "<tree flex=\"1\" 
 			id=\"tree\"
 			seltype='multiple'
 			>";
 	
-		
-		/*$tree .= '<treecols>';
-		$tree .= '<treecol  id="id" label = "France1111" primary="true" cycler="true" flex="1" persist="width ordinal hidden"/>';
-		$tree .= '<splitter class="tree-splitter"/>';*/
 		$tree .= '<treecols>';
-		$tree .= '<treecol  id="id" label = "France" primary="true" flex="1" persist="width ordinal hidden"/>';
+		$tree .= '<treecol  id="id" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
 		$tree .= '<splitter class="tree-splitter"/>';
 
 		
 		$tree .= '</treecols>';
-	//	$tree .= $this->GetTreeChildren($type, $Cols, $id);
 		$tree .= $this->GetTreeChildren();
 		$tree .= '</tree>';
-		echo $tree;
+		
 		return $tree;
 		
 	}
@@ -756,63 +734,55 @@ class Xul{
 		$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
 		$retours = $html->find('li a[title^=Deputes]');
 		
-		//boucle sur les départements
 		$tree = '<treechildren >'.EOL;
-		foreach($retours as $dept)
-		{	$urlDept = $dept->attr["href"];
-			$url =$baseUrl.$urlDept;
-			$htmlDept = $cl_Output->call('file_get_html',$url);
+		$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
+		$tree .= '<treerow>'.EOL;
+		$tree .= '<treecell label="France"/>'.EOL;
+		$tree .= '</treerow>'.EOL;
+			$i = 1;
+			$tree .= '<treechildren >'.EOL;
+			foreach($retours as $dept)
+			{	
+				$urlDept = $dept->attr["href"];
+				$url =$baseUrl.$urlDept;
+				$htmlDept = $cl_Output->call('file_get_html',$url);
 			
-			/*$rsCantons = $htmlDept->find('tbody tr');
-			$rsCantons1 = array_shift($rsCantons);
-			$x = "";
-			$tabNomCantonsDepute = array();
-			$tabNomGeonameCantons2 = array();
-			foreach($rsCantons as $cantons)
-			{
-			$infosCantons = $cantons->children;
-			$ChaineCantons = implode(";", $infosCantons);
-			$nom_cantons = $this->extractBetweenDelimeters($ChaineCantons,"(cantons de ",")");
-			$tabNomGeonameCantons1 = explode (",",$nom_cantons);
-			$tabNomGeonameCantons2 = array_merge ($tabNomGeonameCantons2,$tabNomGeonameCantons1);
-			}
-	
-			$tabNomGeonameCantons = $tabNomGeonameCantons2;*/
-			
-			
-			/*$NomDepart = $dept->nodes;
-			$ChaineNomDepart = implode(";", $NomDepart);
-			$nomGeo_Depart = $this->extractBetweenDelimeters($ChaineNomDepart,""," ");*/
-			
-			$x = extract::extract_departement ($urlDept,$dept);
-			//$y = extract::extract_canton ($htmlDept,$urlDept);
-			
-			$tree .= '<treeitem id="1942" container="true" empty="false" >'.EOL;
-			$tree .= '<treerow>'.EOL;
-			$tree .= '<treecell label="'.$x[1].'"/>'.EOL;
-			$tree .= '</treerow>'.EOL;
-			$tree .= '</treeitem>'.EOL;
-			/*if ($x[1] == "Ain")
-			{
-				$tree = '<treechildren >'.EOL;
-				foreach($tabNomGeonameCantons as $Canton)
-				{
-				$tree .= '<treeitem id="1942" container="true" empty="false" >'.EOL;
+				$x = extract::extract_departement ($urlDept,$dept);
+				
+				$tree .= '<treeitem id="'.$i.'" container="true" empty="false" >'.EOL;
 				$tree .= '<treerow>'.EOL;
-				$tree .= '<treecell label="'.$Canton.'"/>'.EOL;
+				$tree .= '<treecell label="'.$x[1].'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
-				$tree .= '</treeitem>'.EOL;
+				//$tree .= '</treeitem>'.EOL;
+				
+				if ($x[1] == "Ain")
+				{	$y = extract::extract_canton ($htmlDept,$urlDept);
+					$j = 1;
+					$tree .= '<treechildren >'.EOL;
+					//foreach($tabNomGeonameCantons as $Canton)
+					foreach($y[5] as $Canton)
+					{
+					$tree .= '<treeitem id="'.$j.'" container="true" empty="false" >'.EOL;
+					$tree .= '<treerow>'.EOL;
+					$tree .= '<treecell label="'.$Canton.'"/>'.EOL;
+					$tree .= '</treerow>'.EOL;
+					$tree .= '</treeitem>'.EOL;
+					$j ++;
+					}
+					$tree .= '</treechildren>'.EOL;
+					$tree .= '</treeitem>'.EOL;
+					
 				}
-				$tree .= '</treechildren>'.EOL;
-				$tree .= '</treeitem>'.EOL;
+				else
+				{
+					$tree .= '</treeitem>'.EOL;
+				}
+				$i ++;
 			}
-			else
-			{
-				$tree .= '</treeitem>'.EOL;
-			}*/
-		}
+			$tree .= '</treechildren>'.EOL;
+		$tree .= '</treeitem>'.EOL;
 		$tree .= '</treechildren>'.EOL;
-		return $tree;
+	return $tree;
 
 	}
 	function GetTree_load(){
@@ -823,12 +793,12 @@ class Xul{
 			>";
 	
 		$tree .= '<treecols>';
-		$tree .= '<treecol  id="id" label = "France" primary="true" flex="1" persist="width ordinal hidden"/>';
+		$tree .= '<treecol  id="id" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
 		$tree .= '<splitter class="tree-splitter"/>';
 		$tree .= '</treecols>';
 		$tree .= $this->GetTreeChildren_load();
 		$tree .= '</tree>';
-		echo $tree;
+		//echo $tree;
 		return $tree;
 	}
 	
@@ -837,28 +807,38 @@ class Xul{
 		$sql = "SELECT `nom_geoname` FROM `geoname` ";     
 	
 		$db=new mysql ('localhost','root','','evalactipol');
+		//$db = new mysql ($this->site->infos["SQL_HOST"], $this->site->infos["SQL_LOGIN"], $this->site->infos["SQL_PWD"], $this->site->infos["SQL_DB"], $dbOptions);
 		$db->connect();
 		$req = $db->query($sql);
 		$db->close();
 		$nb = mysql_num_rows($req);
-
-	
-		$tree = '<treechildren >'.EOL;
 		
-		for ($i=0;$i<=$nb-1;$i++)
-		{
-			
-			$tree .= '<treeitem id="1942" container="true" empty="false" >'.EOL;
-			$tree .= '<treerow>'.EOL;
-			$r = $db->fetch_array($req);
-			$result2[$i] = $r['nom_geoname'];  
-			$tree .= '<treecell label="'.$result2[$i].'"/>'.EOL;
-			$tree .= '</treerow>'.EOL;
-			$tree .= '</treeitem>'.EOL;
-		}
+		$tree = '<treechildren >'.EOL;
+		$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
+		$tree .= '<treerow>'.EOL;
+		$tree .= '<treecell label="France"/>'.EOL;
+		$tree .= '</treerow>'.EOL;
+	
+			$tree .= '<treechildren >'.EOL;
+			$j = 1;	
+			for ($i=0;$i<=$nb-1;$i++)
+			{
+				$tree .= '<treeitem id="'.$j.'" container="true" empty="false" >'.EOL;
+				$tree .= '<treerow>'.EOL;
+				$r = $db->fetch_array($req);
+				$result2[$i] = $r['nom_geoname'];
+				$result3 = html_entity_decode($result2[$i]);
+				//$tree .= '<treecell label="'.$result2[$i].'"/>'.EOL;
+				$tree .= '<treecell label="'.$result3.'"/>'.EOL;
+				$tree .= '</treerow>'.EOL;
+				$tree .= '</treeitem>'.EOL;
+				$j ++;
+			}
 
 		$tree .= '</treechildren>'.EOL;
-		return $tree;
+	$tree .= '</treeitem>'.EOL;
+	$tree .= '</treechildren>'.EOL;
+	return $tree;
 	}
 	
 function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
