@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="iso-8859-15" ?><?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="evalactipol.css" type="text/css"?>
+
+
+<window
+    id="wSaisiDiag"
+    flex="1"
+    title="Evaluation de l'activité des députés français "
+    orient="horizontal"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	onload="ChargeTreeFromAjax_load('idRub','treeRub','terre');"
+	
+>
+
+<script type="application/x-javascript" src="library/js/interface.js" />
+<script type="application/x-javascript" src="library/js/ajax.js"/>
+<script type="application/x-javascript" src="library/js/tree.js"/>
+
+	<script>
+		var role = "AUCUN";
+	</script>
+
+	<vbox  flex="1" style="overflow:auto">
+
+		<hbox id="nav-toolbar" >
+			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('idRub','treeRub','terre');"/>
+			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax_load('idRub','treeRub','terre');"/>
+		</hbox>
+	
+		
+		<hbox class="global" id="global" flex="1">
+			<vbox class="BoiteV" flex="0" width="300px">
+				<hbox id="RefId" >
+					<label id="titreRub" value="Selectionner un geoname" class="titre" />
+					<label id="idRub" value="1942" class="titreLiens" hidden="true"/>
+				</hbox>
+				<hbox id='treeRub' class="BoiteV" context="popterre" ></hbox>
+			</vbox>
+		</hbox>		
+	</vbox>
+			
+
+			
+	
+ 
+<script type="application/x-javascript" >
+	//met à jour le choix du diagnostic
+	//SetChoixDiagnostic();
+   //	ChargeTreeFromAjax('idRub','treeRub','terre');
+</script>
+
+</window>
