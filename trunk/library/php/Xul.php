@@ -601,6 +601,7 @@ class Xul{
 					$tree .= '</treechildren>'.EOL;
 					$tree .= '</treeitem>'.EOL;
 					
+					extract::SetGeoname($x[1],$x[2],$x[0],$y[3]);
 				}
 				else
 				{
