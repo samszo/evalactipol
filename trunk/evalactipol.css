@@ -1,0 +1,301 @@
+/*** D�monstration de XUL ***/
+window{
+  background-color: #FFFFFF;  
+}
+
+
+.menubar 
+{
+	background-image: url("images/menubar_bg.png") !important; 
+	height:36px;
+}
+
+.menubartext
+{
+  color                 : #000000;
+  text-decoration       : none;
+  margin:20px 0 0 0;
+} 
+
+.menubartext:hover
+{
+  color                 : #FFFFFF;
+  text-decoration       : underline;
+  cursor                : pointer;
+}
+
+
+
+.global 
+{
+	margin : 0px 5px 0px 5px;
+	padding: 0px 5px 0px 5px;
+}
+
+
+.BoiteV
+{
+	-moz-box-flex:1;
+	background-color: #E5E5E5; 
+	margin : 0px 5px 5px 5px;
+}
+
+.titre {
+	font-size: 12px !important;
+	font-weight:bold;
+	font-family: arial, verdana, sans-serif !important;
+	padding:3px 0 3px 5px;
+	margin:3px 3px 3px 3px;
+}
+
+.titreLiens {
+	color: #000000;
+	text-decoration: none;
+	padding:7px 0 0px 0px;
+	margin:0px 0px 0px 0px;
+}
+
+.titreLiens:hover {
+	color: #000000;
+	text-decoration: underline;
+}
+.ariane 
+{
+	background-color:#FFFFFF;
+	height:10px;
+	font-size: 14px !important;
+	font-family: arial, verdana, sans-serif !important;
+	color:#000000;
+	padding:0 0 0 0;
+	margin:0 0 0 15px;
+}
+
+
+.text-link
+{
+  color                 : black;
+  text-decoration       : none;
+}
+
+.text-link:focus
+{
+  color                 : #FFFFFF;
+  text-decoration       : none;
+}
+
+.text-link:hover
+{
+  color                 : #FFFFFF;
+  text-decoration       : underline;
+  cursor                : pointer;
+} 
+
+.text-link:hover:active
+{
+  color                 : #FFFFFF;
+  text-decoration       : underline;
+} 
+
+.text-link[visited="true"] 
+{
+  color                 : purple;
+}
+
+
+.text-link2
+{
+  color                 : #FFFFFF;
+  text-decoration       : none;
+}
+
+.text-link2:focus
+{
+  color                 : #FFFFFF;
+  text-decoration       : none;
+}
+
+.text-link2:hover
+{
+  color                 : #FFFFFF;
+  text-decoration       : underline;
+  cursor                : pointer;
+} 
+
+.text-link2:hover:active
+{
+  color                 : #FFFFFF;
+  text-decoration       : underline;
+} 
+
+.text-link2[visited="true"] 
+{
+  color                 : purple;
+}
+
+.text-linkAdmin
+{
+  color                 : blue;
+  text-decoration       : none;
+}
+
+.text-linkAdmin:focus
+{
+  color                 : blue;
+  text-decoration       : none;
+}
+
+.text-linkAdmin:hover
+{
+  color                 : blue;
+  text-decoration       : underline;
+  cursor                : pointer;
+} 
+
+.text-linkAdmin:hover:active
+{
+  color                 : blue;
+  text-decoration       : underline;
+} 
+
+.text-linkAdmin[visited="true"] 
+{
+  color                 : purple;
+}
+
+
+.FormBox
+{
+	margin : 10px 10px 10px 10px;
+	background-color: #FFFFFF; 
+}
+
+
+#nav-toolbar
+{
+	margin : 2px 0px 2px 0px;
+	background-color: #4C813C;
+	padding:0 0 0 25px;  
+}
+
+.nav-liste-prob
+{
+	margin : 2px 0px 2px 0px;
+	background-color: #4C813C;
+	padding:0 0 0 25px;  
+}
+
+#tbFilAriane
+{
+	margin : 0px 0px 2px 0px;
+	background-color: #73BE1E;
+	padding:0 0 0 25px; 
+}
+
+
+.toolbox
+{
+		background-color:#FFFFFF;
+}
+
+.toolbarbutton {
+	-moz-box-align: center;
+	-moz-box-pack: center;
+	margin: 0px 10px 0px 50px;
+	padding: 3px 5px 3px 5px;
+	-moz-border-radius: 20px;
+ 	}
+
+
+.toolbar
+{
+	-moz-box-align: center;
+	-moz-box-pack: center;
+	margin: 0px 10px 0px 10px;
+	padding: 3px 5px 3px 5px;
+	background-color:#FFFFFF;
+}
+
+
+
+
+.treeRub
+{
+	margin : 10px 10px 10px 10px;
+}
+
+.treeRubCols
+{
+	font-size: 12px !important;
+	font-weight:bold;
+	font-family: arial, verdana, sans-serif !important;
+	background-color: #73BE1E;
+}
+
+treechildren::-moz-tree-col 
+{
+  widht: 150px;
+	background-color: #73BE1E;
+}
+
+treechildren::-moz-tree-row 
+{
+	background-color: #73BE1E;
+}
+
+.treechildren::-moz-tree-progressmeter(RedBar)
+{
+  background-color: red;
+  color:red;
+}
+
+treechildren::-moz-tree-indentation
+{
+  width: 5px;
+}
+
+
+treechildren::-moz-tree-row(RedRow)
+{
+  background-color: red;
+}
+treechildren::-moz-tree-row(YellowRow)
+{
+  background-color: yellow;
+}
+treechildren::-moz-tree-row(BlueRow)
+{
+  background-color: blue;
+}
+
+.footer 
+{
+	background-color:#73BE1E;
+	height:20px;
+	-moz-box-align:end;
+	color:#FFFFFF;
+}
+
+textbox
+{
+	font-size: 16px ;
+}
+
+menulist
+{
+	font-size: 16px ;
+}
+
+radio
+{
+	font-size: 16px ;
+}
+
+
+label.labelForm
+{
+	font-size: 16px ;
+}
+
+label
+{
+	margin-top: 2px;
