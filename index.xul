@@ -17,14 +17,14 @@
 <script type="application/x-javascript" src="library/js/tree.js"/>
 
 	<script>
-		var role = "AUCUN";
+		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
 	</script>
 
 	<vbox  flex="1" style="overflow:auto">
 
 		<hbox id="nav-toolbar" >
-			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('idRub','treeRub','terre');"/>
-			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax_load('idRub','treeRub','terre');"/>
+			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree');"/>
+			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax('GetTree_load');"/>
 		</hbox>
 	
 		
