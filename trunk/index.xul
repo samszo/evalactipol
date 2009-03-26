@@ -8,7 +8,7 @@
     title="Evaluation de l'activité des députés français "
     orient="horizontal"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="ChargeTreeFromAjax_load('idRub','treeRub','terre');"
+	onload="ChargeTreeFromAjax('GetTree_load','treeRub');"
 	
 >
 
@@ -23,8 +23,8 @@
 	<vbox  flex="1" style="overflow:auto">
 
 		<hbox id="nav-toolbar" >
-			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree');"/>
-			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax('GetTree_load');"/>
+			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree','treeRub');"/>
+			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax('GetTree_load','treeRub');"/>
 		</hbox>
 	
 		
