@@ -1151,27 +1151,13 @@ function ChargeTreeCsv(idSrc,idDst)
 	
 }
 
-function ChargeTreeFromAjax(idSrc,idDst,type)
+function ChargeTreeFromAjax(fonction)
 {
   try {
-	//alert("ChargeTreeFromAjax IN "+type+"\n");
-	//var id = document.getElementById(idSrc).value;
-	//var id = "5479";
 	
-	var doc = document.getElementById(idDst);
-	//pour ne charger qu'une fois le tree
-	//if(document.getElementById('tree'+type))
-	//	return
-
-	//var url = urlExeAjax+"?f=GetTree&ParamNom=GetOntoTree&type="+type+"&id="+id;
-	var url = "//localhost/evalactipol/library/php/ExeAjax.php?f=GetTree&ParamNom=GetOntoTree&type=terre&id=5479";
-	//var url = "//localhost/evalactipol/library/php/ExeAjax.php?f=GetTree";
-	//var url = urlExeAjax+"?f=GetTree";
-	//alert("ChargeTreeFromAjax url "+url+"\n");
-	//AjaxRequest(url,'AppendTreeChildren',parentitem)
+	var url = urlExeAjax+"?f="+fonction;
 	
 	AppendResult(url,doc);
-	AppliDroit(role);
 	
 	dump("ChargeTreeFromAjax OUT\n");
    
@@ -1179,34 +1165,6 @@ function ChargeTreeFromAjax(idSrc,idDst,type)
 	
 }
 
-function ChargeTreeFromAjax_load(idSrc,idDst,type)
-{
-  try {
-	
-	//alert("ChargeTreeFromAjax IN "+type+"\n");
-	//var id = document.getElementById(idSrc).value;
-	//var id = "5479";
-	
-	var doc = document.getElementById(idDst);
-	//pour ne charger qu'une fois le tree
-	//if(document.getElementById('tree'+type))
-	//	return
-
-	//var url = urlExeAjax+"?f=GetTree&ParamNom=GetOntoTree&type="+type+"&id="+id;
-	var url = "//localhost/evalactipol/library/php/ExeAjax.php?f=GetTree_load&ParamNom=GetOntoTree&type=terre&id=5479";
-	//var url = "//localhost/evalactipol/library/php/ExeAjax.php?f=GetTree_load";
-	//var url = urlExeAjax+"?f=GetTree";
-	//alert("ChargeTreeFromAjax url "+url+"\n");
-	//AjaxRequest(url,'AppendTreeChildren',parentitem)
-	
-	AppendResult(url,doc);
-	AppliDroit(role);
-	
-	dump("ChargeTreeFromAjax OUT\n");
-   
-   } catch(ex2){alert(":ChargeTreeFromAjax:"+ex2+" url="+url);dump("::"+ex2);}
-	
-}
 
 function ChargeTabboxFromAjax(idSrc,idDst,type)
 {
