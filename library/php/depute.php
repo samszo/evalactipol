@@ -8,6 +8,7 @@ public $mailDepute;
 public $numPhoneDepute;
 public $lienANDepute;
 public $NomPrenonDepute;
+public $circonscDepute;
 
 public $url_depute;
 public $url_html_depute;
@@ -153,7 +154,14 @@ public function extract_dateRep_question ($NewChaine)
 	return $dateRepQuestion;
 
 }
-public function extrac_infos_depute ($infosCantonsDepute)
+public function recup_circonsc_deput ($tabCirconscDepute,$NomPrenonDepute)
+{
+	$circonsc_deput = $tabCirconscDepute[$NomPrenonDepute];
+	return $circonsc_deput;
+
+}
+
+public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 {
 	$rslienQuest = $this->recup_lien_questions($this->url_depute);
 	$this->NomDepute = $this->recup_nom_deput ($this->url_html_depute);
@@ -163,18 +171,47 @@ public function extrac_infos_depute ($infosCantonsDepute)
 	$this->lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
 	//$NomPrenonDepute = $NomDepute." ".$PrenomDepute;
 	$NomPrenonDepute = $this->NomDepute." ".$this->PrenomDepute;
+	$this->circonscDepute = $this->recup_circonsc_deput ($tabCirconscDepute,$NomPrenonDepute);
 
 	//$result_id_deput = $this->SetDepute($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);
-	$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute);
-
-	$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
+	
+	//$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute);
+	$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute,$this->circonscDepute);
+	
+	
+	/*$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
 	if ($result_exist_depuUrl == NULL)
 	{         
 		$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
-	}
+	}*/
 	
+	
+	//$tab_ids_catons_depute = $this->ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
+	$tab_noms_catons_depute = $this->noms_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
+	
+	
+	/*foreach ($tab_ids_catons_depute as $id_geo)
+	{
+		$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
+			if ($result_exist_depuGeo == NULL)
+			{         
+				$this->insert_table_deput_Geo($result_id_deput,$id_geo);
+			}
+	}*/
+
+// Fin La partie ajoutée pour testet l'objet député
+
+	//$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
+	//return $result_id_deput;
+	
+	
+	return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute);
+	//return array ($result_id_deput,$NomPrenonDepute);
+}
+
+public function ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute)
+{
 	$Result_id_geo1 = "";
-	$t_geo = "Canton";
 	foreach ($this->nums_geoname as $id_geo1)
 	{
 		$ResultnameGeo = $this->extract_name_geo ($id_geo1);
@@ -190,20 +227,26 @@ public function extrac_infos_depute ($infosCantonsDepute)
 	$Result_id_geo2 = substr($Result_id_geo1,1);
 	$Result_id_geo3 = explode(";", $Result_id_geo2);
 	
-	foreach ($Result_id_geo3 as $id_geo)
-	{
-		$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
-			if ($result_exist_depuGeo == NULL)
-			{         
-				$this->insert_table_deput_Geo($result_id_deput,$id_geo);
-			}
-	}
+	return $Result_id_geo3;
 
-// Fin La partie ajoutée pour testet l'objet député
-
-	$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
-	return $result_id_deput;
 }
+
+public function noms_catons_depute ($infosCantonsDepute,$NomPrenonDepute)
+{
+	$tab_noms_catons_depute1 = "";
+	foreach ($infosCantonsDepute as $canton => $value)
+	{	
+		if ($infosCantonsDepute [$canton] == $NomPrenonDepute)
+		{
+		$tab_noms_catons_depute1 = $tab_noms_catons_depute1.";".$canton;
+		}
+	}
+	$tab_noms_catons_depute2 = substr($tab_noms_catons_depute1,1);
+	$tab_noms_catons_depute = explode(";", $tab_noms_catons_depute2);
+	
+return $tab_noms_catons_depute;
+}
+
 public function insert_infos_tous_questions ($rslienQuest,$result_id_deput)
 {
 	$urlQuestionResult = $this->extract_contenu_lienQuest ($rslienQuest);
@@ -314,7 +357,7 @@ public function toASCII($ch) {
 	return $result;  
 }
 
-function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
+function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart,$circonscDepute)
 {	
 	$nom = $this->toASCII($nom);
 	$prenom = $this->toASCII($prenom);
@@ -325,7 +368,7 @@ function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
 	$db->connect();
 	$sql = "DELETE FROM `depute` WHERE `nom_depute`=\"$nom\" AND `prenom_depute`=\"$prenom\" AND `lien_AN_depute`=\"$lien_AN_deput\" ";     
 	$result = $db->query(utf8_decode($sql));
-	$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\")";
+	$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` , `circonsc_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\", \"$circonscDepute\" )";
 	$result = $db->query(utf8_decode($sql));
 	$id =  mysql_insert_id();
 	$db->close();

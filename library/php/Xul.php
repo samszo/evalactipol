@@ -52,57 +52,88 @@ class Xul{
 		
 		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
 		$baseUrl ="http://www.laquadrature.net";
+		
 		$baseUrlHtml = $baseUrl."/wiki/Deputes_par_departement";
-		$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
+		//$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
+		$html = file_get_html ($baseUrl."/wiki/Deputes_par_departement");
 		$retours = $html->find('li a[title^=Deputes]');
 		
 		$tree = '<treechildren >'.EOL;
-		$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
+		$tree .= '<treeitem id="1" container="true" open="true" >'.EOL;
 		$tree .= '<treerow>'.EOL;
 		$tree .= '<treecell label="France"/>'.EOL;
 		$tree .= '</treerow>'.EOL;
-			$i = 1;
+			
+			
 			$tree .= '<treechildren >'.EOL;
 			foreach($retours as $dept)
 			{	
 				$urlDept = $dept->attr["href"];
 				$url =$baseUrl.$urlDept;
 				$htmlDept = $cl_Output->call('file_get_html',$url);
-			
-				$x = extract::extract_departement ($urlDept,$dept);
+				$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
+				$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
 				
-				$tree .= '<treeitem id="'.$i.'" container="true" empty="false" >'.EOL;
+				$tree .= '<treeitem id="'.$infosDepartement[3].'" container="true" open="false" >'.EOL;
 				$tree .= '<treerow>'.EOL;
-				$tree .= '<treecell label="'.$x[1].'"/>'.EOL;
+				$tree .= '<treecell label="'.$infosDepartement[1].'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
 				//$tree .= '</treeitem>'.EOL;
 				
-				if ($x[1] == "Ain")
-				{	$y = extract::extract_canton ($htmlDept,$urlDept);
-					$j = 1;
+				if ($infosDepartement[1] == "Ain")
+				{
 					$tree .= '<treechildren >'.EOL;
-					//foreach($tabNomGeonameCantons as $Canton)
-					foreach($y[5] as $Canton)
+					
+					$rsDept = $htmlDept->find('td a[href^=/wiki/]');
+					
+					foreach($rsDept as $depu)
 					{
-					$tree .= '<treeitem id="'.$j.'" container="true" empty="false" >'.EOL;
-					$tree .= '<treerow>'.EOL;
-					$tree .= '<treecell label="'.$Canton.'"/>'.EOL;
-					$tree .= '</treerow>'.EOL;
-					$tree .= '</treeitem>'.EOL;
-					$j ++;
+						$urlDepu = $depu->attr["href"]; 
+						$nom = substr($urlDepu,6,7);
+						if($nom!="Deputes")
+						{	
+							$urlDepute=$baseUrl.$urlDepu;
+							$htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
+							
+							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
+							$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
+							
+							$tree .= '<treeitem id="'.$result_deput[0].'" container="true" open="false" >'.EOL;
+							$tree .= '<treerow>'.EOL;
+							$tree .= '<treecell label="'.$result_deput[1].'"/>'.EOL;
+							$tree .= '</treerow>'.EOL;
+							//$tree .= '</treeitem>'.EOL;
+							
+							$tree .= '<treechildren >'.EOL;
+								foreach ($result_deput[2] as $nom_canton)
+								{	
+									
+									//$nom_canton = html_entity_decode($nom_canton1);
+									
+									$tree .= '<treeitem id="1" container="true" open="false" >'.EOL;
+									$tree .= '<treerow>'.EOL;
+									$tree .= '<treecell label="'.$nom_canton.'"/>'.EOL;
+									$tree .= '</treerow>'.EOL;
+									$tree .= '</treeitem>'.EOL;
+								}
+							$tree .= '</treechildren>'.EOL;
+							$tree .= '</treeitem>'.EOL;	
+							
+						}
+						
+						
 					}
 					$tree .= '</treechildren>'.EOL;
-					$tree .= '</treeitem>'.EOL;
-					
-					extract::SetGeoname($x[1],$x[2],$x[0],$y[3]);
+				$tree .= '</treeitem>'.EOL;	
 				}
 				else
 				{
-					$tree .= '</treeitem>'.EOL;
+				$tree .= '</treeitem>'.EOL;	
 				}
-				$i ++;
+				
 			}
 			$tree .= '</treechildren>'.EOL;
+			
 		$tree .= '</treeitem>'.EOL;
 		$tree .= '</treechildren>'.EOL;
 	return $tree;
@@ -127,40 +158,90 @@ class Xul{
 	
 	function GetTreeChildren_load(){
 	
-		$sql = "SELECT `nom_geoname` FROM `geoname` ";     
-	
-		$db=new mysql ('localhost','root','','evalactipol');
-		//$db = new mysql ($this->site->infos["SQL_HOST"], $this->site->infos["SQL_LOGIN"], $this->site->infos["SQL_PWD"], $this->site->infos["SQL_DB"], $dbOptions);
-		$db->connect();
-		$req = $db->query($sql);
-		$db->close();
-		$nb = mysql_num_rows($req);
+		
 		
 		$tree = '<treechildren >'.EOL;
 		$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
 		$tree .= '<treerow>'.EOL;
 		$tree .= '<treecell label="France"/>'.EOL;
 		$tree .= '</treerow>'.EOL;
-	
 			$tree .= '<treechildren >'.EOL;
-			$j = 1;	
-			for ($i=0;$i<=$nb-1;$i++)
-			{
-				$tree .= '<treeitem id="'.$j.'" container="true" empty="false" >'.EOL;
+			
+			$sql_departement = "SELECT `id_geoname`,`nom_geoname`,`num_depart_geoname` FROM `geoname` WHERE `type_geoname`= \"Departement\" ";
+			$db_departement=new mysql ('localhost','root','','evalactipol');
+			$db_departement->connect();
+			$request_departement = $db_departement->query($sql_departement);
+			$db_departement->close();
+			$nb_departement = mysql_num_rows($request_departement);
+			
+			for ($i=0;$i<=$nb_departement-1;$i++)
+			{	
+				
+				$r_departement = $db_departement->fetch_array($request_departement);
+				$id_geoname[$i] = $r_departement['id_geoname'];
+				$nom_geoname[$i] = html_entity_decode($r_departement['nom_geoname']);
+				$num_depart_geoname[$i] = $r_departement['num_depart_geoname'];
+				
+				$tree .= '<treeitem id="'.$id_geoname[$i].'" container="true" empty="false" >'.EOL;
 				$tree .= '<treerow>'.EOL;
-				$r = $db->fetch_array($req);
-				$result2[$i] = $r['nom_geoname'];
-				$result3 = html_entity_decode($result2[$i]);
-				//$tree .= '<treecell label="'.$result2[$i].'"/>'.EOL;
-				$tree .= '<treecell label="'.$result3.'"/>'.EOL;
+				$tree .= '<treecell label="'.$nom_geoname[$i].'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
+				
+					$tree .= '<treechildren >'.EOL;
+					
+					$sql_depute = "SELECT `id_depute`,`nom_depute`,`prenom_depute`,`circonsc_depute` FROM `depute` WHERE `num_depart_depute`= \"$id_geoname[$i]\" ";
+					$db_depute=new mysql ('localhost','root','','evalactipol');
+					$db_depute->connect();
+					$req_depute = $db_depute->query($sql_depute);
+					$db_depute->close();
+					$nb_depute = mysql_num_rows($req_depute);
+					for ($j=0;$j<=$nb_depute-1;$j++)
+					{
+						$r_depute = $db_depute->fetch_array($req_depute);
+						$id_depute[$j] = $r_depute['id_depute'];
+						$nom_depute[$j] = html_entity_decode($r_depute['nom_depute']);
+						$prenom_depute[$j] = html_entity_decode($r_depute['prenom_depute']);
+						$circonsc_depute[$j] = html_entity_decode($r_depute['circonsc_depute']);
+					
+						$tree .= '<treeitem id="'.$id_depute[$j].'" container="true" empty="false" >'.EOL;
+						$tree .= '<treerow>'.EOL;
+						$tree .= '<treecell label="'.$nom_depute[$j].' '.$prenom_depute[$j].'"/>'.EOL;
+						$tree .= '</treerow>'.EOL;
+						$tree .= '</treeitem>'.EOL;
+						
+							/*$tree .= '<treechildren >'.EOL;
+					
+							$sql_canton = "SELECT `id_geoname`,`nom_geoname` FROM `geoname` WHERE `type_geoname`= \"Canton\" AND `circonscriptions_geoname`= \"$circonsc_depute[$j]\"  ";
+							$db_canton=new mysql ('localhost','root','','evalactipol');
+							$db_canton->connect();
+							$req_canton = $db_canton->query($sql_canton);
+							$db_canton->close();
+							$nb_canton = mysql_num_rows($req_canton);
+							for ($j=0;$j<=$nb_canton-1;$j++)
+							{
+								$r_canton = $db_canton->fetch_array($req_canton);
+								$id_canton[$j] = $r_canton['id_geoname'];
+								$nom_canton[$j] = html_entity_decode($r_canton['nom_geoname']);
+										
+								$tree .= '<treeitem id="'.$id_canton[$j].'" container="true" empty="false" >'.EOL;
+								$tree .= '<treerow>'.EOL;
+								$tree .= '<treecell label="'.$nom_canton[$j].'"/>'.EOL;
+								$tree .= '</treerow>'.EOL;
+								$tree .= '</treeitem>'.EOL;
+								
+							}
+							$tree .= '</treechildren>'.EOL;
+						$tree .= '</treeitem>'.EOL;	*/
+										
+					}
+					$tree .= '</treechildren>'.EOL;
 				$tree .= '</treeitem>'.EOL;
-				$j ++;
+						
 			}
 
+			$tree .= '</treechildren>'.EOL;
+		$tree .= '</treeitem>'.EOL;
 		$tree .= '</treechildren>'.EOL;
-	$tree .= '</treeitem>'.EOL;
-	$tree .= '</treechildren>'.EOL;
 	return $tree;
 	}
 	
@@ -170,6 +251,23 @@ function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
 	$posRight = stripos($inputstr,$delimeterRight,$posLeft+1);
 	return  substr($inputstr,$posLeft,$posRight-$posLeft);
 	}
+
+/*function GetDepartement(){
+
+	$db=new mysql ('localhost','root','','evalactipol');
+	//$db = new mysql ($this->site->infos["SQL_HOST"], $this->site->infos["SQL_LOGIN"], $this->site->infos["SQL_PWD"], $this->site->infos["SQL_DB"], $dbOptions);
+	$db->connect();
+	$sql = "SELECT `id_geoname` `nom_geoname` FROM `geoname` WHERE `type_geoname`=Departement";
+	$req = $db->query($sql);
+	$nb = mysql_num_rows($req);
+	for ($i=0;$i<=$nb-1;$i++)
+		{
+		$r = $db->fetch_array($req);
+		$result1[$i] = $r['id_geoname'];
+		$result2[$i] = $r['nom_geoname'];
+		}
+	
+}*/
 
 }
 ?>

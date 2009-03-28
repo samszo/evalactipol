@@ -40,7 +40,9 @@ function extract_site ()
 		//Extraction des infos sur les départements
 		$infosDepartement = $this->extract_departement ($urlDept,$dept);
 		//Insertion dans la table geoname
-		$id_geo_departement = $this->SetGeoname($infosDepartement[1],$infosDepartement[2],$infosDepartement[0],$infosCantons[3]);
+		
+		//$id_geo_departement = $this->SetGeoname($infosDepartement[1],$infosDepartement[2],$infosDepartement[0],$infosCantons[3]);
+		$id_geo_departement = $infosDepartement[3];
 		$result_id_geo = $this->extract_id_geo ($infosDepartement[0]);
 	
 		foreach ($result_id_geo as $id_geo)
@@ -72,7 +74,7 @@ function extract_site ()
 				$result_id_url_Deput = $this->SetUrl($urlDepute,"find('td a[href^=/wiki/]')");
 				//extraction des info du député
 				$oDepute = new depute ($htmllienDepu,$depu,$result_id_url_Deput,$infosDepartement[0],$this->cl_Output,$this->site,$result_id_geoCanton);
-				$id_deput = $oDepute->extrac_infos_depute ($infosCantons[6]);
+				$id_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
 				$ids_deputes1= (string)$id_deput;
 				$ids_deputes2= $ids_deputes2.",".$ids_deputes1;
 				$ids_deputes = substr($ids_deputes2,1);
@@ -86,7 +88,7 @@ function extract_site ()
 	}  
 }    
 
-function extract_departement ($urlDept,$dept)
+function extract_departement ($urlDept,$dept,$circonscDepart)
 {
 	$numDepart = substr($urlDept,14);
 	$numDepartDepute = (int)$numDepart;   
@@ -94,8 +96,10 @@ function extract_departement ($urlDept,$dept)
 	$NomDepart = $dept->nodes;
 	$ChaineNomDepart = implode(";", $NomDepart);
 	$nomGeo_Depart = $this->extractBetweenDelimeters($ChaineNomDepart,""," ");
-	$type_geoname = "Departement";  
-	return array ($numDepartDepute,$nomGeo_Depart,$type_geoname);
+	$type_geoname = "Departement";
+	
+	$id_geo_departement = extract::SetGeoname($nomGeo_Depart,$type_geoname,$numDepartDepute,$circonscDepart);
+	return array ($numDepartDepute,$nomGeo_Depart,$type_geoname,$id_geo_departement);
 }
 
 function extract_canton ($htmlDept,$urlDept)
@@ -109,6 +113,8 @@ function extract_canton ($htmlDept,$urlDept)
 	$x = "";
 	$tabNomGeonameCantonsResult = array();
 	$tabNomCantonsDepute = array();
+	$tabNomCantonsDepute_nohtml = array();
+	$tabCirconscDepute = array();
 	
 	foreach($rsCantons as $cantons)
 	{
@@ -119,6 +125,7 @@ function extract_canton ($htmlDept,$urlDept)
 		$test1 = $this->extractBetweenDelimeters($ChaineCantons,";",";");
 		$test2 = $this->extractBetweenDelimeters($test1,"title=","/a>");
 		$nomPrenom_depute_cantons = $this->extractBetweenDelimeters($test2,">","<");
+		
 		//Insertion des noms des cantons dans un tableau
 		$tabNomGeonameCantons = explode (",",$nom_cantons);
 	
@@ -127,8 +134,18 @@ function extract_canton ($htmlDept,$urlDept)
 			$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
 			$value1=strtr($value1_1,$tableau_caracts_html);
 			$tabNomGeonameCantons1 [$value1] = $nomPrenom_depute_cantons;
+			$tabNomGeonameCantons2 [$value1_1] = $nomPrenom_depute_cantons;
 		}
 		$tabNomCantonsDepute = array_merge ($tabNomCantonsDepute,$tabNomGeonameCantons1);
+		$tabNomCantonsDepute_nohtml = array_merge ($tabNomCantonsDepute_nohtml,$tabNomGeonameCantons2);
+		
+		/*foreach ($tabNomGeonameCantons as $value1_1)
+		{
+			//$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
+			//$value1=strtr($value1_1,$tableau_caracts_html);
+			$tabNomGeonameCantons1 [$value1_1] = $nomPrenom_depute_cantons;
+		}
+		$tabNomCantonsDepute_nohtml = array_merge ($tabNomCantonsDepute,$tabNomGeonameCantons1);*/
 			
 		foreach ($tabNomGeonameCantons as $value)
 		{
@@ -138,11 +155,16 @@ function extract_canton ($htmlDept,$urlDept)
 			$type_geoname_canton = "canton";
 			//Extraction du numéro de circonscription du canton
 			$circonscription_cantons = substr($ChaineCantons,5,1);
-			//$this->SetGeoname($nom_geoname_canton,$type_geoname_canton,$numDepart_canton,$circonscription_cantons);
-			extract::SetGeoname($nom_geoname_canton,$type_geoname_canton,$numDepart_canton,$circonscription_cantons);
+			
+			//extract::SetGeoname($nom_geoname_canton,$type_geoname_canton,$numDepart_canton,$circonscription_cantons);
 			$x = $x.",".$circonscription_cantons;
 		}
+	
 	$tabNomGeonameCantonsResult = array_merge ($tabNomGeonameCantonsResult,$tabNomGeonameCantons);
+	
+	$tabCirconscDepute1 [$nomPrenom_depute_cantons] = $circonscription_cantons;
+	$tabCirconscDepute = array_merge ($tabCirconscDepute,$tabCirconscDepute1);
+	
 	}
 	//Les numéros de circonscriptions qui existent dans un département
 	$circonscriptions_depart1 = substr($x,1);
@@ -151,7 +173,7 @@ function extract_canton ($htmlDept,$urlDept)
 	$circonscriptions_depart = implode(",", $circonscriptions_depart3);
 	$type_geoname = "Canton";
 //return array ($nom_cantons,$circonscription_cantons,$numDepart_canton,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantons,$tabNomCantonsDepute);   
-return array ($nom_cantons,$circonscription_cantons,$numDepart_canton,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantonsResult,$tabNomCantonsDepute);
+return array ($nom_cantons,$circonscription_cantons,$numDepart_canton,$circonscriptions_depart,$type_geoname,$tabNomGeonameCantonsResult,$tabNomCantonsDepute,$tabNomCantonsDepute_nohtml,$tabCirconscDepute);
 }
 
 //Fonction qui récupère une chaine inconnue entre deux chaines connues
@@ -221,7 +243,8 @@ function extract_id_geo ($num_Depart_geo)
 
 function extract_id_geoCanton ($num_Depart_geo,$type_geo)
 {
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	//$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db=new mysql ('localhost','root','','evalactipol');
 	$link=$db->connect();
 	$sql = "SELECT `id_geoname` FROM `geoname` WHERE `num_depart_geoname`=\"$num_Depart_geo\" AND `type_geoname`=\"$type_geo\"  ";     
 	$result = $db->query(utf8_decode($sql));
