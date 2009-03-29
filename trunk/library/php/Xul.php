@@ -37,14 +37,7 @@ class Xul{
 		
 	}
 	
-	function GetTreeItem($idXul, $cells, $style){
-		$this->xul .= '<treeitem id="'.$idXul.'" '.$style.' >'.EOL;
-		$this->xul .= '<treerow>'.EOL;
-		foreach($cells as $cell)
-			$this->xul .= '<treecell label="'.$cell.'"/>'.EOL;
-		$this->xul .= '</treerow>'.EOL;
-		$this->xul .= '<treechildren >'.EOL;		
-	}
+	
 	
 	
 	function GetTreeChildren()
@@ -151,25 +144,55 @@ class Xul{
 		$tree .= '<splitter class="tree-splitter"/>';
 		$tree .= '</treecols>';
 		
-		$tree .= '<treechildren >'.EOL;
-		$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
-		$tree .= '<treerow>'.EOL;
-		$tree .= '<treecell label="France"/>'.EOL;
-		$tree .= '</treerow>'.EOL;
+		//$tree .= '<treechildren >'.EOL;
+		//$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
+		//$tree .= '<treerow>'.EOL;
+		//$tree .= '<treecell label="France"/>'.EOL;
+		//$tree .= '</treerow>'.EOL;
 		
-		$tree .= $this->GetTreeChildren_load("departement",$id=-1);
+		//$tree .= $this->GetTreeChildren_load("departement",$id=-1);
+		$tree .= $this->GetTreeChildren_load("france",$niv=-1,$val1=-1,$val2=-1);
 		//$tree .= $this->GetTreeChildren_load();
 		
-		$tree .= '</treeitem>'.EOL;
-		$tree .= '</treechildren>'.EOL;
+		//$tree .= '</treeitem>'.EOL;
+		//$tree .= '</treechildren>'.EOL;
 		
 		$tree .= '</tree>';
 		//echo $tree;
 		return $tree;
 	}
 	
-	function GetTreeChildren_load($type,$id){
+	function GetTreeItem($idXul, $cells){
+		$tree = '<treeitem id="'.$idXul.'">'.EOL;
+		$tree .= '<treerow>'.EOL;
+		foreach($cells as $cell)
+			$tree .= '<treecell label="'.$cells.'"/>'.EOL;
+		$tree .= '</treerow>'.EOL;
+		$this->xul .= '<treechildren >'.EOL;		
+		return $tree; 
+	}
+	
+	function GetTreeChildren_load($type,$niv,$val1,$val2){
 		
+		if ($niv==-1)
+		{
+		$tree = '<treechildren >'.EOL;
+		
+		$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
+		$tree .= '<treerow>'.EOL;
+		$tree .= '<treecell label="France"/>'.EOL;
+		$tree .= '</treerow>'.EOL;
+		
+		//$tree .= $this->GetTreeItem("1","france");
+		$tree .= $this->GetTreeChildren_load("departement", 1, -1,-1);
+		
+		$tree .= '</treeitem>'.EOL;
+		$tree .= '</treechildren>'.EOL;
+		
+		
+		}
+		else
+		{
 		
 		
 		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/col";
@@ -181,17 +204,24 @@ class Xul{
 		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/from";
 		$attrs =$this->site->XmlParam->GetElements($Xpath);
 		
-		if ($id==-1)
-		{
-		$where = $Q[0]->where;
-		}
-		else
-		{
-			
-			$where = str_replace("-parent-", $id, $Q[0]->where);
-			
-		}
 		
+			/*if ($val2==-1)
+			{
+			$where = str_replace("-parent-", $val1, $Q[0]->where);
+			}
+			else 
+			{
+			$where1 = str_replace("-parent-", $val1, $Q[0]->where);
+			$where = str_replace("-parent_depart-", $val2, $where1);
+			}*/
+			
+			$where = str_replace("-parent-", $val1, $Q[0]->where);
+			
+			if ($val2!=-1)
+			{
+			$where = str_replace("-parent_depart-", $val2, $where);
+			}
+			
 		
 			$tree = '<treechildren >'.EOL;
 			
@@ -226,21 +256,22 @@ class Xul{
 				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
 				
+				//$tree .= $this->GetTreeItem($r[0],$valXul);
+				
 					if($type=="departement")
-					$tree .= $this->GetTreeChildren_load("depute", $r[0]);
+					$tree .= $this->GetTreeChildren_load("depute",1, $r[0],-1);
 					if($type=="depute")
-					$tree .= $this->GetTreeChildren_load("cantons", $r[3]);
+					$tree .= $this->GetTreeChildren_load("cantons",1, $r[3],$r[4]);
 					
-					
-					
-				
-				
 					
 				$tree .= '</treeitem>'.EOL;
 						
 			}
-
+			
+			
 			$tree .= '</treechildren>'.EOL;
+		}
+		
 		
 	return $tree;
 	}
