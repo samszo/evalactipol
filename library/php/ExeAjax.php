@@ -3,7 +3,8 @@
         require_once ("../../param/ParamPage.php");
         
         //charge le fichier de paramètrage
-        $objSite->XmlParam = new XmlParam(PathRoot."/param/ParamXul.xml");
+        //$objSite->XmlParam = new XmlParam(PathRoot."/param/ParamXul.xml");
+		$objSite->XmlParam = new XmlParam(PathRoot."/param/Evalactipol.xml");
 
 
         $resultat = "";

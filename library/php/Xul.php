@@ -150,13 +150,102 @@ class Xul{
 		$tree .= '<treecol  id="id" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
 		$tree .= '<splitter class="tree-splitter"/>';
 		$tree .= '</treecols>';
-		$tree .= $this->GetTreeChildren_load();
+		
+		$tree .= '<treechildren >'.EOL;
+		$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
+		$tree .= '<treerow>'.EOL;
+		$tree .= '<treecell label="France"/>'.EOL;
+		$tree .= '</treerow>'.EOL;
+		
+		$tree .= $this->GetTreeChildren_load("departement",$id=-1);
+		//$tree .= $this->GetTreeChildren_load();
+		
+		$tree .= '</treeitem>'.EOL;
+		$tree .= '</treechildren>'.EOL;
+		
 		$tree .= '</tree>';
 		//echo $tree;
 		return $tree;
 	}
 	
-	function GetTreeChildren_load(){
+	function GetTreeChildren_load($type,$id){
+		
+		
+		
+		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/col";
+		$Cols = $this->site->XmlParam->GetElements($Xpath);
+		
+		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']";
+		$Q = $this->site->XmlParam->GetElements($Xpath);
+		
+		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/from";
+		$attrs =$this->site->XmlParam->GetElements($Xpath);
+		
+		if ($id==-1)
+		{
+		$where = $Q[0]->where;
+		}
+		else
+		{
+			
+			$where = str_replace("-parent-", $id, $Q[0]->where);
+			
+		}
+		
+		
+			$tree = '<treechildren >'.EOL;
+			
+			
+			$sql = $Q[0]->select.$Q[0]->from.$where;
+			$db=new mysql ('localhost','root','','evalactipol');
+			$db->connect();
+			$request = $db->query($sql);
+			$db->close();
+			$nb = mysql_num_rows($request);
+			
+			for ($i=0;$i<=$nb-1;$i++)
+			{	
+				
+				$r = $db->fetch_row($request);
+				
+				
+				switch ($type) {
+					case "depute":
+						$valXul = html_entity_decode($r[1])." ".html_entity_decode($r[2]);
+					break;
+					case "cantons":
+						$valXul = html_entity_decode($r[1]);
+					break;
+					
+					default:	
+					$valXul = html_entity_decode($r[1]);
+				}	
+				
+				$tree .= '<treeitem id="'.$r[0].'" container="true" empty="false" >'.EOL;
+				$tree .= '<treerow>'.EOL;
+				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
+				$tree .= '</treerow>'.EOL;
+				
+					if($type=="departement")
+					$tree .= $this->GetTreeChildren_load("depute", $r[0]);
+					if($type=="depute")
+					$tree .= $this->GetTreeChildren_load("cantons", $r[3]);
+					
+					
+					
+				
+				
+					
+				$tree .= '</treeitem>'.EOL;
+						
+			}
+
+			$tree .= '</treechildren>'.EOL;
+		
+	return $tree;
+	}
+	
+	/*function GetTreeChildren_load(){
 	
 		
 		
@@ -233,7 +322,7 @@ class Xul{
 							$tree .= '</treechildren>'.EOL;
 						$tree .= '</treeitem>'.EOL;	*/
 										
-					}
+				/*	}
 					$tree .= '</treechildren>'.EOL;
 				$tree .= '</treeitem>'.EOL;
 						
@@ -243,7 +332,7 @@ class Xul{
 		$tree .= '</treeitem>'.EOL;
 		$tree .= '</treechildren>'.EOL;
 	return $tree;
-	}
+	}*/
 	
 function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
 	{
