@@ -1,21 +1,9 @@
 <XmlParams>
 
-	<!-- Gestion des requêtes SPIP -->		
+	
 	<XmlParam nom="GetTreeChildren_load">
 		<Querys>
 				
-			<Query fonction="GetTreeChildren_terre">
-				<!-- récupère par rapport au parent les rubriques qui ont un mot clef type de territoire-->
-				<col tag="id" parse="Integer"/>
-				<col tag="titre"/>
-				<select>SELECT r.id_rubrique id, r.titre, r.id_parent parent </select>
-				<from> FROM spip_rubriques r
-					INNER JOIN spip_mots_rubriques mr ON mr.id_rubrique = r.id_rubrique AND mr.id_mot IN (54,56,57,58,59,60,138,139,146)
-				</from>
-				<where def="1942"> WHERE id_parent = -parent- GROUP BY r.id_rubrique ORDER BY r.titre </where>
-				<js evt="onselect" function="GetTreeSelect('tree-param0-',['idRub','libRub'],[0,1]);ChargeTabboxFromAjax('idRub','FormSaisi','Terre');"/>
-			</Query>
-			
 			<Query fonction="GetTreeChildren_departement">
 				<!-- récupère par rapport au parent les rubriques qui ont un mot clef type de territoire-->
 				<col tag="id" parse="Integer"/>
