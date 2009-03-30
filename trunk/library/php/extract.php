@@ -122,11 +122,9 @@ function extract_canton ($htmlDept,$urlDept)
 		$ChaineCantons = implode(":;:", $infosCantons);
 		//Extraction des noms des cantons dans une chaine de caractères
 		$nom_cantons = $this->extractBetweenDelimeters($ChaineCantons,"(cantons de ",")");
-		//$test1 = $this->extractBetweenDelimeters($ChaineCantons,";",";");
 		$test1 = $this->extractBetweenDelimeters($ChaineCantons,":;:",":;:");
 		
 		$test2 = $this->extractBetweenDelimeters($test1,"title=","/a>");
-		//$nomPrenom_depute_cantons = $this->extractBetweenDelimeters($test2,">","<");
 		$nomPrenom_depute_cantons = trim($this->extractBetweenDelimeters($test2,">","<"));
 		
 		//Insertion des noms des cantons dans un tableau
@@ -142,14 +140,6 @@ function extract_canton ($htmlDept,$urlDept)
 		$tabNomCantonsDepute = array_merge ($tabNomCantonsDepute,$tabNomGeonameCantons1);
 		$tabNomCantonsDepute_nohtml = array_merge ($tabNomCantonsDepute_nohtml,$tabNomGeonameCantons2);
 		
-		/*foreach ($tabNomGeonameCantons as $value1_1)
-		{
-			//$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
-			//$value1=strtr($value1_1,$tableau_caracts_html);
-			$tabNomGeonameCantons1 [$value1_1] = $nomPrenom_depute_cantons;
-		}
-		$tabNomCantonsDepute_nohtml = array_merge ($tabNomCantonsDepute,$tabNomGeonameCantons1);*/
-			
 		foreach ($tabNomGeonameCantons as $value)
 		{
 			//Préciser que le type de geoname d'un canton est canton

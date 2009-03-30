@@ -91,8 +91,6 @@ class Xul{
 				if ($infosDepartement[1] == "Ain")
 				{
 					
-					
-					
 					$tree .= '<treechildren >'.EOL;
 					
 					$rsDept = $htmlDept->find('td a[href^=/wiki/]');
