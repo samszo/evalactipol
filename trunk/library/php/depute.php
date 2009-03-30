@@ -170,12 +170,13 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 	$this->numPhoneDepute = $this->recup_Phone_deput ($this->url_depute);
 	$this->lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
 	//$NomPrenonDepute = $NomDepute." ".$PrenomDepute;
-	$NomPrenonDepute = $this->NomDepute." ".$this->PrenomDepute;
+	//$NomPrenonDepute = $this->NomDepute." ".$this->PrenomDepute;
+	$NomPrenonDepute = trim($this->NomDepute." ".$this->PrenomDepute);
 	$this->circonscDepute = $this->recup_circonsc_deput ($tabCirconscDepute,$NomPrenonDepute);
 
 	//$result_id_deput = $this->SetDepute($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);
 	
-	//$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute);
+	//$result_id_deput = $this->SetDepute1($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute);
 	$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute,$this->circonscDepute);
 	
 	
@@ -374,6 +375,25 @@ function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart,$circ
 	$db->close();
 	return $id;
 }
+
+function SetDepute1($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
+{	
+	$nom = $this->toASCII($nom);
+	$prenom = $this->toASCII($prenom);
+	$mail = $this->toASCII($mail);
+	$lien_AN_deput = $this->toASCII($lien_AN_deput);
+	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "DELETE FROM `depute` WHERE `nom_depute`=\"$nom\" AND `prenom_depute`=\"$prenom\" AND `lien_AN_depute`=\"$lien_AN_deput\" ";     
+	$result = $db->query(utf8_decode($sql));
+	$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` , `circonsc_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\", '' )";
+	$result = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	$db->close();
+	return $id;
+}
+
 
 function SetUrl($valeurURL, $codeExtractURL)
 {	

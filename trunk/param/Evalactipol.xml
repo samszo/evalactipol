@@ -1,12 +1,9 @@
 <XmlParams>
 
 	<!-- Gestion des requêtes SPIP -->		
-	<XmlParam nom="GetOntoTree">
+	<XmlParam nom="GetTreeChildren_load">
 		<Querys>
 				
-<!-- Requêtes pour la création des arbres  -->
-			
-
 			<Query fonction="GetTreeChildren_terre">
 				<!-- récupère par rapport au parent les rubriques qui ont un mot clef type de territoire-->
 				<col tag="id" parse="Integer"/>
@@ -52,12 +49,23 @@
 				<js evt="onselect" function="GetTreeSelect('tree-param0-',['idRub','libRub'],[0,1]);ChargeTabboxFromAjax('idRub','FormSaisi','Terre');"/>
 			</Query>
 			
+		</Querys>	
+	</XmlParam>
+	
+	<XmlParam nom="GetTreeChildren">
+		<GetTreeChildrens>
 			
-
-		</Querys>
-		
+			<GetTreeChildren fonction="GetTreeChildren_departement">
+				<baseUrlHtml>/wiki/Deputes_par_departement</baseUrlHtml>
+				<find1>'li a[title^=Deputes]'</find1>
+			</GetTreeChildren>
 			
-		
+			<GetTreeChildren fonction="GetTreeChildren_depute">
+				
+				<find1>'td a[href^=/wiki/]'</find1>
+			</GetTreeChildren>
+			
+		</GetTreeChildrens>	
 	</XmlParam>
 	
 </XmlParams>
