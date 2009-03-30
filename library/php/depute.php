@@ -198,8 +198,8 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 
 	//$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
 	
-	//return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute);
-	return array ($result_id_deput,$NomPrenonDepute);
+	return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute);
+	//return array ($result_id_deput,$NomPrenonDepute);
 }
 
 public function ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute)
