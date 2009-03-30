@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 -- 
 -- Serveur: localhost
--- Généré le : Vendredi 20 Mars 2009 à 20:24
+-- Généré le : Lundi 30 Mars 2009 à 04:38
 -- Version du serveur: 5.0.27
 -- Version de PHP: 5.2.0
 -- 
@@ -99,6 +99,7 @@ CREATE TABLE `depute` (
   `numphone_depute` varchar(255) NOT NULL,
   `lien_AN_depute` varchar(255) NOT NULL,
   `num_depart_depute` int(10) unsigned NOT NULL,
+  `circonsc_depute` int(10) unsigned NOT NULL,
   PRIMARY KEY  (`id_depute`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

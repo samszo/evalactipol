@@ -119,12 +119,15 @@ function extract_canton ($htmlDept,$urlDept)
 	foreach($rsCantons as $cantons)
 	{
 		$infosCantons = $cantons->children;
-		$ChaineCantons = implode(";", $infosCantons);
+		$ChaineCantons = implode(":;:", $infosCantons);
 		//Extraction des noms des cantons dans une chaine de caractères
 		$nom_cantons = $this->extractBetweenDelimeters($ChaineCantons,"(cantons de ",")");
-		$test1 = $this->extractBetweenDelimeters($ChaineCantons,";",";");
+		//$test1 = $this->extractBetweenDelimeters($ChaineCantons,";",";");
+		$test1 = $this->extractBetweenDelimeters($ChaineCantons,":;:",":;:");
+		
 		$test2 = $this->extractBetweenDelimeters($test1,"title=","/a>");
-		$nomPrenom_depute_cantons = $this->extractBetweenDelimeters($test2,">","<");
+		//$nomPrenom_depute_cantons = $this->extractBetweenDelimeters($test2,">","<");
+		$nomPrenom_depute_cantons = trim($this->extractBetweenDelimeters($test2,">","<"));
 		
 		//Insertion des noms des cantons dans un tableau
 		$tabNomGeonameCantons = explode (",",$nom_cantons);
