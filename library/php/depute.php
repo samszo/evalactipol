@@ -169,8 +169,6 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 	$this->mailDepute = $this->recup_mail_deput ($this->url_depute);
 	$this->numPhoneDepute = $this->recup_Phone_deput ($this->url_depute);
 	$this->lienANDepute = $this->recup_lien_AN_deput ($this->url_depute);
-	//$NomPrenonDepute = $NomDepute." ".$PrenomDepute;
-	//$NomPrenonDepute = $this->NomDepute." ".$this->PrenomDepute;
 	$NomPrenonDepute = trim($this->NomDepute." ".$this->PrenomDepute);
 	$this->circonscDepute = $this->recup_circonsc_deput ($tabCirconscDepute,$NomPrenonDepute);
 
@@ -206,8 +204,8 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 	//return $result_id_deput;
 	
 	
-	return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute);
-	//return array ($result_id_deput,$NomPrenonDepute);
+	//return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute);
+	return array ($result_id_deput,$NomPrenonDepute);
 }
 
 public function ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute)
