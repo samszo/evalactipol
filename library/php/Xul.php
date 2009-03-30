@@ -37,7 +37,7 @@ class Xul{
 		$tree .= '<treecell label="France"/>'.EOL;
 		$tree .= '</treerow>'.EOL;
 		
-		$tree .= $this->GetTreeChildren("departement");
+		$tree .= $this->GetTreeChildren("departement","","","");
 		
 		$tree .= '</treeitem>'.EOL;
 		$tree .= '</treechildren>'.EOL;
@@ -48,7 +48,7 @@ class Xul{
 		
 	}
 	
-	function GetTreeChildren($type)
+	function GetTreeChildren($type,$infosCantons,$infosDepartement,$htmlDept)
 	{	
 		
 	
@@ -62,33 +62,96 @@ class Xul{
 		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
 		//$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
 		//$html = file_get_html ($baseUrl."/wiki/Deputes_par_departement");
-		$html = file_get_html ($baseUrlHtml);
+		
 		//$x = $Q[0]->find1;
 		//echo $x; 
 		//$retours = $html->find($x);
+		if ($type == "departement")
+		{
+		$html = file_get_html ($baseUrlHtml);
 		$retours = $html->find('li a[title^=Deputes]');
-		
-		
-			$tree = '<treechildren >'.EOL;
-			foreach($retours as $dept)
-			{	
-				$urlDept = $dept->attr["href"];
-				$url =$baseUrl.$urlDept;
-				$htmlDept = $cl_Output->call('file_get_html',$url);
-				if ($type = "departement")
+		}
+		else 
+		{
+		$html = $htmlDept;
+		$retours = $html->find('td a[href^=/wiki/]');
+		}
+			if ($type == "departement")
 				{
-				$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
-				$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
+				$infosDepartement[1] = "Ain";
 				}
+			else 
+				{
+				$infosDepartement[1] = $infosDepartement[1];
+				}
+			if ($infosDepartement[1] == "Ain")
+			{
+		
+				$tree = '<treechildren >'.EOL;
+				foreach($retours as $dept)
+				{	
+					$urlDept = $dept->attr["href"];
+					if ($type == "departement")
+					{
+					$nom = "xxxx";
+					}
+					else 
+					{
+					$nom = substr($urlDept,6,7);
+					}
+					//$nom = substr($urlDept,6,7);
+					if($nom!="Deputes")
+					{
+				
+					$url =$baseUrl.$urlDept;
+					$htmlDept = $cl_Output->call('file_get_html',$url);
+						if ($type == "departement")
+						{
+						$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
+						$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
+						$idXul = $infosDepartement[3];
+						$valXul = $infosDepartement[1];
+						}
+						else 
+						{
+						$oDepute = new depute ($htmlDept,$dept,'',$infosDepartement[0],$cl_Output,$this->site,'');
+						$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
+						$idXul = $result_deput[0];
+						$valXul = $result_deput[1];
+						}
+						
+						$tree .= '<treeitem id="'.$idXul.'" container="true" open="false" >'.EOL;
+						$tree .= '<treerow>'.EOL;
+						$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
+						$tree .= '</treerow>'.EOL;
+				
+						if ($type == "departement")
+						$tree .= $this->GetTreeChildren("depute",$infosCantons, $infosDepartement,$htmlDept);
 				
 				
-				$tree .= '<treeitem id="'.$infosDepartement[3].'" container="true" open="false" >'.EOL;
-				$tree .= '<treerow>'.EOL;
-				$tree .= '<treecell label="'.$infosDepartement[1].'"/>'.EOL;
-				$tree .= '</treerow>'.EOL;
-				//$tree .= '</treeitem>'.EOL;
+						$tree .= '</treeitem>'.EOL;
 				
-				if ($infosDepartement[1] == "Ain")
+					}
+				}	
+				$tree .= '</treechildren>'.EOL;
+				
+			return $tree;	
+			}
+			//else
+			//{
+			//$tree .= '</treeitem>'.EOL;
+			//}
+			//$tree .= '</treeitem>'.EOL;
+			//$tree .= '</treechildren>'.EOL;
+		
+		//return $tree;
+
+	}		
+				
+				
+				
+				
+				/*if ($infosDepartement[1] == "Ain")
 				{
 					
 					$tree .= '<treechildren >'.EOL;
@@ -106,6 +169,8 @@ class Xul{
 							
 							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
 							$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
+								
+							
 							
 							$tree .= '<treeitem id="'.$result_deput[0].'" container="true" open="false" >'.EOL;
 							//$tree .= '<treeitem id="1" container="true" open="false" >'.EOL;
@@ -134,7 +199,7 @@ class Xul{
 		
 	return $tree;
 
-	}
+	}*/
 	/*function GetTreeChildren()
 	{	
 		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));

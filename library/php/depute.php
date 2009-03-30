@@ -172,8 +172,6 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 	$NomPrenonDepute = trim($this->NomDepute." ".$this->PrenomDepute);
 	$this->circonscDepute = $this->recup_circonsc_deput ($tabCirconscDepute,$NomPrenonDepute);
 
-	//$result_id_deput = $this->SetDepute($NomDepute,$PrenomDepute,$mailDepute,$numPhoneDepute,$lienANDepute,$this->num_depart_depute);
-	
 	//$result_id_deput = $this->SetDepute1($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute);
 	$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute,$this->circonscDepute);
 	
@@ -198,11 +196,7 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 			}
 	}*/
 
-// Fin La partie ajoutée pour testet l'objet député
-
 	//$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
-	//return $result_id_deput;
-	
 	
 	//return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute);
 	return array ($result_id_deput,$NomPrenonDepute);
