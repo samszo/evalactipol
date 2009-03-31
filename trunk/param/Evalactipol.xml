@@ -44,13 +44,20 @@
 		<GetTreeChildrens>
 			
 			<GetTreeChildren fonction="GetTreeChildren_departement">
+				<baseUrl>http://www.laquadrature.net</baseUrl>
 				<baseUrlHtml>/wiki/Deputes_par_departement</baseUrlHtml>
-				<find1>'li a[title^=Deputes]'</find1>
+				<find>'li a[title^=Deputes]'</find>
+				<nom>xxx</nom>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_depute">
-				
-				<find1>'td a[href^=/wiki/]'</find1>
+				<baseUrl>http://www.laquadrature.net</baseUrl>
+				<find>'td a[href^=/wiki/]'</find>
+				<nom>xxx</nom>
+			</GetTreeChildren>
+			
+			<GetTreeChildren fonction="GetTreeChildren_cantons">
+				<nom>xxx</nom>
 			</GetTreeChildren>
 			
 		</GetTreeChildrens>	
