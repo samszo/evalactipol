@@ -153,10 +153,10 @@ function extract_canton ($htmlDept,$urlDept)
 			$x = $x.",".$circonscription_cantons;
 		}
 	
-	$tabNomGeonameCantonsResult = array_merge ($tabNomGeonameCantonsResult,$tabNomGeonameCantons);
+		$tabNomGeonameCantonsResult = array_merge ($tabNomGeonameCantonsResult,$tabNomGeonameCantons);
 	
-	$tabCirconscDepute1 [$nomPrenom_depute_cantons] = $circonscription_cantons;
-	$tabCirconscDepute = array_merge ($tabCirconscDepute,$tabCirconscDepute1);
+		$tabCirconscDepute1 [$nomPrenom_depute_cantons] = $circonscription_cantons;
+		$tabCirconscDepute = array_merge ($tabCirconscDepute,$tabCirconscDepute1);
 	
 	}
 	//Les numéros de circonscriptions qui existent dans un département

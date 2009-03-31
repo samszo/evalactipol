@@ -9,10 +9,9 @@ class Xul{
     }
 
     function __construct($site, $id=-1, $complet=true) {
-	//echo "new Site $sites, $id, $scope<br/>";
+	
   	$this->trace = TRACE;
-
-    $this->site = $site;
+	$this->site = $site;
     $this->id = $id;
 	
 	}
@@ -51,36 +50,29 @@ class Xul{
 	function GetTreeChildren($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput)
 	{	
 		
-	
-		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
-		$baseUrl ="http://www.laquadrature.net";
-		
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
 		
-		//$baseUrlHtml = $baseUrl."/wiki/Deputes_par_departement";
-		//$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
-		//$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
-		//$html = file_get_html ($baseUrl."/wiki/Deputes_par_departement");
+		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
 		
-		//$x = $Q[0]->find1;
-		//echo $x; 
-		//$retours = $html->find($x);
+		$baseUrl =$Q[0]->baseUrl;
+		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
+		
+		//$retours = $html->find($Q[0]->find);
+		
 		if ($type == "departement")
 		{
-		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
 		$html = file_get_html ($baseUrlHtml);
 		$retours = $html->find('li a[title^=Deputes]');
 		}
 		elseif ($type == "depute")
 		{
-		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
 		$html = $htmlDept;
 		$retours = $html->find('td a[href^=/wiki/]');
 		}
 		else
 		{
-		$retours = $result_deput;
+		$retours = $result_deput[2];
 		}
 			if ($type == "departement")
 				{
@@ -104,7 +96,8 @@ class Xul{
 					if ($type == "departement")
 					{
 					$urlDept = $dept->attr["href"];
-					$nom = "xxxx";
+					$nom = $Q[0]->nom;
+					//$nom = "xxxx";
 					}
 					elseif ($type == "depute")
 					{
@@ -113,13 +106,12 @@ class Xul{
 					}
 					else
 					{
-					$nom = "xxxx";
+					$nom = $Q[0]->nom;
+					//$nom = "xxxx";
 					}
-					//$nom = substr($urlDept,6,7);
+					
 					if($nom!="Deputes")
 					{
-				
-					
 						if ($type == "departement")
 						{
 						$url =$baseUrl.$urlDept;
@@ -140,11 +132,12 @@ class Xul{
 						}
 						else
 						{
-						$idXul = "1";
+						$result_canton = extract::SetGeoname($dept,"Canton",$result_deput[3],$result_deput[4]);
+						$idXul = $result_canton;
 						$valXul = $dept;
 						}
 						
-						$tree .= '<treeitem id="'.$idXul.'" container="true" open="false" >'.EOL;
+						$tree .= '<treeitem id="'.$type."_".$idXul.'" container="true" open="false" >'.EOL;
 						$tree .= '<treerow>'.EOL;
 						$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
 						$tree .= '</treerow>'.EOL;
@@ -152,7 +145,7 @@ class Xul{
 						if ($type == "departement")
 						$tree .= $this->GetTreeChildren("depute",$infosCantons, $infosDepartement,$htmlDept,"");
 						if ($type == "depute")
-						$tree .= $this->GetTreeChildren("cantons","", "","",$result_deput[2]);
+						$tree .= $this->GetTreeChildren("cantons","", "","",$result_deput);
 				
 						$tree .= '</treeitem>'.EOL;
 				
@@ -162,15 +155,6 @@ class Xul{
 				
 			return $tree;	
 			}
-			//else
-			//{
-			//$tree .= '</treeitem>'.EOL;
-			//}
-			//$tree .= '</treeitem>'.EOL;
-			//$tree .= '</treechildren>'.EOL;
-		
-		//return $tree;
-
 	}		
 							
 	/*function GetTreeChildren()
@@ -310,15 +294,9 @@ class Xul{
 		
 		else
 		{
-			$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/col";
-			$Cols = $this->site->XmlParam->GetElements($Xpath);
-		
 			$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']";
 			$Q = $this->site->XmlParam->GetElements($Xpath);
 		
-			$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/from";
-			$attrs =$this->site->XmlParam->GetElements($Xpath);
-			
 			$where = str_replace("-parent-", $val1, $Q[0]->where);
 			
 			if ($val2!=-1)
@@ -349,12 +327,10 @@ class Xul{
 					$valXul = html_entity_decode($r[1]);
 				}	
 				
-				$tree .= '<treeitem id="'.$r[0].'" container="true" empty="false" >'.EOL;
+				$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" >'.EOL;
 				$tree .= '<treerow>'.EOL;
 				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
-				
-				//$tree .= $this->GetTreeItem($r[0],$valXul);
 				
 					if($type=="departement")
 					$tree .= $this->GetTreeChildren_load("depute",1, $r[0],-1);
