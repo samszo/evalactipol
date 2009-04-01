@@ -58,103 +58,72 @@ class Xul{
 		$baseUrl =$Q[0]->baseUrl;
 		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
 		
-		//$retours = $html->find($Q[0]->find);
-		
 		if ($type == "departement")
-		{
-		$html = file_get_html ($baseUrlHtml);
-		$retours = $html->find('li a[title^=Deputes]');
+        {
+        	$html = file_get_html ($baseUrlHtml);
+            $retours = $html->find($Q[0]->find."");
+		}elseif($type == "depute"){
+			$html = $htmlDept;
+            $retours = $html->find($Q[0]->find."");
+        }else{
+			$retours = $result_deput[2];
 		}
-		elseif ($type == "depute")
-		{
-		$html = $htmlDept;
-		$retours = $html->find('td a[href^=/wiki/]');
-		}
-		else
-		{
-		$retours = $result_deput[2];
-		}
-			if ($type == "departement")
-				{
-				$infosDepartement[1] = "Ain";
-				}
-			elseif ($type == "depute")
-				{
-				$infosDepartement[1] = $infosDepartement[1];
-				}
-			else
-				{
-				$infosDepartement[1] = "Ain";
-				}
-			if ($infosDepartement[1] == "Ain")
-			{
-		
-				$tree = '<treechildren >'.EOL;
-				foreach($retours as $dept)
-				{	
-					
-					if ($type == "departement")
-					{
+ 				
+		$tree = '<treechildren >'.EOL;
+		foreach($retours as $dept)
+		{	
+
+			
+			switch ($type) {
+				case "departement":
 					$urlDept = $dept->attr["href"];
 					$nom = $Q[0]->nom;
-					//$nom = "xxxx";
-					}
-					elseif ($type == "depute")
-					{
+					$url =$baseUrl.$urlDept;
+					$htmlDept = $cl_Output->call('file_get_html',$url);
+					$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
+					$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
+					$idXul = $infosDepartement[3];
+					$valXul = $infosDepartement[1];
+					break;
+				case "depute":
 					$urlDept = $dept->attr["href"];
 					$nom = substr($urlDept,6,7);
-					}
-					else
-					{
-					$nom = $Q[0]->nom;
-					//$nom = "xxxx";
-					}
-					
 					if($nom!="Deputes")
 					{
-						if ($type == "departement")
-						{
-						$url =$baseUrl.$urlDept;
-						$htmlDept = $cl_Output->call('file_get_html',$url);
-						$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
-						$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
-						$idXul = $infosDepartement[3];
-						$valXul = $infosDepartement[1];
-						}
-						elseif ($type == "depute")
-						{
 						$url =$baseUrl.$urlDept;
 						$htmlDept = $cl_Output->call('file_get_html',$url);
 						$oDepute = new depute ($htmlDept,$dept,'',$infosDepartement[0],$cl_Output,$this->site,'');
 						$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
 						$idXul = $result_deput[0];
 						$valXul = $result_deput[1];
-						}
-						else
-						{
-						$result_canton = extract::SetGeoname($dept,"Canton",$result_deput[3],$result_deput[4]);
-						$idXul = $result_canton;
-						$valXul = $dept;
-						}
-						
-						$tree .= '<treeitem id="'.$type."_".$idXul.'" container="true" open="false" >'.EOL;
-						$tree .= '<treerow>'.EOL;
-						$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
-						$tree .= '</treerow>'.EOL;
-				
-						if ($type == "departement")
-						$tree .= $this->GetTreeChildren("depute",$infosCantons, $infosDepartement,$htmlDept,"");
-						if ($type == "depute")
-						$tree .= $this->GetTreeChildren("cantons","", "","",$result_deput);
-				
-						$tree .= '</treeitem>'.EOL;
-				
 					}
-				}	
-				$tree .= '</treechildren>'.EOL;
-				
-			return $tree;	
+					break;
+				case "cantons":
+					$nom = $Q[0]->nom;
+					$result_canton = extract::SetGeoname($dept,"Canton",$result_deput[3],$result_deput[4]);
+					$idXul = $result_canton;
+					$valXul = $dept;
+					break;
 			}
+							
+			if($nom!="Deputes")
+			{
+				$tree .= '<treeitem id="'.$type."_".$idXul.'" container="true" open="false" >'.EOL;
+				$tree .= '<treerow>'.EOL;
+				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
+				$tree .= '</treerow>'.EOL;
+	
+				if ($type == "departement")
+					$tree .= $this->GetTreeChildren($Q[0]->nextfct."",$infosCantons, $infosDepartement,$htmlDept,"");
+				if ($type == "depute")
+					$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
+		
+				$tree .= '</treeitem>'.EOL;
+			}
+		}	
+		$tree .= '</treechildren>'.EOL;
+			
+		return $tree;	
 	}		
 							
 	/*function GetTreeChildren()
@@ -258,7 +227,7 @@ class Xul{
 		$tree .= '<splitter class="tree-splitter"/>';
 		$tree .= '</treecols>';
 		
-		$tree .= $this->GetTreeChildren_load("france",$niv=-1,$val1=-1,$val2=-1);
+		$tree .= $this->GetTreeChildren_load("france");
 		$tree .= '</tree>';
 		
 		return $tree;
@@ -274,40 +243,31 @@ class Xul{
 		return $tree; 
 	}
 	
-	function GetTreeChildren_load($type,$niv,$val1,$val2){
+	function GetTreeChildren_load($type,$niv=-1,$val1=-1,$val2=-1){
 		
-		if ($niv==-1)
-		{
+		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']";
+		$Q = $this->site->XmlParam->GetElements($Xpath);
+		
+		if ($niv==-1){
 			$tree = '<treechildren >'.EOL;
 		
 			$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
 			$tree .= '<treerow>'.EOL;
-			$tree .= '<treecell label="France"/>'.EOL;
+			$tree .= '<treecell label="'.$type.'"/>'.EOL;
 			$tree .= '</treerow>'.EOL;
 		
-			//$tree .= $this->GetTreeItem("1","france");
-			$tree .= $this->GetTreeChildren_load("departement", 1, -1,-1);
+			$tree .= $this->GetTreeChildren_load($Q[0]->nextfct."", $niv+1);
 		
 			$tree .= '</treeitem>'.EOL;
 			$tree .= '</treechildren>'.EOL;
-		}
-		
-		else
-		{
-			$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']";
-			$Q = $this->site->XmlParam->GetElements($Xpath);
-		
+		}else{
 			$where = str_replace("-parent-", $val1, $Q[0]->where);
-			
-			if ($val2!=-1)
-			{
-				$where = str_replace("-parent_depart-", $val2, $where);
-			}
+			$where = str_replace("-parent_depart-", $val2, $where);
 			
 			$tree = '<treechildren >'.EOL;
 			
 			$sql = $Q[0]->select.$Q[0]->from.$where;
-			$db=new mysql ('localhost','root','','evalactipol');
+			$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 			$db->connect();
 			$request = $db->query($sql);
 			$db->close();
@@ -315,36 +275,24 @@ class Xul{
 				
 			while($r = $db->fetch_row($request))
 			{	
-				switch ($type) {
-					case "depute":
-						$valXul = html_entity_decode($r[1])." ".html_entity_decode($r[2]);
-					break;
-					case "cantons":
-						$valXul = html_entity_decode($r[1]);
-					break;
-					
-					default:	
-					$valXul = html_entity_decode($r[1]);
-				}	
+				$valXul = html_entity_decode($r[1]);
 				
 				$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" >'.EOL;
 				$tree .= '<treerow>'.EOL;
 				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
-				
-					if($type=="departement")
-					$tree .= $this->GetTreeChildren_load("depute",1, $r[0],-1);
-					if($type=="depute")
-					$tree .= $this->GetTreeChildren_load("cantons",1, $r[3],$r[4]);
-					
+
+				if($Q[0]->nextfct)
+					$tree .= $this->GetTreeChildren_load($Q[0]->nextfct."",$niv+1, $r[3], $r[4]);
+						
 				$tree .= '</treeitem>'.EOL;
 						
 			}//while
 			
 			if($nb>0)
-			$tree .= '</treechildren>'.EOL;
+				$tree .= '</treechildren>'.EOL;
 			else
-			$tree = '';
+				$tree = '';
 		}
 			
 	return $tree;
