@@ -16,7 +16,7 @@ class Xul{
 	
 	}
 
-    function GetTree(){
+    /*function GetTree(){
 		
 		$tree = "<tree flex=\"1\" 
 			id=\"tree\"
@@ -124,7 +124,85 @@ class Xul{
 		$tree .= '</treechildren>'.EOL;
 			
 		return $tree;	
-	}		
+	}*/
+	
+	function GetTree_load(){
+		$type = "departement";
+		$id = "1";
+		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
+		$js = $this->site->GetJs($Xpath, array($type,$id));
+		
+		$tree = "<tree flex=\"1\" 
+			id=\"tree\"
+			seltype='multiple'
+			".$js."
+			
+			>";
+	
+		$tree .= '<treecols>';
+		$tree .= '<treecol  id="1" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
+		$tree .= '<splitter class="tree-splitter"/>';
+
+		
+		$tree .= '</treecols>';
+		
+		$tree .= '<treechildren >'.EOL;
+		$tree .= '<treeitem id="1" container="true" open="true" >'.EOL;
+		$tree .= '<treerow>'.EOL;
+		$tree .= '<treecell label="France"/>'.EOL;
+		$tree .= '</treerow>'.EOL;
+		
+		$tree .= $this->GetTreeChildren_load("departement");
+		
+		$tree .= '</treeitem>'.EOL;
+		$tree .= '</treechildren>'.EOL;
+		
+		$tree .= '</tree>';
+		
+		return $tree;
+		
+	}
+	
+	function GetTreeChildren_load($type)
+	{	
+		
+		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
+		$Q = $this->site->XmlParam->GetElements($Xpath);
+		//$id = "1";
+		//$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
+		//$js = $this->site->GetJs($Xpath, array($type,$id));
+		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
+		
+		$baseUrl =$Q[0]->baseUrl;
+		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
+		$html = file_get_html ($baseUrlHtml);
+		$retours = $html->find($Q[0]->find."");
+		
+ 		$tree = '<treechildren >'.EOL;
+		foreach($retours as $dept)
+		{	
+			$urlDept = $dept->attr["href"];
+			$url =$baseUrl.$urlDept;
+			$htmlDept = $cl_Output->call('file_get_html',$url);
+			$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
+			$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
+			//$idXul = $infosDepartement[3];
+			$idXul = $infosDepartement[0];
+			$valXul = $infosDepartement[1];
+					
+				
+				$tree .= '<treeitem id="'.$type."_".$idXul.'" container="true" open="false">'.EOL;
+				$tree .= '<treerow>'.EOL;
+				$tree .= '<treecell label="'.$valXul.'" />'.EOL;
+				$tree .= '</treerow>'.EOL;
+	
+				$tree .= '</treeitem>'.EOL;
+			
+		}	
+		$tree .= '</treechildren>'.EOL;
+			
+		return $tree;	
+	}
 							
 	/*function GetTreeChildren()
 	{	
@@ -215,7 +293,7 @@ class Xul{
 	return $tree;
 
 	}*/
-	function GetTree_load(){
+	/*function GetTree_load(){
 		
 		$tree = "<tree flex=\"1\" 
 			id=\"tree\"
@@ -296,7 +374,7 @@ class Xul{
 		}
 			
 	return $tree;
-	}
+	}*/
 		
 	
 function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
