@@ -98,8 +98,9 @@ function extract_departement ($urlDept,$dept,$circonscDepart)
 	$nomGeo_Depart = $this->extractBetweenDelimeters($ChaineNomDepart,""," ");
 	$type_geoname = "Departement";
 	
-	$id_geo_departement = extract::SetGeoname($nomGeo_Depart,$type_geoname,$numDepartDepute,$circonscDepart);
-	return array ($numDepartDepute,$nomGeo_Depart,$type_geoname,$id_geo_departement);
+	//$id_geo_departement = extract::SetGeoname($nomGeo_Depart,$type_geoname,$numDepartDepute,$circonscDepart);
+	//return array ($numDepartDepute,$nomGeo_Depart,$type_geoname,$id_geo_departement);
+	return array ($numDepartDepute,$nomGeo_Depart,$type_geoname);
 }
 
 function extract_canton ($htmlDept,$urlDept)
