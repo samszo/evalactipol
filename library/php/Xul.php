@@ -15,8 +15,9 @@ class Xul{
     $this->id = $id;
 	
 	}
-
-    /*function GetTree(){
+	//GetTree($type,$infosCantons, $infosDepartement,$htmlDept,$x);
+    //function GetTree(){
+	function GetTree($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput){
 		
 		$tree = "<tree flex=\"1\" 
 			id=\"tree\"
@@ -26,8 +27,6 @@ class Xul{
 		$tree .= '<treecols>';
 		$tree .= '<treecol  id="id" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
 		$tree .= '<splitter class="tree-splitter"/>';
-
-		
 		$tree .= '</treecols>';
 		
 		$tree .= '<treechildren >'.EOL;
@@ -36,7 +35,8 @@ class Xul{
 		$tree .= '<treecell label="France"/>'.EOL;
 		$tree .= '</treerow>'.EOL;
 		
-		$tree .= $this->GetTreeChildren("departement","","","","");
+		//$tree .= $this->GetTreeChildren("departement","","","","");
+		$tree .= $this->GetTreeChildren($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput);
 		
 		$tree .= '</treeitem>'.EOL;
 		$tree .= '</treechildren>'.EOL;
@@ -63,16 +63,19 @@ class Xul{
         	$html = file_get_html ($baseUrlHtml);
             $retours = $html->find($Q[0]->find."");
 		}elseif($type == "depute"){
+			
 			$html = $htmlDept;
-            $retours = $html->find($Q[0]->find."");
+			$retours = $html->find($Q[0]->find."");
+			
+			
         }else{
 			$retours = $result_deput[2];
 		}
+		
  				
 		$tree = '<treechildren >'.EOL;
 		foreach($retours as $dept)
 		{	
-
 			
 			switch ($type) {
 				case "departement":
@@ -86,8 +89,10 @@ class Xul{
 					$valXul = $infosDepartement[1];
 					break;
 				case "depute":
+					
 					$urlDept = $dept->attr["href"];
 					$nom = substr($urlDept,6,7);
+					
 					if($nom!="Deputes")
 					{
 						$url =$baseUrl.$urlDept;
@@ -115,8 +120,8 @@ class Xul{
 	
 				if ($type == "departement")
 					$tree .= $this->GetTreeChildren($Q[0]->nextfct."",$infosCantons, $infosDepartement,$htmlDept,"");
-				if ($type == "depute")
-					$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
+				//if ($type == "depute")
+					//$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
 		
 				$tree .= '</treeitem>'.EOL;
 			}
@@ -124,10 +129,11 @@ class Xul{
 		$tree .= '</treechildren>'.EOL;
 			
 		return $tree;	
-	}*/
+	}
 	
-	function GetTree_load(){
-		$type = "departement";
+	function GetTree_load($type){
+		
+		//$type = "departement";
 		$id = "1";
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
 		$js = $this->site->GetJs($Xpath, array($type,$id));
@@ -202,6 +208,48 @@ class Xul{
 		$tree .= '</treechildren>'.EOL;
 			
 		return $tree;	
+	}
+	
+	function Getlist($id,$type){
+        
+		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
+		$Q = $this->site->XmlParam->GetElements($Xpath);
+		
+		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
+		$baseUrl =$Q[0]->baseUrl;
+		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
+		$html = $cl_Output->call('file_get_html',$baseUrlHtml);
+		//$type = $this->extractBetweenDelimeters($id,"","_");
+		$num = substr($id,12);
+		$retours = $html->find('li a[title^=Deputes '.$num.']');
+		
+ 			foreach ($retours as $dept)
+			{
+			$urlDept = $dept->attr["href"];
+			$url =$baseUrl.$urlDept;
+			$htmlDept = $cl_Output->call('file_get_html',$url);
+			
+			$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
+			$infosDepartement = extract::extract_One_departement ($urlDept,$dept,$infosCantons[3]);
+			}
+			
+			$tree = $this->GetTree("depute",$infosCantons,$infosDepartement,$htmlDept,"");
+			
+			$listbox = $tree;
+			
+			$listbox .= '<listbox>';
+			$listbox .= '<listitem label="'.$infosDepartement[1].'"/>';
+			$listbox .= '<listitem label="'.$infosDepartement[0].'"/>';
+			$listbox .= '<listitem label="'.$infosDepartement[2].'"/>';
+			//$listbox .= '<listitem label="'.$infosDepartement[3].'"/>';
+			$listbox .= '<listitem label="'.$infosDepartement[4].'"/>';
+			$listbox .= '</listbox>';
+			//$listbox .= "ChargeTreeFromAjax('GetTree_load','treeRub','departement');"
+			
+			
+			
+		return $listbox;
+			
 	}
 							
 	/*function GetTreeChildren()
