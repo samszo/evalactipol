@@ -63,6 +63,7 @@
 				<find>td a[href^=/wiki/]</find>
 				<nom>xxx</nom>
 				<nextfct>cantons</nextfct>
+				<js evt="onselect" function="GetTreeSelect('tree1','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_cantons">

@@ -8,7 +8,7 @@ function ChargeTreeFromAjax(fonction,idDst,type)
   try {
 	
 	var doc = document.getElementById(idDst);
-	
+	//var num_depart = document.getElementById(idSrc).value;
 	var url = urlExeAjax+"?f="+fonction+"&type="+type;
 	AppendResult(url,doc);
 	dump("ChargeTreeFromAjax OUT\n");
@@ -25,7 +25,14 @@ try {
 	var doc = document.getElementById(idDst);
 	var id = document.getElementById(idDst).value;
 	
+	if (type == "departement")
+	{
 	var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
+	}
+	else
+	{
+	var url = urlExeAjax2+"?f=Getlist_depute&id="+id+"&type="+type;
+	}
 	//var url = urlExeAjax2+"?f=Getlist"+"&id="+id;
 	AppendResult(url,doc);
 	dump("ChargelistFromAjax OUT\n");

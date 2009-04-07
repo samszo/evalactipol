@@ -367,7 +367,16 @@ function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart,$circ
 	$db->close();
 	return $id;
 }
-
+function GetDepute($id)
+{	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "SELECT * FROM `depute` WHERE `id_depute`=\"$id\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$id =  mysql_insert_id();
+	$db->close();
+	return $result;
+}
 function SetDepute1($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
 {	
 	$nom = $this->toASCII($nom);
