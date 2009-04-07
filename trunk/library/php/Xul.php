@@ -19,9 +19,15 @@ class Xul{
     //function GetTree(){
 	function GetTree($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput){
 		
+		$id = "1";
+		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
+		$js = $this->site->GetJs($Xpath, array($type,$id));
+		
 		$tree = "<tree flex=\"1\" 
-			id=\"tree\"
+			id=\"tree1\"
 			seltype='multiple'
+			".$js."
+
 			>";
 	
 		$tree .= '<treecols>';
@@ -120,8 +126,8 @@ class Xul{
 	
 				if ($type == "departement")
 					$tree .= $this->GetTreeChildren($Q[0]->nextfct."",$infosCantons, $infosDepartement,$htmlDept,"");
-				//if ($type == "depute")
-					//$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
+				if ($type == "depute")
+					$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
 		
 				$tree .= '</treeitem>'.EOL;
 			}
@@ -131,9 +137,10 @@ class Xul{
 		return $tree;	
 	}
 	
+	
 	function GetTree_load($type){
 		
-		//$type = "departement";
+		
 		$id = "1";
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
 		$js = $this->site->GetJs($Xpath, array($type,$id));
@@ -144,7 +151,7 @@ class Xul{
 			".$js."
 			
 			>";
-	
+		
 		$tree .= '<treecols>';
 		$tree .= '<treecol  id="1" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
 		$tree .= '<splitter class="tree-splitter"/>';
@@ -168,7 +175,6 @@ class Xul{
 		return $tree;
 		
 	}
-	
 	function GetTreeChildren_load($type)
 	{	
 		
@@ -203,7 +209,7 @@ class Xul{
 				$tree .= '</treerow>'.EOL;
 	
 				$tree .= '</treeitem>'.EOL;
-			
+				
 		}	
 		$tree .= '</treechildren>'.EOL;
 			
@@ -212,11 +218,12 @@ class Xul{
 	
 	function Getlist($id,$type){
         
+		
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
 		
 		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
-		$baseUrl =$Q[0]->baseUrl;
+		$baseUrl =$Q[0]->baseUrl."";
 		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
 		$html = $cl_Output->call('file_get_html',$baseUrlHtml);
 		//$type = $this->extractBetweenDelimeters($id,"","_");
@@ -249,6 +256,106 @@ class Xul{
 			
 			
 		return $listbox;
+			
+	}
+	function Getlist_depute($id,$type){
+		
+		
+		//$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
+		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_departement']";
+		$Q = $this->site->XmlParam->GetElements($Xpath);
+		
+		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
+		$baseUrl =$Q[0]->baseUrl."";
+		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
+		$html = $cl_Output->call('file_get_html',$baseUrlHtml);
+		//$type = $this->extractBetweenDelimeters($id,"","_");
+		$num = substr($id,7);
+		//echo $num;
+		//$retours = $html->find('li a[title^=Deputes '.$num.']');
+		$retours = $html->find('li a[title^=Deputes]');
+		
+ 			foreach ($retours as $dept)
+			{
+			
+			$urlDept = $dept->attr["href"];
+			$url =$baseUrl.$urlDept;
+			$htmlDept = $cl_Output->call('file_get_html',$url);
+			
+			$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
+			$infosDepartement = extract::extract_One_departement ($urlDept,$dept,$infosCantons[3]);
+				
+				$result_deput = $this->GetDepute($num);
+				
+				$NomPrenomDepute = html_entity_decode($result_deput[1]).html_entity_decode($result_deput[2]);
+				
+				$rsDept = $htmlDept->find('td a[href^=/wiki/'.$NomPrenomDepute.']');
+					
+					foreach($rsDept as $depu)
+					{
+						$urlDepu = $depu->attr["href"]; 
+						//echo $urlDepu;
+						$nom = substr($urlDepu,6,7);
+						
+						if($nom!="Deputes")
+						{	
+							$urlDepute=$baseUrl.$urlDepu;
+							$htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
+							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
+							$result_deput1111 = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
+							
+							//$tree = $this->GetTree("cantons","","","",$result_deput1111);
+							//$listbox = $tree;
+							$listbox = '<listbox>';
+							$listbox .= '<listitem label="'.$result_deput[1].'"/>';
+							$listbox .= '<listitem label="'.$result_deput[2].'"/>';
+							$listbox .= '<listitem label="'.$result_deput[3].'"/>';
+							$listbox .= '<listitem label="'.$result_deput[4].'"/>';
+							$listbox .= '<listitem label="'.$result_deput[5].'"/>';
+							$listbox .= '<listitem label="'.$result_deput[6].'"/>';
+							$listbox .= '<listitem label="'.$result_deput[7].'"/>';
+							$listbox .= '</listbox>';
+							//$zzz = "Mehdi";
+							//echo "Touibi";
+							/*$urlDepute=$baseUrl.$urlDepu;
+							$htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
+							
+							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
+							$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
+							
+							$tree .= '<treeitem id="'.$result_deput[0].'" container="true" open="false" >'.EOL;
+							$tree .= '<treerow>'.EOL;
+							$tree .= '<treecell label="'.$result_deput[1].'"/>'.EOL;
+							$tree .= '</treerow>'.EOL;
+							//$tree .= '</treeitem>'.EOL;
+							$tree .= '</treeitem>'.EOL;	*/
+							
+						}
+							
+					}
+			}
+			
+			/*$tree = $this->GetTree("depute",$infosCantons,$infosDepartement,$htmlDept,"");
+			
+			$listbox = $tree;
+			
+			$listbox .= '<listbox>';
+			$listbox .= '<listitem label="'.$infosDepartement[1].'"/>';
+			$listbox .= '<listitem label="'.$infosDepartement[0].'"/>';
+			$listbox .= '<listitem label="'.$infosDepartement[2].'"/>';
+			//$listbox .= '<listitem label="'.$infosDepartement[3].'"/>';
+			$listbox .= '<listitem label="'.$infosDepartement[4].'"/>';
+			$listbox .= '</listbox>';*/
+			//$listbox .= "ChargeTreeFromAjax('GetTree_load','treeRub','departement');"
+			
+			
+			
+		return $listbox;
+		
+			
+			
+			
+		
 			
 	}
 							
@@ -430,7 +537,17 @@ function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
 	$posLeft  = stripos($inputstr,$delimeterLeft)+strlen($delimeterLeft);
 	$posRight = stripos($inputstr,$delimeterRight,$posLeft+1);
 	return  substr($inputstr,$posLeft,$posRight-$posLeft);
-	}	
+	}
+function GetDepute($id)
+{	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "SELECT * FROM `depute` WHERE `id_depute`=\"$id\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$id =  mysql_insert_id();
+	$db->close();
+	return ($result1 = mysql_fetch_array( $result));
+}
 
 }
 ?>
