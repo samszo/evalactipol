@@ -17,7 +17,7 @@ class Xul{
 	}
 	//GetTree($type,$infosCantons, $infosDepartement,$htmlDept,$x);
     //function GetTree(){
-	function GetTree($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput){
+	function GetTree($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput,$titreTree){
 		
 		$id = "1";
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
@@ -38,7 +38,7 @@ class Xul{
 		$tree .= '<treechildren >'.EOL;
 		$tree .= '<treeitem id="1" container="true" open="true" >'.EOL;
 		$tree .= '<treerow>'.EOL;
-		$tree .= '<treecell label="France"/>'.EOL;
+		$tree .= '<treecell label="'.$titreTree.'"/>'.EOL;
 		$tree .= '</treerow>'.EOL;
 		
 		//$tree .= $this->GetTreeChildren("departement","","","","");
@@ -126,8 +126,8 @@ class Xul{
 	
 				if ($type == "departement")
 					$tree .= $this->GetTreeChildren($Q[0]->nextfct."",$infosCantons, $infosDepartement,$htmlDept,"");
-				if ($type == "depute")
-					$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
+				//if ($type == "depute")
+					//$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
 		
 				$tree .= '</treeitem>'.EOL;
 			}
@@ -180,9 +180,7 @@ class Xul{
 		
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
-		//$id = "1";
-		//$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
-		//$js = $this->site->GetJs($Xpath, array($type,$id));
+		
 		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
 		
 		$baseUrl =$Q[0]->baseUrl;
@@ -240,7 +238,7 @@ class Xul{
 			$infosDepartement = extract::extract_One_departement ($urlDept,$dept,$infosCantons[3]);
 			}
 			
-			$tree = $this->GetTree("depute",$infosCantons,$infosDepartement,$htmlDept,"");
+			$tree = $this->GetTree("depute",$infosCantons,$infosDepartement,$htmlDept,"",$infosDepartement[1]);
 			
 			$listbox = $tree;
 			
@@ -250,10 +248,7 @@ class Xul{
 			$listbox .= '<listitem label="'.$infosDepartement[2].'"/>';
 			//$listbox .= '<listitem label="'.$infosDepartement[3].'"/>';
 			$listbox .= '<listitem label="'.$infosDepartement[4].'"/>';
-			$listbox .= '</listbox>';
-			//$listbox .= "ChargeTreeFromAjax('GetTree_load','treeRub','departement');"
-			
-			
+			$listbox .= '</listbox>';	
 			
 		return $listbox;
 			
@@ -271,9 +266,9 @@ class Xul{
 		$html = $cl_Output->call('file_get_html',$baseUrlHtml);
 		//$type = $this->extractBetweenDelimeters($id,"","_");
 		$num = substr($id,7);
-		//echo $num;
-		//$retours = $html->find('li a[title^=Deputes '.$num.']');
-		$retours = $html->find('li a[title^=Deputes]');
+		$result_deput_sql = $this->GetDepute($num);
+		
+		$retours = $html->find('li a[title^=Deputes '.$result_deput_sql[6].']');
 		
  			foreach ($retours as $dept)
 			{
@@ -285,16 +280,14 @@ class Xul{
 			$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
 			$infosDepartement = extract::extract_One_departement ($urlDept,$dept,$infosCantons[3]);
 				
-				$result_deput = $this->GetDepute($num);
-				
-				$NomPrenomDepute = html_entity_decode($result_deput[1]).html_entity_decode($result_deput[2]);
+				$NomPrenomDepute = html_entity_decode($result_deput_sql[1]).html_entity_decode($result_deput_sql[2]);
+				$NomPrenomDepute_separ = html_entity_decode($result_deput_sql[1])." ".html_entity_decode($result_deput_sql[2]);
 				
 				$rsDept = $htmlDept->find('td a[href^=/wiki/'.$NomPrenomDepute.']');
 					
 					foreach($rsDept as $depu)
 					{
 						$urlDepu = $depu->attr["href"]; 
-						//echo $urlDepu;
 						$nom = substr($urlDepu,6,7);
 						
 						if($nom!="Deputes")
@@ -302,62 +295,28 @@ class Xul{
 							$urlDepute=$baseUrl.$urlDepu;
 							$htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
 							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
-							$result_deput1111 = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
-							
-							//$tree = $this->GetTree("cantons","","","",$result_deput1111);
-							//$listbox = $tree;
-							$listbox = '<listbox>';
-							$listbox .= '<listitem label="'.$result_deput[1].'"/>';
-							$listbox .= '<listitem label="'.$result_deput[2].'"/>';
-							$listbox .= '<listitem label="'.$result_deput[3].'"/>';
-							$listbox .= '<listitem label="'.$result_deput[4].'"/>';
-							$listbox .= '<listitem label="'.$result_deput[5].'"/>';
-							$listbox .= '<listitem label="'.$result_deput[6].'"/>';
-							$listbox .= '<listitem label="'.$result_deput[7].'"/>';
-							$listbox .= '</listbox>';
-							//$zzz = "Mehdi";
-							//echo "Touibi";
-							/*$urlDepute=$baseUrl.$urlDepu;
-							$htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
-							
-							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
 							$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
 							
-							$tree .= '<treeitem id="'.$result_deput[0].'" container="true" open="false" >'.EOL;
-							$tree .= '<treerow>'.EOL;
-							$tree .= '<treecell label="'.$result_deput[1].'"/>'.EOL;
-							$tree .= '</treerow>'.EOL;
-							//$tree .= '</treeitem>'.EOL;
-							$tree .= '</treeitem>'.EOL;	*/
+							$tree = $this->GetTree("cantons","","","",$result_deput,$NomPrenomDepute_separ);
+							$listbox = $tree;
+							$listbox .= '<listbox>';
+							$listbox .= '<listitem label="'.$result_deput_sql[1].'"/>';
+							$listbox .= '<listitem label="'.$result_deput_sql[2].'"/>';
+							$listbox .= '<listitem label="'.$result_deput_sql[3].'"/>';
+							$listbox .= '<listitem label="'.$result_deput_sql[4].'"/>';
+							$listbox .= '<listitem label="'.$result_deput_sql[5].'"/>';
+							$listbox .= '<listitem label="'.$result_deput_sql[6].'"/>';
+							$listbox .= '<listitem label="'.$result_deput_sql[7].'"/>';
+							$listbox .= '</listbox>';
 							
 						}
 							
 					}
 			}
 			
-			/*$tree = $this->GetTree("depute",$infosCantons,$infosDepartement,$htmlDept,"");
-			
-			$listbox = $tree;
-			
-			$listbox .= '<listbox>';
-			$listbox .= '<listitem label="'.$infosDepartement[1].'"/>';
-			$listbox .= '<listitem label="'.$infosDepartement[0].'"/>';
-			$listbox .= '<listitem label="'.$infosDepartement[2].'"/>';
-			//$listbox .= '<listitem label="'.$infosDepartement[3].'"/>';
-			$listbox .= '<listitem label="'.$infosDepartement[4].'"/>';
-			$listbox .= '</listbox>';*/
-			//$listbox .= "ChargeTreeFromAjax('GetTree_load','treeRub','departement');"
-			
-			
-			
 		return $listbox;
 		
-			
-			
-			
-		
-			
-	}
+		}
 							
 	/*function GetTreeChildren()
 	{	

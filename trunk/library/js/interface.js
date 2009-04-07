@@ -33,7 +33,7 @@ try {
 	{
 	var url = urlExeAjax2+"?f=Getlist_depute&id="+id+"&type="+type;
 	}
-	//var url = urlExeAjax2+"?f=Getlist"+"&id="+id;
+	
 	AppendResult(url,doc);
 	dump("ChargelistFromAjax OUT\n");
    
