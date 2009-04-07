@@ -17,7 +17,7 @@
 				</from>
 				<nextfct>depute</nextfct>
 				<where def="1942"> WHERE `type_geoname`= "Departement" </where>
-				<js evt="onselect" function="testHello();"/>
+				
 			</Query>
 			
 			<Query fonction="GetTreeChildren_depute">
@@ -29,7 +29,7 @@
 				<from>  FROM `depute`
 				</from>
 				<where def="1942">  WHERE `num_depart_depute`= "-parent-" </where>
-				<js evt="onselect" function="GetTreeSelect('tree-param0-',['idRub','libRub'],[0,1]);ChargeTabboxFromAjax('idRub','FormSaisi','Terre');"/>
+				
 			</Query>
 			
 			<Query fonction="GetTreeChildren_cantons">
@@ -40,7 +40,7 @@
 				<from> FROM `geoname`
 				</from>
 				<where def="1942"> WHERE `type_geoname` = "Canton" AND `circonscriptions_geoname`= "-parent-" AND `num_depart_geoname`= "-parent_depart-" </where>
-				<js evt="onselect" function="GetTreeSelect('tree-param0-',['idRub','libRub'],[0,1]);ChargeTabboxFromAjax('idRub','FormSaisi','Terre');"/>
+				
 			</Query>
 			
 		</Querys>	
@@ -55,12 +55,12 @@
 				<find>li a[title^=Deputes]</find>
 				<nom>xxx</nom>
 				<nextfct>depute</nextfct>
-				<js evt="onselect" function="testHello('tree');"/>
+				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','departement');"/>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_depute">
 				<baseUrl>http://www.laquadrature.net</baseUrl>
-				<find>'td a[href^=/wiki/]'</find>
+				<find>td a[href^=/wiki/]</find>
 				<nom>xxx</nom>
 				<nextfct>cantons</nextfct>
 			</GetTreeChildren>

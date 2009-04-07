@@ -86,12 +86,21 @@ function extract_site ()
 			$this->insert_table_deput_Geo($ids_deputes,$id_geo_departement);
 		}
 	}  
-}    
+}
+
+//function Getlist(){
+        
+		//echo $id;
+		//echo ('id');
+		
+		//return $id;
+	//}
 
 function extract_departement ($urlDept,$dept,$circonscDepart)
 {
 	$numDepart = substr($urlDept,14);
-	$numDepartDepute = (int)$numDepart;   
+	//$numDepartDepute = (int)$numDepart;
+	$numDepartDepute = $numDepart;   
 	//Extraction du nom de département  
 	$NomDepart = $dept->nodes;
 	$ChaineNomDepart = implode(";", $NomDepart);
@@ -102,6 +111,24 @@ function extract_departement ($urlDept,$dept,$circonscDepart)
 	//return array ($numDepartDepute,$nomGeo_Depart,$type_geoname,$id_geo_departement);
 	return array ($numDepartDepute,$nomGeo_Depart,$type_geoname);
 }
+
+function extract_One_departement ($urlDept,$dept,$circonscDepart)
+{	
+	$numDepart = substr($urlDept,14);
+	//$numDepartDepute = (int)$numDepart;
+	$numDepartDepute = $numDepart;   
+	//Extraction du nom de département  
+	$NomDepart = $dept->nodes;
+	$ChaineNomDepart = implode(";", $NomDepart);
+	$nomGeo_Depart = $this->extractBetweenDelimeters($ChaineNomDepart,""," ");
+	$type_geoname = "Departement";
+	
+	$id_geo_departement = extract::SetGeoname($nomGeo_Depart,$type_geoname,$numDepartDepute,$circonscDepart);
+	//$id_geo_departement = extract::SetGeoname($nomGeo_Depart,$type_geoname,$numDepartDepute,'');
+	return array ($numDepartDepute,$nomGeo_Depart,$type_geoname,$id_geo_departement,$circonscDepart);
+	//return array ($numDepartDepute,$nomGeo_Depart,$type_geoname,$circonscDepart);
+}
+
 
 function extract_canton ($htmlDept,$urlDept)
 {          
