@@ -29,11 +29,6 @@
 			$type = $_GET['type'];
 		else
 			$type = -1;
-		
-		//if(isset($_GET['num_depart']))
-			//$num_depart = $_GET['num_depart'];
-		//else
-			//$num_depart = -1;
         
        
 		switch ($fonction) {
@@ -76,8 +71,6 @@
         $xul = new Xul($objSite);
 		
 		return $xul->Getlist($id,$type);
-		
-		
 	}
 	function Getlist_depute($id,$type){
 		

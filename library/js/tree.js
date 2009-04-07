@@ -49,10 +49,6 @@ function GetTreeSelect(idTree,idTrace,colTrace){
 	//pour gérer la multisélection
 	var numRanges = tree.view.selection.getRangeCount();
 	
-	//c = tree.treeBoxObject.columns[colTrace[0]];
-	//var x = tree.view.getCellText(numRanges,c);
-	//alert("Item " + x + " sélectionné.");
-	
 	for (var t = 0; t < numRanges; t++){
 		tree.view.selection.getRangeAt(t,start,end);
 		
@@ -62,18 +58,14 @@ function GetTreeSelect(idTree,idTrace,colTrace){
 			
 				dump("GetTreeSelect colTrace[0] "+colTrace[0]+"\n");
 				dump("GetTreeSelect idTrace "+idTrace+"\n");
-				//c = tree.treeBoxObject.columns[colTrace[i]];
 				c = tree.treeBoxObject.columns[colTrace[0]];
 				
 				//document.getElementById(idTrace).value=tree.view.getCellText(v,c);
 				document.getElementById(idTrace).value = tree.view.getItemAtIndex(v).id;
 				
 				var y = tree.view.getItemAtIndex(v).id;
-				//var z = document.getElementById('libRub');
-				//alert("Item " + y + " sélectionné.");
 				
-				//alert("Item " + document.getElementById(idTrace[i]).value + " sélectionné.");
-			
+				//alert("Item " + y + " sélectionné.");
 		}
 	}
   } catch(ex2){ alert("::"+ex2); }
