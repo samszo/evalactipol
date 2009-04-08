@@ -124,8 +124,8 @@ class Xul{
 				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
 	
-				if ($type == "departement")
-					$tree .= $this->GetTreeChildren($Q[0]->nextfct."",$infosCantons, $infosDepartement,$htmlDept,"");
+				//if ($type == "departement")
+					//$tree .= $this->GetTreeChildren($Q[0]->nextfct."",$infosCantons, $infosDepartement,$htmlDept,"");
 				//if ($type == "depute")
 					//$tree .= $this->GetTreeChildren($Q[0]->nextfct."","", "","",$result_deput);
 		
@@ -194,8 +194,9 @@ class Xul{
 			$urlDept = $dept->attr["href"];
 			$url =$baseUrl.$urlDept;
 			$htmlDept = $cl_Output->call('file_get_html',$url);
-			$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
-			$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
+			//$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
+			//$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
+			$infosDepartement = extract::extract_departement ($urlDept,$dept);
 			//$idXul = $infosDepartement[3];
 			$idXul = $infosDepartement[0];
 			$valXul = $infosDepartement[1];
