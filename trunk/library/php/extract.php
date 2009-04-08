@@ -96,7 +96,8 @@ function extract_site ()
 		//return $id;
 	//}
 
-function extract_departement ($urlDept,$dept,$circonscDepart)
+//function extract_departement ($urlDept,$dept,$circonscDepart)
+function extract_departement ($urlDept,$dept)
 {
 	$numDepart = substr($urlDept,14);
 	//$numDepartDepute = (int)$numDepart;
