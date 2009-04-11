@@ -176,27 +176,27 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 	$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute,$this->circonscDepute);
 	
 	
-	/*$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
+	$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
 	if ($result_exist_depuUrl == NULL)
 	{         
 		$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
-	}*/
+	}
 	
 	
-	//$tab_ids_catons_depute = $this->ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
+	$tab_ids_catons_depute = $this->ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
 	$tab_noms_catons_depute = $this->noms_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
 	
 	
-	/*foreach ($tab_ids_catons_depute as $id_geo)
+	foreach ($tab_ids_catons_depute as $id_geo)
 	{
 		$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
 			if ($result_exist_depuGeo == NULL)
 			{         
 				$this->insert_table_deput_Geo($result_id_deput,$id_geo);
 			}
-	}*/
+	}
 
-	//$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
+	$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
 	
 	return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute,$this->num_depart_depute,$this->circonscDepute);
 	
@@ -210,6 +210,7 @@ public function ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute)
 		$ResultnameGeo = $this->extract_name_geo ($id_geo1);
 			foreach ($ResultnameGeo as $nameGeo)
 			{	
+				//$x = html_entity_decode ($nameGeo);
 				if ($infosCantonsDepute [$nameGeo] == $NomPrenonDepute)
 				{
 				$Result_id_geo1 = $Result_id_geo1.";".$id_geo1;
@@ -243,7 +244,9 @@ return $tab_noms_catons_depute;
 public function insert_infos_tous_questions ($rslienQuest,$result_id_deput)
 {
 	$urlQuestionResult = $this->extract_contenu_lienQuest ($rslienQuest);
-	$htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionResult);         
+	//$htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionResult);
+	$htmlLienQuestion = file_get_html($urlQuestionResult);
+	
 	$result_id_url_Questions = $this->SetUrl($urlQuestionResult,"find('li a[href$=Questions]')");
 	$rsQuest = $htmlLienQuestion->find('tbody tr[valign=top]');
 	$rsQuest1 = array_shift($rsQuest);
@@ -350,7 +353,7 @@ public function toASCII($ch) {
 	return $result;  
 }
 
-function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart,$circonscDepute)
+/*function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart,$circonscDepute)
 {	
 	$nom = $this->toASCII($nom);
 	$prenom = $this->toASCII($prenom);
@@ -366,7 +369,38 @@ function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart,$circ
 	$id =  mysql_insert_id();
 	$db->close();
 	return $id;
+}*/
+function SetDepute($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart,$circonscDepute)
+{	
+	$nom = $this->toASCII($nom);
+	$prenom = $this->toASCII($prenom);
+	$mail = $this->toASCII($mail);
+	$lien_AN_deput = $this->toASCII($lien_AN_deput);
+	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	
+	$sql = "SELECT * FROM `depute` WHERE `nom_depute`=\"$nom\" AND `prenom_depute`=\"$prenom\" AND `lien_AN_depute`=\"$lien_AN_deput\" ";     
+	
+	$result = $db->query(utf8_decode($sql));
+	$result1 = mysql_fetch_row( $result);
+	//$db->close();
+	if ($result1 == NULL)
+	{
+	$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` , `circonsc_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\", \"$circonscDepute\" )";
+	$result2 = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	//$db->close();
+	//return $id;
+	}
+	else
+	{
+	$id = $result1[0]; 
+	}
+	$db->close();
+	return $id;
 }
+
 function GetDepute($id)
 {	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
@@ -377,7 +411,7 @@ function GetDepute($id)
 	$db->close();
 	return $result;
 }
-function SetDepute1($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
+/*function SetDepute1($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
 {	
 	$nom = $this->toASCII($nom);
 	$prenom = $this->toASCII($prenom);
@@ -393,10 +427,41 @@ function SetDepute1($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
 	$id =  mysql_insert_id();
 	$db->close();
 	return $id;
+}*/
+	
+function SetDepute1($nom,$prenom,$mail,$numphone,$lien_AN_deput,$num_depart)
+{	
+	$nom = $this->toASCII($nom);
+	$prenom = $this->toASCII($prenom);
+	$mail = $this->toASCII($mail);
+	$lien_AN_deput = $this->toASCII($lien_AN_deput);
+	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	
+	$sql = "SELECT * FROM `depute` WHERE `nom_depute`=\"$nom\" AND `prenom_depute`=\"$prenom\" AND `lien_AN_depute`=\"$lien_AN_deput\" ";     
+	
+	$result = $db->query(utf8_decode($sql));
+	$result1 = mysql_fetch_row( $result);
+	//$db->close();
+	if ($result1 == NULL)
+	{
+	$sql = "INSERT INTO `depute` ( `id_depute` , `nom_depute` , `prenom_depute` , `mail_depute` , `numphone_depute` , `lien_AN_depute` , `num_depart_depute` , `circonsc_depute` ) VALUES ('', \"$nom\", \"$prenom\", \"$mail\", \"$numphone\", \"$lien_AN_deput\", \"$num_depart\", \"$circonscDepute\" )";
+	$result2 = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	//$db->close();
+	//return $id;
+	}
+	else
+	{
+	$id = $result1[0]; 
+	}
+	$db->close();
+	return $id;
 }
 
 
-function SetUrl($valeurURL, $codeExtractURL)
+/*function SetUrl($valeurURL, $codeExtractURL)
 {	
 	$valeurURL = $this->toASCII($valeurURL);
 	$codeExtractURL = $this->toASCII($codeExtractURL);
@@ -410,9 +475,39 @@ function SetUrl($valeurURL, $codeExtractURL)
 	$id =  mysql_insert_id();
 	$db->close();
 	return $id;
+}*/
+
+function SetUrl($valeurURL, $codeExtractURL)
+{	
+	$valeurURL = $this->toASCII($valeurURL);
+	$codeExtractURL = $this->toASCII($codeExtractURL);
+	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	
+	$sql = "SELECT * FROM `urls` WHERE `valeur_url` =\"$valeurURL\" AND code_extract_URL=\"$codeExtractURL\" ";     
+	
+	$result = $db->query(utf8_decode($sql));
+	$result1 = mysql_fetch_row( $result);
+	//$db->close();
+	if ($result1 == NULL)
+	{
+	$sql = "INSERT INTO `urls` ( `id_URL` , `valeur_url`, `code_extract_URL` ) VALUES ('', \"$valeurURL\", \"$codeExtractURL\")";     
+	$result2 = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	//$db->close();
+	//return $id;
+	}
+	else
+	{
+	$id = $result1[0]; 
+	}
+	$db->close();
+	return $id;
+	
 }
 
-function SetQuestion($num_question,$date_publication,$date_reponse,$num_legislature,$id_deput,$id_url)
+/*function SetQuestion($num_question,$date_publication,$date_reponse,$num_legislature,$id_deput,$id_url)
 {
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
@@ -423,6 +518,32 @@ function SetQuestion($num_question,$date_publication,$date_reponse,$num_legislat
 	$id =  mysql_insert_id();
 	$db->close();
 	return $id;
+}*/
+	
+function SetQuestion($num_question,$date_publication,$date_reponse,$num_legislature,$id_deput,$id_url)
+{	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	
+	$sql = "SELECT * FROM `questions` WHERE `num_question`=\"$num_question\" AND `date_publication`=\"$date_publication\" ";     
+	
+	$result = $db->query(utf8_decode($sql));
+	$result1 = mysql_fetch_row( $result);
+	//$db->close();
+	if ($result1 == NULL)
+	{
+	$sql = "INSERT INTO `questions` ( `id_question` , `num_question` , `date_publication` , `date_reponse` , `num_legislature` , `id_depute`, `id_URL` ) VALUES ('', \"$num_question\", \"$date_publication\", \"$date_reponse\", \"$num_legislature\", \"$id_deput\", \"$id_url\")";
+	$result2 = $db->query(utf8_decode($sql));
+	$id =  mysql_insert_id();
+	//$db->close();
+	//return $id;
+	}
+	else
+	{
+	$id = $result1[0]; 
+	}
+	$db->close();
+	return $id;
+	
 }
 
 function SetMotClef($valeur_MC)
@@ -622,13 +743,17 @@ function extract_name_geo ($id_geo)
 	$link=$db->connect();
 	$sql = "SELECT `nom_geoname` FROM `geoname` WHERE `id_geoname`=\"$id_geo\" ";     
 	$result = $db->query(utf8_decode($sql));
+	
 	$num = $db->num_rows($result);
-
 	for ($i=0;$i<=$num-1;$i++)
 	{
 		$result1 = $db->fetch_row($result);
 		$result2[$i] = $result1[0];		
 	}  
+	
+	//$result1 = $db->fetch_row($result);
+	//$result2 = $result1[0];		
+	
 	$db->close($link);
 	return $result2;
 }

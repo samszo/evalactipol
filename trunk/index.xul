@@ -8,7 +8,7 @@
     title="Evaluation de l'activité des députés français "
     orient="horizontal"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="ChargeTreeFromAjax('GetTree_load','treeRub','departement');"
+	onload="ChargeTreeFromAjax('GetTree_load','treeRub','France');"
 	
 >
 
