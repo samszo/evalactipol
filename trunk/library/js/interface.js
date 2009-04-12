@@ -25,14 +25,15 @@ try {
 	var doc = document.getElementById(idDst);
 	var id = document.getElementById(idDst).value;
 	
-	if (type == "departement")
-	{
+	//if (type == "departement")
+	//if (type == "France")
+	//{
 	var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
-	}
-	else
-	{
-	var url = urlExeAjax2+"?f=Getlist_depute&id="+id+"&type="+type;
-	}
+	//}
+	//else
+	//{
+	//var url = urlExeAjax2+"?f=Getlist_depute&id="+id+"&type="+type;
+	//}
 	
 	AppendResult(url,doc);
 	dump("ChargelistFromAjax OUT\n");
