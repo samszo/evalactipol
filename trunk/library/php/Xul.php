@@ -362,7 +362,8 @@ class Xul{
 			{
 			$urlDept = $dept->attr["href"];
 			$url =$baseUrl.$urlDept;
-			$htmlDept = $cl_Output->call('file_get_html',$url);
+			//$htmlDept = $cl_Output->call('file_get_html',$url);
+			$htmlDept = file_get_html($url);
 			
 			$infosCantons = $extract_object->extract_canton ($htmlDept,$urlDept);
 			$infosDepartement = $extract_object->extract_One_departement ($urlDept,$dept,$infosCantons[3]);
@@ -381,7 +382,8 @@ class Xul{
 					if($nom!="Deputes")
 					{
 						$urlDepute=$extract_object->baseUrl.$urlDepu;
-						$htmllienDepu = $extract_object->cl_Output->call('file_get_html',$urlDepute);
+						//$htmllienDepu = $extract_object->cl_Output->call('file_get_html',$urlDepute);
+						$htmllienDepu = file_get_html($urlDepute);
 						$result_id_url_Deput = $extract_object->SetUrl($urlDepute,"find('td a[href^=/wiki/]')");
 						//extraction des info du député
 						$oDepute = new depute ($htmllienDepu,$depu,$result_id_url_Deput,$infosDepartement[0],$extract_object->cl_Output,$extract_object->site,$result_id_geoCanton);
