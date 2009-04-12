@@ -6,7 +6,7 @@
 				
 			<Query fonction="GetTreeChildren_France">
 				<nextfct>departement</nextfct>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','departement');"/>
+				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','France');"/>
 			</Query>
 			
 
@@ -19,7 +19,7 @@
 				</from>
 				<nextfct>depute</nextfct>
 				<where def="1942"> WHERE `type_geoname`= "Departement" </where>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','departement');"/>
+				<js evt="onselect" function="GetTreeSelect('tree1','libCanton',[0,1]);ChargelistFromAjax('libCanton','departement');"/>
 				
 			</Query>
 			
@@ -32,7 +32,7 @@
 				<from>  FROM `depute`
 				</from>
 				<where def="1942">  WHERE `num_depart_depute`= "-parent-" </where>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
+				<js evt="onselect" function="GetTreeSelect('tree2','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
 				
 			</Query>
 			
@@ -53,13 +53,19 @@
 	<XmlParam nom="GetTreeChildren">
 		<GetTreeChildrens>
 			
+			<GetTreeChildren fonction="GetTreeChildren_France">
+				
+				<nextfct>departement</nextfct>
+				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','departement');"/>
+			</GetTreeChildren>
+			
 			<GetTreeChildren fonction="GetTreeChildren_departement">
 				<baseUrl>http://www.laquadrature.net</baseUrl>
 				<baseUrlHtml>/wiki/Deputes_par_departement</baseUrlHtml>
 				<find>li a[title^=Deputes]</find>
 				<nom>xxx</nom>
 				<nextfct>depute</nextfct>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','departement');"/>
+				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_depute">
@@ -67,7 +73,7 @@
 				<find>td a[href^=/wiki/]</find>
 				<nom>xxx</nom>
 				<nextfct>cantons</nextfct>
-				<js evt="onselect" function="GetTreeSelect('tree1','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
+				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_cantons">
