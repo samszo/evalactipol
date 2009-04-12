@@ -337,22 +337,6 @@ class Xul{
 	
 	function Getlist($id,$type){
         
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
 		
@@ -370,17 +354,6 @@ class Xul{
 		//$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		//$Q = $this->site->XmlParam->GetElements($Xpath);
 		
-
-
-
-
-
-
-
-
-
-
-
 		$num = substr($id,12);
 		$result_depart_sql = $this->GetGeoname($num);
 		$contexteTree = "Deputes de ".html_entity_decode($result_depart_sql[1]);
@@ -397,54 +370,8 @@ class Xul{
 		
 		}
 			
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 			
-
-
-
-
-
-
-
 			
-
-
 		return $listbox;
 			
 	}

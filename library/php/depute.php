@@ -176,27 +176,27 @@ public function extrac_infos_depute ($infosCantonsDepute,$tabCirconscDepute)
 	$result_id_deput = $this->SetDepute($this->NomDepute,$this->PrenomDepute,$this->mailDepute,$this->numPhoneDepute,$this->lienANDepute,$this->num_depart_depute,$this->circonscDepute);
 	
 	
-	$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
+	/*$result_exist_depuUrl = $this->verif_exist_deputUrl ($result_id_deput,$this->id_url_depute);
 	if ($result_exist_depuUrl == NULL)
 	{         
 		$this->insert_table_depute_url($result_id_deput,$this->id_url_depute);
-	}
+	}*/
 	
 	
-	$tab_ids_catons_depute = $this->ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
+	//$tab_ids_catons_depute = $this->ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
 	$tab_noms_catons_depute = $this->noms_catons_depute ($infosCantonsDepute,$NomPrenonDepute);
 	
 	
-	foreach ($tab_ids_catons_depute as $id_geo)
+	/*foreach ($tab_ids_catons_depute as $id_geo)
 	{
 		$result_exist_depuGeo = $this->verif_exist_deputGeo ($result_id_deput,$id_geo);
 			if ($result_exist_depuGeo == NULL)
 			{         
 				$this->insert_table_deput_Geo($result_id_deput,$id_geo);
 			}
-	}
+	}*/
 
-	$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
+	//$this->insert_infos_tous_questions ($rslienQuest,$result_id_deput);
 	
 	return array ($result_id_deput,$NomPrenonDepute,$tab_noms_catons_depute,$this->num_depart_depute,$this->circonscDepute);
 	
@@ -210,7 +210,6 @@ public function ids_catons_depute ($infosCantonsDepute,$NomPrenonDepute)
 		$ResultnameGeo = $this->extract_name_geo ($id_geo1);
 			foreach ($ResultnameGeo as $nameGeo)
 			{	
-				//$x = html_entity_decode ($nameGeo);
 				if ($infosCantonsDepute [$nameGeo] == $NomPrenonDepute)
 				{
 				$Result_id_geo1 = $Result_id_geo1.";".$id_geo1;
@@ -244,9 +243,7 @@ return $tab_noms_catons_depute;
 public function insert_infos_tous_questions ($rslienQuest,$result_id_deput)
 {
 	$urlQuestionResult = $this->extract_contenu_lienQuest ($rslienQuest);
-	//$htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionResult);
-	$htmlLienQuestion = file_get_html($urlQuestionResult);
-	
+	$htmlLienQuestion = $this->cl_Output_depute->call('file_get_html',$urlQuestionResult);         
 	$result_id_url_Questions = $this->SetUrl($urlQuestionResult,"find('li a[href$=Questions]')");
 	$rsQuest = $htmlLienQuestion->find('tbody tr[valign=top]');
 	$rsQuest1 = array_shift($rsQuest);
@@ -743,17 +740,13 @@ function extract_name_geo ($id_geo)
 	$link=$db->connect();
 	$sql = "SELECT `nom_geoname` FROM `geoname` WHERE `id_geoname`=\"$id_geo\" ";     
 	$result = $db->query(utf8_decode($sql));
-	
 	$num = $db->num_rows($result);
+
 	for ($i=0;$i<=$num-1;$i++)
 	{
 		$result1 = $db->fetch_row($result);
 		$result2[$i] = $result1[0];		
 	}  
-	
-	//$result1 = $db->fetch_row($result);
-	//$result2 = $result1[0];		
-	
 	$db->close($link);
 	return $result2;
 }
