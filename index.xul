@@ -44,6 +44,7 @@
 				
 				 
 				 <hbox id='libRub' class="BoiteV" context="popterre" ></hbox>
+				 <hbox id='libCanton' class="BoiteV" context="popterre" ></hbox>
 				
 				
 			</vbox>
