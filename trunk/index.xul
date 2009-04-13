@@ -8,7 +8,7 @@
     title="Evaluation de l'activité des députés français "
     orient="horizontal"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
-	onload="ChargeTreeFromAjax('GetTree_load','treeRub','France');"
+	onload="ChargeTreeFromAjax('GetTree_load','treeFrance','France');"
 	
 >
 
@@ -24,8 +24,8 @@
 	<vbox  flex="1" style="overflow:auto" width="10px">
 
 		<hbox id="nav-toolbar" hidden="true">
-			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree','treeRub');"/>
-			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax('GetTree_load','treeRub','departement');"/>
+			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree','treeFrance');"/>
+			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax('GetTree_load','treeFrance','departement');"/>
 		</hbox>
 	
 		
@@ -34,15 +34,15 @@
 				<hbox id="RefId" >
 					<label id="titreRub" value="Selectionner un geoname" class="titre" />
 				</hbox>
-				<hbox id='treeRub' class="BoiteV" context="popterre" ></hbox>
+				<hbox id='treeFrance' class="BoiteV" context="popterre" ></hbox>
 				
 			</vbox>
 		</hbox>		
 	</vbox>
 	
-	<vbox class="BoiteV" flex="1">
+	<vbox class="BoiteV" flex="1" width="100px" >
 				
-				<hbox id='libRub' class="BoiteV" context="popterre"></hbox>
+				<hbox id='treeDepute' class="BoiteV" context="popterre"></hbox>
 				<hbox id='libCanton' class="BoiteV" context="popterre"></hbox>
 				<hbox id='libCanton1' class="BoiteV" context="popterre"></hbox>
 				 

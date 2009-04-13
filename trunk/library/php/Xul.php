@@ -137,90 +137,10 @@ class Xul{
 		return $tree;	
 	}
 	
-	
-	/*function GetTree_load($type){
-		
-		
-		$id = "1";
-		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
-		$js = $this->site->GetJs($Xpath, array($type,$id));
-		
-		$tree = "<tree flex=\"1\" 
-			id=\"tree\"
-			seltype='multiple'
-			".$js."
-			
-			>";
-		
-		$tree .= '<treecols>';
-		$tree .= '<treecol  id="1" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
-		$tree .= '<splitter class="tree-splitter"/>';
-
-		
-		$tree .= '</treecols>';
-		
-		$tree .= '<treechildren >'.EOL;
-		$tree .= '<treeitem id="1" container="true" open="true" >'.EOL;
-		$tree .= '<treerow>'.EOL;
-		$tree .= '<treecell label="France"/>'.EOL;
-		$tree .= '</treerow>'.EOL;
-		
-		$tree .= $this->GetTreeChildren_load("departement");
-		
-		$tree .= '</treeitem>'.EOL;
-		$tree .= '</treechildren>'.EOL;
-		
-		$tree .= '</tree>';
-		
-		return $tree;
-		
-	}
-	function GetTreeChildren_load($type)
-	{	
-		
-		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
-		$Q = $this->site->XmlParam->GetElements($Xpath);
-		
-		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
-		
-		$baseUrl =$Q[0]->baseUrl;
-		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
-		$html = file_get_html ($baseUrlHtml);
-		$retours = $html->find($Q[0]->find."");
-		
- 		$tree = '<treechildren >'.EOL;
-		foreach($retours as $dept)
-		{	
-			$urlDept = $dept->attr["href"];
-			$url =$baseUrl.$urlDept;
-			$htmlDept = $cl_Output->call('file_get_html',$url);
-			$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
-			$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
-			//$infosDepartement = extract::extract_departement ($urlDept,$dept);
-			//$idXul = $infosDepartement[3];
-			$idXul = $infosDepartement[0];
-			$valXul = $infosDepartement[1];
-					
-				
-				$tree .= '<treeitem id="'.$type."_".$idXul.'" container="true" open="false">'.EOL;
-				$tree .= '<treerow>'.EOL;
-				$tree .= '<treecell label="'.$valXul.'" />'.EOL;
-				$tree .= '</treerow>'.EOL;
-	
-				$tree .= '</treeitem>'.EOL;
-				
-		}	
-		$tree .= '</treechildren>'.EOL;
-			
-		return $tree;	
-	}*/
-		
 	function GetTree_load($type,$niv=-1,$val1=-1,$val2=-1,$contexteTree,$titreTree){
 		
 		$id = "1";
-		//$type = "France";
 		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']/js";
-		//$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']/js";
 		$js = $this->site->GetJs($Xpath, array($type,$id));
 		
 		if ($type =="departement")
@@ -256,17 +176,10 @@ class Xul{
 		$tree .= '<splitter class="tree-splitter"/>';
 		$tree .= '</treecols>';
 		
-		//$tree .= $this->GetTreeChildren_load($type,$niv=-1,$val1,$val2=-1,$titreTree);
-		$tree .= $this->GetTreeChildren_load($type,$niv=-1,$val1,$val2,$titreTree);
-		//if ($type == "departement")
-		//{
-		//	$tree .= '</tree1>';
-		//}
-		//else
-		//{
-			$tree .= '</tree>';
-		//}
 		
+		$tree .= $this->GetTreeChildren_load($type,$niv=-1,$val1,$val2,$titreTree);
+		
+			$tree .= '</tree>';
 		
 		return $tree;
 	}
@@ -283,8 +196,7 @@ class Xul{
 			$tree .= '<treerow>'.EOL;
 			$tree .= '<treecell label="'.$titreTree.'"/>'.EOL;
 			$tree .= '</treerow>'.EOL;
-		
-			//$tree .= $this->GetTreeChildren_load($Q[0]->nextfct."",$niv+1,$val1,$val2=-1,"");
+			
 			$tree .= $this->GetTreeChildren_load($Q[0]->nextfct."",$niv+1,$val1,$val2,"");
 		
 			$tree .= '</treeitem>'.EOL;
@@ -312,7 +224,7 @@ class Xul{
 				}
 				else
 				{
-				//echo "Touibiiiiiiiiiiiii";
+				
 				$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" >'.EOL;	
 				}
 				$tree .= '<treerow>'.EOL;
@@ -340,501 +252,102 @@ class Xul{
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
 		
-		if ($type == "departement")
+		if ($type == "France")
 		{
-		$num = substr($id,7);
-		$result_depute_sql = $this->Getdepute($num);
-		$result_Quests_Depute = $this->GetQuestsDepute($num);
-		$result_MC_Depute = $this->GetMCDepute($num);
-		$result_Rubr_Depute = $this->GetRubDepute($num);
-		//echo $result_MC_Depute[0] ;
-		$contexteTree = "Cantons de ".html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
-		$titreTree = html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
-		$tree = $this->GetTree_load($Q[0]->nextfct."",'',$result_depute_sql[7],$result_depute_sql[6],$contexteTree,$titreTree);
-		$listbox = $tree;
+			$num = substr($id,12);
+			$result_depart_sql = $this->GetGeoname($num);
+			$contexteTree = "Deputes de ".html_entity_decode($result_depart_sql[1]);
+			$titreTree = html_entity_decode($result_depart_sql[1]);
 		
-		/*$listbox .= '<listbox>';
-		$listbox .= '<listitem label="'.html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]).'"/>';
-		$listbox .= '<listitem label="'.$result_depute_sql[3].'"/>';
-		$listbox .= '<listitem label="'.$result_depute_sql[4].'"/>';
-		$listbox .= '<listitem label="'.$result_depute_sql[5].'"/>';
-		$listbox .= '<listitem label="'.$result_depute_sql[6].'"/>';
-		$listbox .= '<listitem label="'.$result_depute_sql[7].'"/>';
-		
-		if ($result_Quests_Depute != NULL)
-		{	
-			foreach ($result_Quests_Depute as $question)
-			{
-				$listbox .= '<listitem label="'.html_entity_decode($question).'"/>';
-			}
+			$tree = $this->GetTree_load($Q[0]->nextfct."",'',$num,'',$contexteTree,$titreTree);
+			$listbox = $tree;
+			$listbox .= $this->GetListbox($result_depart_sql,$type,$Q);
 		}
 		else
 		{
-			$listbox .= '<listitem label="Pas de questions pour ce depute"/>';
+			$num = substr($id,7);
+			$result_depute_sql = $this->Getdepute($num);
+			$result_Quests_Depute = $this->GetQuestsDepute($num);
+			$result_MC_Depute = $this->GetMCDepute($num);
+			$result_Rubr_Depute = $this->GetRubDepute($num);
+		
+			$contexteTree = "Cantons de ".html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
+			$titreTree = html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
+			$tree = $this->GetTree_load($Q[0]->nextfct."",'',$result_depute_sql[7],$result_depute_sql[6],$contexteTree,$titreTree);
+			$listbox = $tree;
+			$listbox .= $this->GetListbox($result_depute_sql,$type,$Q);
+		
+			$listbox .= $this->GetListboxSimple($result_Quests_Depute,$Q[0]->questions."");
+			$listbox .= $this->GetListboxSimple($result_MC_Depute,$Q[0]->mots."");
+			$listbox .= $this->GetListboxSimple($result_Rubr_Depute,$Q[0]->rubriques."");
 		}
-		
-		if ($result_MC_Depute != NULL)
-		{	
-			foreach ($result_MC_Depute as $motclef)
-			{
-				$listbox .= '<listitem label="'.html_entity_decode($motclef).'"/>';
-			}
-		}
-		else
-		{
-			$listbox .= '<listitem label="Pas de mots-clefs pour ce depute"/>';
-		}
-		
-		if ($result_Rubr_Depute != NULL)
-		{	
-			foreach ($result_Rubr_Depute as $rubrique)
-			{
-				$listbox .= '<listitem label="'.html_entity_decode($rubrique).'"/>';
-			}
-		}
-		else
-		{
-			$listbox .= '<listitem label="Pas de rubriques pour ce depute"/>';
-		}
-		
-		$listbox .= '</listbox>';	*/
-			
-		//$listbox = '<box>';
-		$listbox .= '<listbox rows="1" width="300px">';
-		
-		$listbox .= '<listhead>';
-		$listbox .= '<listheader label="Informations depute"></listheader>';
-		$listbox .= '<listheader label="Valeurs"></listheader>';
-		$listbox .= '</listhead>';
-		
-		$listbox .= '<listcols>';
-		$listbox .= '<listcol flex="1"></listcol>';
-		$listbox .= '<listcol flex="1"></listcol>';
-		
-		//$listbox .= '</listcol>';
-		$listbox .= '</listcols>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Nom Prenom"></listcell>';
-		$listbox .= '<listcell label="'.html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]).'"></listcell>';
-		$listbox .= '</listitem>';
-			
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Mail"></listcell>';
-		$listbox .= '<listcell label="'.$result_depute_sql[3].'"></listcell>';
-		$listbox .= '</listitem>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Numero phone"></listcell>';
-		$listbox .= '<listcell label="'.$result_depute_sql[4].'"></listcell>';
-		$listbox .= '</listitem>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Lien AN"></listcell>';
-		$listbox .= '<listcell label="'.$result_depute_sql[5].'"></listcell>';
-		$listbox .= '</listitem>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Numero du departement "></listcell>';
-		$listbox .= '<listcell label="'.$result_depute_sql[6].'"></listcell>';
-		$listbox .= '</listitem>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Circonscription"></listcell>';
-		$listbox .= '<listcell label="'.$result_depute_sql[7].'"></listcell>';
-		$listbox .= '</listitem>';
-		
-		$listbox .= '</listbox>';
-		
-		$listbox .= '<listbox rows="3" width="10px">';
-		$listbox .= '<listhead>';
-		$listbox .= '<listheader label="Questions"/>';
-		//$listbox .= '<listheader label="Mots-clefs"/>';
-		//$listbox .= '<listheader label="Rubriques"/>';
-		$listbox .= '</listhead>';
-		$listbox .= '<listcols>';
-		$listbox .= '<listcol/>';
-		$listbox .= '</listcols>';
-		
-		if ($result_Quests_Depute != NULL)
-		{	
-			foreach ($result_Quests_Depute as $question)
-			{	
-				$listbox .= '<listitem label="'.html_entity_decode($question).'"/>';
-				
-			}
-		}
-		else
-		{
-			$listbox .= '<listitem label="Aucune question"/>';
-		}
-		
-		
-		$listbox .= '</listbox>';
-		
-		$listbox .= '<listbox rows="3" width="10px">';
-		$listbox .= '<listhead>';
-		$listbox .= '<listheader label="Mots-clefs"/>';
-		//$listbox .= '<listheader label="Mots-clefs"/>';
-		//$listbox .= '<listheader label="Rubriques"/>';
-		$listbox .= '</listhead>';
-		$listbox .= '<listcols>';
-		$listbox .= '<listcol/>';
-		$listbox .= '</listcols>';
-		
-		if ($result_MC_Depute != NULL)
-		{	
-			foreach ($result_MC_Depute as $motclef)
-			{	
-				$listbox .= '<listitem label="'.html_entity_decode($motclef).'"/>';
-				
-			}
-		}
-		else
-		{
-			$listbox .= '<listitem label="Aucune mot-clef"/>';
-		}
-		
-		
-		
-		
-		$listbox .= '</listbox>';
-		
-		$listbox .= '<listbox rows="3" width="10px">';
-		$listbox .= '<listhead>';
-		$listbox .= '<listheader label="Mots-clefs"/>';
-		//$listbox .= '<listheader label="Mots-clefs"/>';
-		//$listbox .= '<listheader label="Rubriques"/>';
-		$listbox .= '</listhead>';
-		$listbox .= '<listcols>';
-		$listbox .= '<listcol/>';
-		$listbox .= '</listcols>';
-		
-		if ($result_Rubr_Depute != NULL)
-		{	
-			foreach ($result_Rubr_Depute as $rubrique)
-			{	
-				$listbox .= '<listitem label="'.html_entity_decode($rubrique).'"/>';
-				
-			}
-		}
-		else
-		{
-			$listbox .= '<listitem label="Aucune mot-clef"/>';
-		}
-		
-		
-		
-		
-		$listbox .= '</listbox>';
-		
-		
-		
-		}
-		else
-		{
-		//$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
-		//$Q = $this->site->XmlParam->GetElements($Xpath);
-		
-		$num = substr($id,12);
-		$result_depart_sql = $this->GetGeoname($num);
-		$contexteTree = "Deputes de ".html_entity_decode($result_depart_sql[1]);
-		$titreTree = html_entity_decode($result_depart_sql[1]);
-		
-		$tree = $this->GetTree_load($Q[0]->nextfct."",'',$num,'',$contexteTree,$titreTree);
-		$listbox = $tree;
-		
-		/*$listbox .= '<listbox>';
-		$listbox .= '<listitem label="'.html_entity_decode($result_depart_sql[1]).'"/>';
-		$listbox .= '<listitem label="'.$result_depart_sql[2].'"/>';
-		$listbox .= '<listitem label="'.$result_depart_sql[3].'"/>';
-		$listbox .= '<listitem label="'.$result_depart_sql[4].'"/>';
-		$listbox .= '</listbox>';	*/
-		
-		
-		//$listbox .= '<box>';
-		$listbox .= '<listbox width="400px" height="5px">';
-		
-		$listbox .= '<listhead>';
-		$listbox .= '<listheader label="Informations"></listheader>';
-		$listbox .= '<listheader label="Valeurs"></listheader>';
-		$listbox .= '</listhead>';
-		
-		$listbox .= '<listcols>';
-		$listbox .= '<listcol flex="1"></listcol>';
-		$listbox .= '<listcol flex="1"></listcol>';
-		$listbox .= '</listcols>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Nom du geoname"></listcell>';
-		$listbox .= '<listcell label="'.html_entity_decode($result_depart_sql[1]).'"></listcell>';
-		$listbox .= '</listitem>';
-			
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Type"></listcell>';
-		$listbox .= '<listcell label="'.$result_depart_sql[2].'"></listcell>';
-		$listbox .= '</listitem>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Numero"></listcell>';
-		$listbox .= '<listcell label="'.$result_depart_sql[3].'"></listcell>';
-		$listbox .= '</listitem>';
-		
-		$listbox .= '<listitem>';
-		$listbox .= '<listcell label="Circonscriptions"></listcell>';
-		$listbox .= '<listcell label="'.$result_depart_sql[4].'"></listcell>';
-		$listbox .= '</listitem>';
-
-		$listbox .= '</listbox>';
-		
-		//$listbox .= '</box>';
-
-		
-		
-		}
-			
-			
-			
 		return $listbox;
-			
 	}
-	function Getlist_depute($id,$type){
-		
-		
-		//$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
-		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_departement']";
-		$Q = $this->site->XmlParam->GetElements($Xpath);
-		
-		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
-		$baseUrl =$Q[0]->baseUrl."";
-		$baseUrlHtml = $baseUrl.$Q[0]->baseUrlHtml;
-		$html = $cl_Output->call('file_get_html',$baseUrlHtml);
-		//$type = $this->extractBetweenDelimeters($id,"","_");
-		$num = substr($id,7);
-		$result_deput_sql = $this->GetDepute($num);
-		
-		$retours = $html->find('li a[title^=Deputes '.$result_deput_sql[6].']');
-		
- 			foreach ($retours as $dept)
-			{
-			
-			$urlDept = $dept->attr["href"];
-			$url =$baseUrl.$urlDept;
-			$htmlDept = $cl_Output->call('file_get_html',$url);
-			
-			$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
-			$infosDepartement = extract::extract_One_departement ($urlDept,$dept,$infosCantons[3]);
-				
-				$NomPrenomDepute = html_entity_decode($result_deput_sql[1]).html_entity_decode($result_deput_sql[2]);
-				$NomPrenomDepute_separ = html_entity_decode($result_deput_sql[1])." ".html_entity_decode($result_deput_sql[2]);
-				
-				$rsDept = $htmlDept->find('td a[href^=/wiki/'.$NomPrenomDepute.']');
-					
-					foreach($rsDept as $depu)
-					{
-						$urlDepu = $depu->attr["href"]; 
-						$nom = substr($urlDepu,6,7);
-						
-						if($nom!="Deputes")
-						{	
-							$urlDepute=$baseUrl.$urlDepu;
-							$htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
-							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
-							$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
-							
-							$tree = $this->GetTree("cantons","","","",$result_deput,$NomPrenomDepute_separ);
-							$listbox = $tree;
-							$listbox .= '<listbox>';
-							$listbox .= '<listitem label="'.$result_deput_sql[1].'"/>';
-							$listbox .= '<listitem label="'.$result_deput_sql[2].'"/>';
-							$listbox .= '<listitem label="'.$result_deput_sql[3].'"/>';
-							$listbox .= '<listitem label="'.$result_deput_sql[4].'"/>';
-							$listbox .= '<listitem label="'.$result_deput_sql[5].'"/>';
-							$listbox .= '<listitem label="'.$result_deput_sql[6].'"/>';
-							$listbox .= '<listitem label="'.$result_deput_sql[7].'"/>';
-							$listbox .= '</listbox>';
-							
-						}
-							
-					}
-			}
-			
-		return $listbox;
-		
-		}
-							
-	/*function GetTreeChildren()
+	
+function GetListbox($result_sql,$type,$Q)
 	{	
-		$cl_Output = new Cache_Lite_Function(array('cacheDir' => CACHEPATH,'lifeTime' => LIFETIME));
-		$baseUrl ="http://www.laquadrature.net";
+		$listbox = '<listbox width="400px" height="5px">';
+			$listbox .= '<listhead>';
+				$listbox .= '<listheader label="Informations"></listheader>';
+				$listbox .= '<listheader label="Valeurs"></listheader>';
+			$listbox .= '</listhead>';
 		
-		$baseUrlHtml = $baseUrl."/wiki/Deputes_par_departement";
-		//$html = $cl_Output->call('file_get_html',$baseUrl."/wiki/Deputes_par_departement");
-		$html = file_get_html ($baseUrl."/wiki/Deputes_par_departement");
-		$retours = $html->find('li a[title^=Deputes]');
+			$listbox .= '<listcols>';
+				$listbox .= '<listcol flex="1"></listcol>';
+				$listbox .= '<listcol flex="1"></listcol>';
+			$listbox .= '</listcols>';
 		
-		$tree = '<treechildren >'.EOL;
-		$tree .= '<treeitem id="1" container="true" open="true" >'.EOL;
-		$tree .= '<treerow>'.EOL;
-		$tree .= '<treecell label="France"/>'.EOL;
-		$tree .= '</treerow>'.EOL;
-					
-			$tree .= '<treechildren >'.EOL;
-			foreach($retours as $dept)
-			{	
-				$urlDept = $dept->attr["href"];
-				$url =$baseUrl.$urlDept;
-				$htmlDept = $cl_Output->call('file_get_html',$url);
-				$infosCantons = extract::extract_canton ($htmlDept,$urlDept);
-				$infosDepartement = extract::extract_departement ($urlDept,$dept,$infosCantons[3]);
-				
-				$tree .= '<treeitem id="'.$infosDepartement[3].'" container="true" open="false" >'.EOL;
-				$tree .= '<treerow>'.EOL;
-				$tree .= '<treecell label="'.$infosDepartement[1].'"/>'.EOL;
-				$tree .= '</treerow>'.EOL;
-				//$tree .= '</treeitem>'.EOL;
-				
-				if ($infosDepartement[1] == "Ain")
-				{
-					$tree .= '<treechildren >'.EOL;
-					
-					$rsDept = $htmlDept->find('td a[href^=/wiki/]');
-					
-					foreach($rsDept as $depu)
-					{
-						$urlDepu = $depu->attr["href"]; 
-						$nom = substr($urlDepu,6,7);
-						if($nom!="Deputes")
-						{	
-							$urlDepute=$baseUrl.$urlDepu;
-							$htmllienDepu = $cl_Output->call('file_get_html',$urlDepute);
-							
-							$oDepute = new depute ($htmllienDepu,$depu,'',$infosDepartement[0],$cl_Output,$this->site,'');
-							$result_deput = $oDepute->extrac_infos_depute ($infosCantons[7],$infosCantons[8]);
-							
-							$tree .= '<treeitem id="'.$result_deput[0].'" container="true" open="false" >'.EOL;
-							$tree .= '<treerow>'.EOL;
-							$tree .= '<treecell label="'.$result_deput[1].'"/>'.EOL;
-							$tree .= '</treerow>'.EOL;
-							//$tree .= '</treeitem>'.EOL;
-							
-							$tree .= '<treechildren >'.EOL;
-								foreach ($result_deput[2] as $nom_canton)
-								{	
-									
-									//$nom_canton = html_entity_decode($nom_canton1);
-									
-									$tree .= '<treeitem id="1" container="true" open="false" >'.EOL;
-									$tree .= '<treerow>'.EOL;
-									$tree .= '<treecell label="'.$nom_canton.'"/>'.EOL;
-									$tree .= '</treerow>'.EOL;
-									$tree .= '</treeitem>'.EOL;
-								}
-							$tree .= '</treechildren>'.EOL;
-							$tree .= '</treeitem>'.EOL;	
-							
-						}
-							
-					}
-					$tree .= '</treechildren>'.EOL;
-				$tree .= '</treeitem>'.EOL;	
-				}
-				else
-				{
-				$tree .= '</treeitem>'.EOL;	
-				}
-				
-			}
-			$tree .= '</treechildren>'.EOL;
-			
-		$tree .= '</treeitem>'.EOL;
-		$tree .= '</treechildren>'.EOL;
-	return $tree;
-
-	}*/
-	/*function GetTree_load(){
-		
-		$tree = "<tree flex=\"1\" 
-			id=\"tree\"
-			seltype='multiple'
-			>";
-	
-		$tree .= '<treecols>';
-		$tree .= '<treecol  id="id" label = "Geonames" primary="true" flex="1" persist="width ordinal hidden"/>';
-		$tree .= '<splitter class="tree-splitter"/>';
-		$tree .= '</treecols>';
-		
-		$tree .= $this->GetTreeChildren_load("france");
-		$tree .= '</tree>';
-		
-		return $tree;
-	}
-	
-	function GetTreeItem($idXul, $cells){
-		$tree = '<treeitem id="'.$idXul.'">'.EOL;
-		$tree .= '<treerow>'.EOL;
-		foreach($cells as $cell)
-			$tree .= '<treecell label="'.$cells.'"/>'.EOL;
-		$tree .= '</treerow>'.EOL;
-		$this->xul .= '<treechildren >'.EOL;		
-		return $tree; 
-	}
-	
-	function GetTreeChildren_load($type,$niv=-1,$val1=-1,$val2=-1){
-		
-		$Xpath = "/XmlParams/XmlParam/Querys/Query[@fonction='GetTreeChildren_".$type."']";
-		$Q = $this->site->XmlParam->GetElements($Xpath);
-		
-		if ($niv==-1){
-			$tree = '<treechildren >'.EOL;
-		
-			$tree .= '<treeitem id="1" container="true" empty="false" >'.EOL;
-			$tree .= '<treerow>'.EOL;
-			$tree .= '<treecell label="'.$type.'"/>'.EOL;
-			$tree .= '</treerow>'.EOL;
-		
-			$tree .= $this->GetTreeChildren_load($Q[0]->nextfct."", $niv+1);
-		
-			$tree .= '</treeitem>'.EOL;
-			$tree .= '</treechildren>'.EOL;
-		}else{
-			$where = str_replace("-parent-", $val1, $Q[0]->where);
-			$where = str_replace("-parent_depart-", $val2, $where);
-			
-			$tree = '<treechildren >'.EOL;
-			
-			$sql = $Q[0]->select.$Q[0]->from.$where;
-			$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-			$db->connect();
-			$request = $db->query($sql);
-			$db->close();
-			$nb = mysql_num_rows($request);
-				
-			while($r = $db->fetch_row($request))
-			{	
-				$valXul = html_entity_decode($r[1]);
-				
-				$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" >'.EOL;
-				$tree .= '<treerow>'.EOL;
-				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
-				$tree .= '</treerow>'.EOL;
-
-				if($Q[0]->nextfct)
-					$tree .= $this->GetTreeChildren_load($Q[0]->nextfct."",$niv+1, $r[3], $r[4]);
-						
-				$tree .= '</treeitem>'.EOL;
-						
-			}//while
-			
-			if($nb>0)
-				$tree .= '</treechildren>'.EOL;
-			else
-				$tree = '';
+		if ($type =="France")
+		{
+				$listbox .= $this->GetListItem($result_sql[1],$Q[0]->NomGeoname."");
+				$listbox .= $this->GetListItem($result_sql[2],$Q[0]->Type."");
+				$listbox .= $this->GetListItem($result_sql[3],$Q[0]->Numeros."");
+				$listbox .= $this->GetListItem($result_sql[4],$Q[0]->Circonscriptions."");
 		}
-			
-	return $tree;
-	}*/
+		else
+		{
+				$listbox .= $this->GetListItem($result_sql[1]." ".$result_sql[2],$Q[0]->NomPrenom."");
+				$listbox .= $this->GetListItem($result_sql[3],$Q[0]->Mail."");
+				$listbox .= $this->GetListItem($result_sql[4],$Q[0]->NumeroPhone."");
+				$listbox .= $this->GetListItem($result_sql[5],$Q[0]->LienAN."");
+				$listbox .= $this->GetListItem($result_sql[6],$Q[0]->NumDepartement."");
+				$listbox .= $this->GetListItem($result_sql[7],$Q[0]->Circonscription."");
+		}
+		$listbox .= '</listbox>';
+	return $listbox;
+	}
+function GetListboxSimple($result_sql,$titreListe)
+	{
+		$listbox = '<listbox rows="3" width="10px">';
+		$listbox .= '<listhead>';
+		$listbox .= '<listheader label="'.$titreListe.'"/>';
+		$listbox .= '</listhead>';
+		$listbox .= '<listcols>';
+		$listbox .= '<listcol/>';
+		$listbox .= '</listcols>';
 		
+		if ($result_sql != NULL)
+		{	
+			foreach ($result_sql as $valeur)
+			{	
+				$listbox .= '<listitem label="'.html_entity_decode($valeur).'"/>';
+			}
+		}
+		else
+		{
+			$listbox .= '<listitem label="Pas de '.$titreListe.'"/>';
+		}
+		$listbox .= '</listbox>';
+		return $listbox; 
+	}
+function GetListItem($result_sql,$titreListe)
+	{
+		$listbox = '<listitem>';
+			$listbox .= '<listcell label="'.$titreListe.'"></listcell>';
+			$listbox .= '<listcell label="'.html_entity_decode($result_sql).'"></listcell>';
+		$listbox .= '</listitem>';
+	return $listbox;
+	}
 	
 function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
 	{
@@ -848,7 +361,6 @@ function GetDepute($id)
 	$db->connect();
 	$sql = "SELECT * FROM `depute` WHERE `id_depute`=\"$id\" ";     
 	$result = $db->query(utf8_decode($sql));
-	//$id =  mysql_insert_id();
 	$db->close();
 	return ($result1 = mysql_fetch_row( $result));
 }
@@ -859,7 +371,6 @@ function GetGeoname($num_depart)
 	$db->connect();
 	$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_depart\" ";     
 	$result = $db->query(utf8_decode($sql));
-	//$id =  mysql_insert_id();
 	$db->close();
 	return ($result1 = mysql_fetch_row( $result));
 }
@@ -876,30 +387,18 @@ function GetQuestsDepute($num)
 	for ($i=0;$i<=$num1-1;$i++)
 	{
 		$result2 = $db->fetch_row($result);
-	//	$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$result1[0]\" ";     
-	//	$result2 = $db->query(utf8_decode($sql));
-	//	$result3 = $db->fetch_row($result2);
 		$result3[$i] = $result2[0];
-		//$result3[$i] = $db->fetch_row($result);
-		
 	}
-	
 	$db->close();
 	return $result3;
-	//return ($result4 = mysql_fetch_row( $result));
+	
 }
 function GetMCDepute($num)
 {	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
-	//$sql = "SELECT * FROM `mot-clef` INTER JOIN `depute-mc` ON (`mot-clef.id_motclef`=`depute-mc.id_motclef`) WHERE `depute-mc.id_motclef` = \"$num\"  ";
-	//$sql = "SELECT * FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
-	//$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_depart\" ";     
 	$sql = "SELECT id_motclef FROM `depute-mc` WHERE `id_depute`=\"$num\" ";     
 	$result = $db->query(utf8_decode($sql));
-	//$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
-	//$id =  mysql_insert_id();
-	
 	
 	$num1 = $db->num_rows($result);
 	$result4 = NULL;
@@ -910,9 +409,7 @@ function GetMCDepute($num)
 		$result2 = $db->query(utf8_decode($sql));
 		$result3 = $db->fetch_row($result2);
 		$result4[$i] = $result3[0];
-		
 	}
-	
 	$db->close();
 	return $result4;
 }
@@ -921,14 +418,9 @@ function GetRubDepute($num)
 {	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
-	//$sql = "SELECT * FROM `mot-clef` INTER JOIN `depute-mc` ON (`mot-clef.id_motclef`=`depute-mc.id_motclef`) WHERE `depute-mc.id_motclef` = \"$num\"  ";
-	//$sql = "SELECT * FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
-	//$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_depart\" ";     
+	
 	$sql = "SELECT id_rubrique FROM `depute-rubr` WHERE `id_depute`=\"$num\" ";     
 	$result = $db->query(utf8_decode($sql));
-	//$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
-	//$id =  mysql_insert_id();
-	
 	
 	$num1 = $db->num_rows($result);
 	$result4 = NULL;
@@ -939,9 +431,7 @@ function GetRubDepute($num)
 		$result2 = $db->query(utf8_decode($sql));
 		$result3 = $db->fetch_row($result2);
 		$result4[$i] = $result3[0];
-		
 	}
-	
 	$db->close();
 	return $result4;
 }

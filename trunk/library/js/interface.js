@@ -8,6 +8,7 @@ function ChargeTreeFromAjax(fonction,idDst,type)
   try {
 	
 	var doc = document.getElementById(idDst);
+	//var id = document.getElementById(idDst).value;
 	//var num_depart = document.getElementById(idSrc).value;
 	var url = urlExeAjax+"?f="+fonction+"&type="+type;
 	AppendResult(url,doc);
@@ -25,18 +26,43 @@ try {
 	var doc = document.getElementById(idDst);
 	var id = document.getElementById(idDst).value;
 	
-	//if (type == "departement")
-	//if (type == "France")
-	//{
-	var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
-	//}
-	//else
-	//{
-	//var url = urlExeAjax2+"?f=Getlist_depute&id="+id+"&type="+type;
-	//}
+	if (id != "1")
+	{
+		var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
 	
-	AppendResult(url,doc);
-	dump("ChargelistFromAjax OUT\n");
+		AppendResult(url,doc);
+		dump("ChargelistFromAjax OUT\n");
+	}
+	if (type =="departement")
+	{
+		setunhidden('libCanton');
+	}
+   
+   } catch(ex2){alert(":ChargelistFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
+	
+}
+
+function setunhidden(idDst)
+{
+
+try {
+	
+	
+	document.getElementById(idDst).style.visibility='visible';
+	
+   
+   } catch(ex2){alert(":ChargelistFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
+	
+}
+
+function sethidden(idDst)
+{
+
+try {
+	
+	
+	document.getElementById(idDst).style.visibility='hidden';
+	
    
    } catch(ex2){alert(":ChargelistFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
 	

@@ -38,7 +38,7 @@
                 	    $resultat= GetTree();
                 	    break;
 				case 'GetTree_load':
-                	    $resultat= GetTree_load($type,'','','','Departements','France');
+						$resultat= GetTree_load($type,'','','','Departements','France');
 						break;
 				case 'Getlist':
                 	    $resultat= Getlist($id,$type);
@@ -61,7 +61,6 @@
         global $objSite;
         $xul = new Xul($objSite);
 		
-		//return $xul->GetTree_load($type,"","","","");
 		return $xul->GetTree_load($type,$niv=-1,$val1=-1,$val2=-1,$contexteTree,$titreTree);
 	}
 	
@@ -78,8 +77,6 @@
         $xul = new Xul($objSite);
 		
 		return $xul->Getlist_depute($id,$type);
-		
-		
 	}
 	
 ?>
