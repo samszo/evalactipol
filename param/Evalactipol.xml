@@ -6,7 +6,7 @@
 				
 			<Query fonction="GetTreeChildren_France">
 				<nextfct>departement</nextfct>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','France');"/>
+				<js evt="onselect" function="sethidden('libCanton');GetTreeSelect('tree','treeDepute',[0,1]);ChargelistFromAjax('treeDepute','France');"/>
 			</Query>
 			
 
@@ -32,7 +32,7 @@
 				<from>  FROM `depute`
 				</from>
 				<where def="1942">  WHERE `num_depart_depute`= "-parent-" </where>
-				<js evt="onselect" function="GetTreeSelect('tree2','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
+				
 				
 			</Query>
 			
@@ -56,7 +56,11 @@
 			<GetTreeChildren fonction="GetTreeChildren_France">
 				
 				<nextfct>departement</nextfct>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','departement');"/>
+				<NomGeoname>Nom Geoname</NomGeoname>
+				<Type>Type</Type>
+				<Numeros>Numeros</Numeros>
+				<Circonscriptions>Circonscriptions</Circonscriptions>
+				<js evt="onselect" function="GetTreeSelect('tree','treeDepute',[0,1]);ChargelistFromAjax('treeDepute','departement');"/>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_departement">
@@ -65,7 +69,19 @@
 				<find>li a[title^=Deputes]</find>
 				<nom>xxx</nom>
 				<nextfct>depute</nextfct>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
+				<questions>questions</questions>
+				<mots>mots-clefs</mots>
+				<rubriques>rubriques</rubriques>
+				<NomPrenom>Nom Prenom</NomPrenom>
+				<Mail>Mail</Mail>
+				<NumeroPhone>Numero Phone</NumeroPhone>
+				<LienAN>Lien AN</LienAN>
+				<NumDepartement>Num Departement</NumDepartement>
+				<Circonscription>Circonscription</Circonscription>
+				
+				
+				
+				<js evt="onselect" function="GetTreeSelect('tree','treeDepute',[0,1]);ChargelistFromAjax('treeDepute','depute');"/>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_depute">
@@ -73,7 +89,7 @@
 				<find>td a[href^=/wiki/]</find>
 				<nom>xxx</nom>
 				<nextfct>cantons</nextfct>
-				<js evt="onselect" function="GetTreeSelect('tree','libRub',[0,1]);ChargelistFromAjax('libRub','depute');"/>
+				<js evt="onselect" function="GetTreeSelect('tree','treeDepute',[0,1]);ChargelistFromAjax('treeDepute','depute');"/>
 			</GetTreeChildren>
 			
 			<GetTreeChildren fonction="GetTreeChildren_cantons">
