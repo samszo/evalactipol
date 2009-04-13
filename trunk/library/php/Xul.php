@@ -411,12 +411,60 @@ class Xul{
 		
 		$tree = $this->GetTree_load($Q[0]->nextfct."",'',$num,'',$contexteTree,$titreTree);
 		$listbox = $tree;
-		$listbox .= '<listbox>';
+		
+		/*$listbox .= '<listbox>';
 		$listbox .= '<listitem label="'.html_entity_decode($result_depart_sql[1]).'"/>';
 		$listbox .= '<listitem label="'.$result_depart_sql[2].'"/>';
 		$listbox .= '<listitem label="'.$result_depart_sql[3].'"/>';
 		$listbox .= '<listitem label="'.$result_depart_sql[4].'"/>';
-		$listbox .= '</listbox>';	
+		$listbox .= '</listbox>';	*/
+		
+		
+		$listbox .= '<box>';
+		$listbox .= '<listbox>';
+		
+		$listbox .= '<listhead>';
+		$listbox .= '<listheader label="Informations"></listheader>';
+		$listbox .= '<listheader label="Valeurs"></listheader>';
+		$listbox .= '</listhead>';
+		
+		$listbox .= '<listcols>';
+		$listbox .= '<listcol flex="1"></listcol>';
+		$listbox .= '<listcol flex="1"></listcol>';
+		$listbox .= '</listcols>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Nom du geoname"></listcell>';
+		$listbox .= '<listcell label="'.html_entity_decode($result_depart_sql[1]).'"></listcell>';
+		/*$listbox .= '<listbox>';
+		$listbox .= '<listitem label="'.html_entity_decode($result_depart_sql[1]).'"/>';
+		$listbox .= '<listitem label="'.$result_depart_sql[2].'"/>';
+		$listbox .= '<listitem label="'.$result_depart_sql[3].'"/>';
+		$listbox .= '<listitem label="'.$result_depart_sql[4].'"/>';
+		$listbox .= '</listbox>';*/
+		
+		$listbox .= '</listitem>';
+			
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Type"></listcell>';
+		$listbox .= '<listcell label="'.$result_depart_sql[2].'"></listcell>';
+		$listbox .= '</listitem>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Numero"></listcell>';
+		$listbox .= '<listcell label="'.$result_depart_sql[3].'"></listcell>';
+		$listbox .= '</listitem>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Circonscriptions"></listcell>';
+		$listbox .= '<listcell label="'.$result_depart_sql[4].'"></listcell>';
+		$listbox .= '</listitem>';
+
+		$listbox .= '</listbox>';
+		
+		$listbox .= '</box>';
+
+		
 		
 		}
 			
