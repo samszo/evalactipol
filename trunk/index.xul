@@ -21,7 +21,7 @@
 		var urlExeAjax2 = "http://localhost/evalactipol/library/php/ExeAjax.php";
 	</script>
 
-	<vbox  flex="1" style="overflow:auto">
+	<vbox  flex="1" style="overflow:auto" width="10px">
 
 		<hbox id="nav-toolbar" hidden="true">
 			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree','treeRub');"/>
@@ -30,30 +30,24 @@
 	
 		
 		<hbox class="global" id="global" flex="1">
-			<vbox class="BoiteV" flex="0" width="300px">
+			<vbox class="BoiteV" flex="0" width="200px">
 				<hbox id="RefId" >
 					<label id="titreRub" value="Selectionner un geoname" class="titre" />
-					
 				</hbox>
 				<hbox id='treeRub' class="BoiteV" context="popterre" ></hbox>
+				
 			</vbox>
 		</hbox>		
 	</vbox>
 	
 	<vbox class="BoiteV" flex="1">
 				
-				 
-				 <hbox id='libRub' class="BoiteV" context="popterre" ></hbox>
+				<hbox id='libRub' class="BoiteV" context="popterre"></hbox>
+				<hbox id='libCanton' class="BoiteV" context="popterre"></hbox>
+				<hbox id='libCanton1' class="BoiteV" context="popterre"></hbox>
 				 
 	</vbox>
 	
-	<vbox class="BoiteV" flex="1">
-				
-				 
-				 
-				 <hbox id='libCanton' class="BoiteV" context="popterre"></hbox>
-	</vbox>
-				
 				
 <script type="application/x-javascript" >
 	//met à jour le choix du diagnostic

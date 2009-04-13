@@ -353,7 +353,7 @@ class Xul{
 		$tree = $this->GetTree_load($Q[0]->nextfct."",'',$result_depute_sql[7],$result_depute_sql[6],$contexteTree,$titreTree);
 		$listbox = $tree;
 		
-		$listbox .= '<listbox>';
+		/*$listbox .= '<listbox>';
 		$listbox .= '<listitem label="'.html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]).'"/>';
 		$listbox .= '<listitem label="'.$result_depute_sql[3].'"/>';
 		$listbox .= '<listitem label="'.$result_depute_sql[4].'"/>';
@@ -397,7 +397,139 @@ class Xul{
 			$listbox .= '<listitem label="Pas de rubriques pour ce depute"/>';
 		}
 		
-		$listbox .= '</listbox>';	
+		$listbox .= '</listbox>';	*/
+			
+		//$listbox = '<box>';
+		$listbox .= '<listbox rows="1" width="300px">';
+		
+		$listbox .= '<listhead>';
+		$listbox .= '<listheader label="Informations depute"></listheader>';
+		$listbox .= '<listheader label="Valeurs"></listheader>';
+		$listbox .= '</listhead>';
+		
+		$listbox .= '<listcols>';
+		$listbox .= '<listcol flex="1"></listcol>';
+		$listbox .= '<listcol flex="1"></listcol>';
+		
+		//$listbox .= '</listcol>';
+		$listbox .= '</listcols>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Nom Prenom"></listcell>';
+		$listbox .= '<listcell label="'.html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]).'"></listcell>';
+		$listbox .= '</listitem>';
+			
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Mail"></listcell>';
+		$listbox .= '<listcell label="'.$result_depute_sql[3].'"></listcell>';
+		$listbox .= '</listitem>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Numero phone"></listcell>';
+		$listbox .= '<listcell label="'.$result_depute_sql[4].'"></listcell>';
+		$listbox .= '</listitem>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Lien AN"></listcell>';
+		$listbox .= '<listcell label="'.$result_depute_sql[5].'"></listcell>';
+		$listbox .= '</listitem>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Numero du departement "></listcell>';
+		$listbox .= '<listcell label="'.$result_depute_sql[6].'"></listcell>';
+		$listbox .= '</listitem>';
+		
+		$listbox .= '<listitem>';
+		$listbox .= '<listcell label="Circonscription"></listcell>';
+		$listbox .= '<listcell label="'.$result_depute_sql[7].'"></listcell>';
+		$listbox .= '</listitem>';
+		
+		$listbox .= '</listbox>';
+		
+		$listbox .= '<listbox rows="3" width="10px">';
+		$listbox .= '<listhead>';
+		$listbox .= '<listheader label="Questions"/>';
+		//$listbox .= '<listheader label="Mots-clefs"/>';
+		//$listbox .= '<listheader label="Rubriques"/>';
+		$listbox .= '</listhead>';
+		$listbox .= '<listcols>';
+		$listbox .= '<listcol/>';
+		$listbox .= '</listcols>';
+		
+		if ($result_Quests_Depute != NULL)
+		{	
+			foreach ($result_Quests_Depute as $question)
+			{	
+				$listbox .= '<listitem label="'.html_entity_decode($question).'"/>';
+				
+			}
+		}
+		else
+		{
+			$listbox .= '<listitem label="Aucune question"/>';
+		}
+		
+		
+		$listbox .= '</listbox>';
+		
+		$listbox .= '<listbox rows="3" width="10px">';
+		$listbox .= '<listhead>';
+		$listbox .= '<listheader label="Mots-clefs"/>';
+		//$listbox .= '<listheader label="Mots-clefs"/>';
+		//$listbox .= '<listheader label="Rubriques"/>';
+		$listbox .= '</listhead>';
+		$listbox .= '<listcols>';
+		$listbox .= '<listcol/>';
+		$listbox .= '</listcols>';
+		
+		if ($result_MC_Depute != NULL)
+		{	
+			foreach ($result_MC_Depute as $motclef)
+			{	
+				$listbox .= '<listitem label="'.html_entity_decode($motclef).'"/>';
+				
+			}
+		}
+		else
+		{
+			$listbox .= '<listitem label="Aucune mot-clef"/>';
+		}
+		
+		
+		
+		
+		$listbox .= '</listbox>';
+		
+		$listbox .= '<listbox rows="3" width="10px">';
+		$listbox .= '<listhead>';
+		$listbox .= '<listheader label="Mots-clefs"/>';
+		//$listbox .= '<listheader label="Mots-clefs"/>';
+		//$listbox .= '<listheader label="Rubriques"/>';
+		$listbox .= '</listhead>';
+		$listbox .= '<listcols>';
+		$listbox .= '<listcol/>';
+		$listbox .= '</listcols>';
+		
+		if ($result_Rubr_Depute != NULL)
+		{	
+			foreach ($result_Rubr_Depute as $rubrique)
+			{	
+				$listbox .= '<listitem label="'.html_entity_decode($rubrique).'"/>';
+				
+			}
+		}
+		else
+		{
+			$listbox .= '<listitem label="Aucune mot-clef"/>';
+		}
+		
+		
+		
+		
+		$listbox .= '</listbox>';
+		
+		
+		
 		}
 		else
 		{
@@ -420,8 +552,8 @@ class Xul{
 		$listbox .= '</listbox>';	*/
 		
 		
-		$listbox .= '<box>';
-		$listbox .= '<listbox>';
+		//$listbox .= '<box>';
+		$listbox .= '<listbox width="400px" height="5px">';
 		
 		$listbox .= '<listhead>';
 		$listbox .= '<listheader label="Informations"></listheader>';
@@ -436,13 +568,6 @@ class Xul{
 		$listbox .= '<listitem>';
 		$listbox .= '<listcell label="Nom du geoname"></listcell>';
 		$listbox .= '<listcell label="'.html_entity_decode($result_depart_sql[1]).'"></listcell>';
-		/*$listbox .= '<listbox>';
-		$listbox .= '<listitem label="'.html_entity_decode($result_depart_sql[1]).'"/>';
-		$listbox .= '<listitem label="'.$result_depart_sql[2].'"/>';
-		$listbox .= '<listitem label="'.$result_depart_sql[3].'"/>';
-		$listbox .= '<listitem label="'.$result_depart_sql[4].'"/>';
-		$listbox .= '</listbox>';*/
-		
 		$listbox .= '</listitem>';
 			
 		$listbox .= '<listitem>';
@@ -462,7 +587,7 @@ class Xul{
 
 		$listbox .= '</listbox>';
 		
-		$listbox .= '</box>';
+		//$listbox .= '</box>';
 
 		
 		
