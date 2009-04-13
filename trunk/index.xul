@@ -23,7 +23,7 @@
 
 	<vbox  flex="1" style="overflow:auto">
 
-		<hbox id="nav-toolbar" >
+		<hbox id="nav-toolbar" hidden="true">
 			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree','treeRub');"/>
 			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax('GetTree_load','treeRub','departement');"/>
 		</hbox>
@@ -40,19 +40,14 @@
 		</hbox>		
 	</vbox>
 	
-	<vbox class="BoiteV" flex="1" >
+	<vbox class="BoiteV" flex="1">
 				
 				 
 				 <hbox id='libRub' class="BoiteV" context="popterre" ></hbox>
-				 <hbox id='libCanton' class="BoiteV" context="popterre" ></hbox>
+				 <hbox id='libCanton' class="BoiteV" context="popterre"></hbox>
+	</vbox>
 				
 				
-			</vbox>
-			
-
-			
-	
- 
 <script type="application/x-javascript" >
 	//met à jour le choix du diagnostic
 	//SetChoixDiagnostic();

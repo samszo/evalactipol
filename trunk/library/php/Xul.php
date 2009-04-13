@@ -344,10 +344,60 @@ class Xul{
 		{
 		$num = substr($id,7);
 		$result_depute_sql = $this->Getdepute($num);
+		$result_Quests_Depute = $this->GetQuestsDepute($num);
+		$result_MC_Depute = $this->GetMCDepute($num);
+		$result_Rubr_Depute = $this->GetRubDepute($num);
+		//echo $result_MC_Depute[0] ;
 		$contexteTree = "Cantons de ".html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
 		$titreTree = html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
 		$tree = $this->GetTree_load($Q[0]->nextfct."",'',$result_depute_sql[7],$result_depute_sql[6],$contexteTree,$titreTree);
 		$listbox = $tree;
+		
+		$listbox .= '<listbox>';
+		$listbox .= '<listitem label="'.html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]).'"/>';
+		$listbox .= '<listitem label="'.$result_depute_sql[3].'"/>';
+		$listbox .= '<listitem label="'.$result_depute_sql[4].'"/>';
+		$listbox .= '<listitem label="'.$result_depute_sql[5].'"/>';
+		$listbox .= '<listitem label="'.$result_depute_sql[6].'"/>';
+		$listbox .= '<listitem label="'.$result_depute_sql[7].'"/>';
+		
+		if ($result_Quests_Depute != NULL)
+		{	
+			foreach ($result_Quests_Depute as $question)
+			{
+				$listbox .= '<listitem label="'.html_entity_decode($question).'"/>';
+			}
+		}
+		else
+		{
+			$listbox .= '<listitem label="Pas de questions pour ce depute"/>';
+		}
+		
+		if ($result_MC_Depute != NULL)
+		{	
+			foreach ($result_MC_Depute as $motclef)
+			{
+				$listbox .= '<listitem label="'.html_entity_decode($motclef).'"/>';
+			}
+		}
+		else
+		{
+			$listbox .= '<listitem label="Pas de mots-clefs pour ce depute"/>';
+		}
+		
+		if ($result_Rubr_Depute != NULL)
+		{	
+			foreach ($result_Rubr_Depute as $rubrique)
+			{
+				$listbox .= '<listitem label="'.html_entity_decode($rubrique).'"/>';
+			}
+		}
+		else
+		{
+			$listbox .= '<listitem label="Pas de rubriques pour ce depute"/>';
+		}
+		
+		$listbox .= '</listbox>';	
 		}
 		else
 		{
@@ -639,6 +689,88 @@ function GetGeoname($num_depart)
 	//$id =  mysql_insert_id();
 	$db->close();
 	return ($result1 = mysql_fetch_row( $result));
+}
+
+function GetQuestsDepute($num)
+{	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	
+	$sql = "SELECT num_question FROM `questions` WHERE `id_depute`=\"$num\" ";     
+	$result = $db->query(utf8_decode($sql));
+	$num1 = $db->num_rows($result);
+	$result3 = NULL;
+	for ($i=0;$i<=$num1-1;$i++)
+	{
+		$result2 = $db->fetch_row($result);
+	//	$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$result1[0]\" ";     
+	//	$result2 = $db->query(utf8_decode($sql));
+	//	$result3 = $db->fetch_row($result2);
+		$result3[$i] = $result2[0];
+		//$result3[$i] = $db->fetch_row($result);
+		
+	}
+	
+	$db->close();
+	return $result3;
+	//return ($result4 = mysql_fetch_row( $result));
+}
+function GetMCDepute($num)
+{	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	//$sql = "SELECT * FROM `mot-clef` INTER JOIN `depute-mc` ON (`mot-clef.id_motclef`=`depute-mc.id_motclef`) WHERE `depute-mc.id_motclef` = \"$num\"  ";
+	//$sql = "SELECT * FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
+	//$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_depart\" ";     
+	$sql = "SELECT id_motclef FROM `depute-mc` WHERE `id_depute`=\"$num\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
+	//$id =  mysql_insert_id();
+	
+	
+	$num1 = $db->num_rows($result);
+	$result4 = NULL;
+	for ($i=0;$i<=$num1-1;$i++)
+	{
+		$result1 = $db->fetch_row($result);
+		$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$result1[0]\" ";     
+		$result2 = $db->query(utf8_decode($sql));
+		$result3 = $db->fetch_row($result2);
+		$result4[$i] = $result3[0];
+		
+	}
+	
+	$db->close();
+	return $result4;
+}
+
+function GetRubDepute($num)
+{	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	//$sql = "SELECT * FROM `mot-clef` INTER JOIN `depute-mc` ON (`mot-clef.id_motclef`=`depute-mc.id_motclef`) WHERE `depute-mc.id_motclef` = \"$num\"  ";
+	//$sql = "SELECT * FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
+	//$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_depart\" ";     
+	$sql = "SELECT id_rubrique FROM `depute-rubr` WHERE `id_depute`=\"$num\" ";     
+	$result = $db->query(utf8_decode($sql));
+	//$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$num\" ";     
+	//$id =  mysql_insert_id();
+	
+	
+	$num1 = $db->num_rows($result);
+	$result4 = NULL;
+	for ($i=0;$i<=$num1-1;$i++)
+	{
+		$result1 = $db->fetch_row($result);
+		$sql = "SELECT valeur_rubrique FROM `rubrique` WHERE `id_rubrique`=\"$result1[0]\" ";     
+		$result2 = $db->query(utf8_decode($sql));
+		$result3 = $db->fetch_row($result2);
+		$result4[$i] = $result3[0];
+		
+	}
+	
+	$db->close();
+	return $result4;
 }
 
 
