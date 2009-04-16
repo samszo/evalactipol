@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="iso-8859-15" ?><?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+﻿<?xml version="1.0" encoding="iso-8859-15" ?><?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
 <?xml-stylesheet href="evalactipol.css" type="text/css"?>
 
 
@@ -30,7 +30,7 @@
 	
 		
 		<hbox class="global" id="global" flex="1">
-			<vbox class="BoiteV" flex="0" width="200px">
+			<vbox class="BoiteV" flex="0" width="185px">
 				<hbox id="RefId" >
 					<label id="titreRub" value="Selectionner un geoname" class="titre" />
 				</hbox>
