@@ -41,10 +41,10 @@
 						$resultat= GetTree_load($type,'','','','Departements','France');
 						break;
 				case 'Getlist':
-                	    $resultat= Getlist($id,$type);
+                	    $resultat= utf8_encode(Getlist($id,$type));
                 	    break;
 				case 'Getlist_depute':
-                	    $resultat= Getlist_depute($id,$type);
+                	    $resultat= utf8_encode(Getlist_depute($id,$type));
                 	    break;
 				case 'GetJson':
                 	    $resultat= GetJson();
