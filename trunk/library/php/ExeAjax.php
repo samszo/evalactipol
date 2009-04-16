@@ -46,6 +46,12 @@
 				case 'Getlist_depute':
                 	    $resultat= Getlist_depute($id,$type);
                 	    break;
+				case 'GetJson':
+                	    $resultat= GetJson();
+                	    break;
+				case 'GetData':
+                	    $resultat= GetData();
+                	    break;
 		}
         
         echo $resultat;  
@@ -77,6 +83,20 @@
         $xul = new Xul($objSite);
 		
 		return $xul->Getlist_depute($id,$type);
+	}
+	function GetJson(){
+		
+		global $objSite;
+        $xul = new Xul($objSite);
+		
+		return $xul->GetJson();
+	}
+	function GetData(){
+		
+		global $objSite;
+        $xul = new Xul($objSite);
+		
+		return $xul->GetData();
 	}
 	
 ?>

@@ -15,6 +15,65 @@ class Xul{
     $this->id = $id;
 	
 	}
+	
+	function GetData()
+	{
+		$Data = "var data = new google.visualization.DataTable();";
+        $Data .= "data.addColumn('date', 'Date');";
+		
+		
+		$Data .= "data.addColumn('number', 'nb questionsA');";
+		$Data .= "data.addColumn('string', 'title1');";
+        $Data .= "data.addColumn('string', 'text1');";
+        
+		$Data .= "data.addColumn('number', 'nb questionsB');";
+		$Data .= "data.addColumn('string', 'title2');";
+        $Data .= "data.addColumn('string', 'text2');";
+        $Data .= "data.addRows(6);";
+		
+		$Data .= "data.setValue(0, 0, new Date(2008, 1 ,1));";
+		
+		$Data .= "data.setValue(0, 1, 3);";
+        $Data .= "data.setValue(0, 4, 4);";
+        $Data .= "data.setValue(1, 0, new Date(2008, 1 ,2));";
+        
+		$Data .= "data.setValue(1, 1, 4);";
+        $Data .= "data.setValue(1, 4, 5);";
+        $Data .= "data.setValue(2, 0, new Date(2008, 1 ,3));";
+        
+		$Data .= "data.setValue(2, 1, 5);";
+        $Data .= "data.setValue(2, 4, 6);";
+        $Data .= "data.setValue(3, 0, new Date(2008, 1 ,4));";
+        
+		$Data .= "data.setValue(3, 1, 6);";
+        $Data .= "data.setValue(3, 4, 7);";
+        
+		
+		$Data .= "data.setValue(3, 5, 'Xavier Breton');";
+        
+        $Data .= "data.setValue(4, 0, new Date(2008, 1 ,5));";
+        
+		$Data .= "data.setValue(4, 1, 7);";
+        
+		$Data .= "data.setValue(4, 2, 'Michel Voisin');";
+        
+        $Data .= "data.setValue(4, 4, 8);";
+        $Data .= "data.setValue(5, 0, new Date(2008, 1 ,6));";
+        
+		$Data .= "data.setValue(5, 1, 8);";
+        $Data .= "data.setValue(5, 4, 9);";
+	
+	return $Data;
+	}
+	
+	function GetJson()
+	{
+		//$json = "Mehdi Touibi"; 
+		$json = "google.visualization.Query.setResponse({version:'0.5',reqId:'0',status:'ok',sig:'6700864051796921914',table:{cols:[{id:'A',label:'Release Date',type:'date',pattern:'M/d/yyyy'},{id:'B',label:'nb questions',type:'number',pattern:'#0.###############'},{id:'C',label:'nb mots-clefs',type:'number',pattern:'#0.###############'},{id:'D',label:'Nom Depute',type:'string',pattern:''}],rows:[{c:[{v:new Date(2008,10,1),f:'10/1/2008'},{v:10,f:'10'},{v:15,f:'15'},{v:'Xavier Breton'}]},{c:[{v:new Date(2008,11,1),f:'11/1/2008'},{v:13,f:'13'},{v:17,f:'17'}]},{c:[{v:new Date(2008,12,1),f:'12/1/2008'},{v:11,f:'11'},{v:25,f:'25'}]},{c:[{v:new Date(2009,1,1),f:'1/1/2009'},{v:8,f:'8'},{v:20,f:'20'}]},{c:[{v:new Date(2009,2,1),f:'2/1/2009'},{v:18,f:'18'},{v:31,f:'31'}]},{c:[{v:new Date(2009,3,1),f:'3/1/2009'},{v:2,f:'2'},{v:5,f:'5'}]},{c:[{v:new Date(2009,4,1),f:'4/1/2009'},{v:22,f:'22'},{v:30,f:'30'}]}]}});";
+	
+	
+	return $json;
+	}
 	//GetTree($type,$infosCantons, $infosDepartement,$htmlDept,$x);
     //function GetTree(){
 	function GetTree($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput,$titreTree){
@@ -330,7 +389,16 @@ function GetListboxSimple($result_sql,$titreListe)
 		{	
 			foreach ($result_sql as $valeur)
 			{	
-				$listbox .= '<listitem label="'.html_entity_decode($valeur).'"/>';
+				//$y = $this->toASCII($valeur);
+				$valeur2 = $this->NoASCII($valeur);
+				//echo $valeur1;
+				//$valeur2 = htmlspecialchars($valeur);
+				//$valeur2 = htmlentities($valeur1,ENT_QUOTES,'UTF-8'); 
+				//$valeur2 = htmlspecialchars($valeur1,ENT_QUOTES,'UTF-8'); 
+				//$listbox .= '<listitem label="'.html_entity_decode($valeur).'"/>';
+				//$valeur2 = html_entity_decode($valeur);
+				//echo $valeur2;
+				$listbox .= '<listitem label="'.$valeur2.'"/>';
 			}
 		}
 		else
@@ -340,6 +408,20 @@ function GetListboxSimple($result_sql,$titreListe)
 		$listbox .= '</listbox>';
 		return $listbox; 
 	}
+
+public function toASCII($ch) { 
+	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
+	$result=strtr($ch,$tableau_caracts_html);
+	return $result;  
+}
+
+public function NoASCII($ch) { 
+	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
+	$tableau_caracts_Nonhtml = array_flip($tableau_caracts_html);
+	$result=strtr($ch,$tableau_caracts_Nonhtml);
+	return $result;  
+}
+
 function GetListItem($result_sql,$titreListe)
 	{
 		$listbox = '<listitem>';
@@ -349,12 +431,6 @@ function GetListItem($result_sql,$titreListe)
 	return $listbox;
 	}
 	
-function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
-	{
-	$posLeft  = stripos($inputstr,$delimeterLeft)+strlen($delimeterLeft);
-	$posRight = stripos($inputstr,$delimeterRight,$posLeft+1);
-	return  substr($inputstr,$posLeft,$posRight-$posLeft);
-	}
 function GetDepute($id)
 {	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);

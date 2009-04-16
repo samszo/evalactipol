@@ -1,0 +1,56 @@
+<html>
+  <head>
+    <script type='text/javascript' src='http://www.google.com/jsapi'></script>
+	
+	<script type="application/x-javascript" src="library/js/interface.js"></script>
+	<script type="application/x-javascript" src="library/js/ajax.js"></script>
+	<script type="application/x-javascript" src="library/js/tree.js"></script>
+
+	<script>
+		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
+		
+	</script>
+
+    <script type='text/javascript'>
+	
+	google.load('visualization', '1', {'packages':['annotatedtimeline']});
+	google.setOnLoadCallback(drawVisualization);
+	
+	var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
+	var url = urlExeAjax+"?f=GetJson";
+	function drawVisualization() {
+	new google.visualization.Query(
+	url).send(
+	function(response) {	
+	new google.visualization.AnnotatedTimeLine(
+	document.getElementById('chart_div')).
+	draw(response.getDataTable(), {'displayAnnotations': true});
+	});
+	}
+		
+	/*function drawVisualization() {
+	new google.visualization.Query(
+	'http://spreadsheets.google.com/tq?key=pCQbetd-CptH5QNY89vLtAg&pub=1').send(
+	function(response) {	
+	new google.visualization.AnnotatedTimeLine(
+	document.getElementById('chart_div')).
+	draw(response.getDataTable(), {'displayAnnotations': true});
+	});
+	}*/
+		
+	/*google.load('visualization', '1', {'packages':['annotatedtimeline']});
+	google.setOnLoadCallback(drawChart);
+	function drawChart() {
+	  
+	GetData();
+	var chart = new google.visualization.AnnotatedTimeLine(document.getElementById('chart_div'));
+	chart.draw(data, {displayAnnotations: true});
+	}*/
+      
+    </script>
+  </head>
+
+  <body>
+    <div id='chart_div' style='width: 700px; height: 240px;'></div>
+  </body>
+</html>
