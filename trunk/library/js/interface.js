@@ -73,7 +73,7 @@ function GetData() {
 	var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
 	var url = urlExeAjax+"?f=GetData";
 	var doc = document.getElementById('chart_div');
-	var result = AppendResult(url,doc);
+	var result = GetResult(url);
 	
 	//var string = (new XMLSerializer()).serializeToString(result);
 	//var xmlobject = (new DOMParser()).parseFromString(result, "text/xml");

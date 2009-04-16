@@ -56,10 +56,13 @@ class Xul{
 		$json = "google.visualization.Query.setResponse({version:'0.5',reqId:'0',status:'ok',sig:'6700864051796921914',";
 		$json .= "table:{cols:[";
 		$json .= "{id:'A',label:'Release Date',type:'date',pattern:'M/d/yyyy'},";
-		$json .= "{id:'B',label:'nb questionsA',type:'number',pattern:'#0.###############'},";
-		$json .= "{id:'D',label:'Nom Depute',type:'string',pattern:''},";
+		
+		$json .= "{id:'1',label:'nb questions Xavier Breton',type:'number',pattern:'#0.###############'},";
+		$json .= "{id:'1',label:'Xavier Breton',type:'string',pattern:''},";
+		
 		$json .= "{id:'F',label:'nb questionB',type:'number',pattern:'#0.###############'},";
 		$json .= "{id:'G',label:'Nom Depute',type:'string',pattern:''}],";
+		
 		$json .= "rows:[{c:[{v:new Date(2008,10,1),f:'10/1/2008'},{v:10,f:'10'},{v:'Xavier Breton'},{v:15,f:'15'},{v:'Xavier Bertran'}]},{c:[{v:new Date(2008,11,1),f:'11/1/2008'},{v:13,f:'13'},,{v:23,f:'23'}]},{c:[{v:new Date(2008,12,1),f:'12/1/2008'},{v:11,f:'11'},,{v:31,f:'31'}]},{c:[{v:new Date(2009,1,1),f:'1/1/2009'},{v:8,f:'8'},,{v:18,f:'18'}]},{c:[{v:new Date(2009,2,1),f:'2/1/2009'},{v:18,f:'18'},,{v:8,f:'8'}]},{c:[{v:new Date(2009,3,1),f:'3/1/2009'},{v:2,f:'2'},,{v:12,f:'12'}]},{c:[{v:new Date(2009,4,1),f:'4/1/2009'},{v:22,f:'22'},,{v:20,f:'20'}]}]}});";
 	
 	
