@@ -20,47 +20,32 @@ class Xul{
 	{
 		$Data = "var data = new google.visualization.DataTable();";
         $Data .= "data.addColumn('date', 'Date');";
-		
-		
 		$Data .= "data.addColumn('number', 'nb questionsA');";
 		$Data .= "data.addColumn('string', 'title1');";
         $Data .= "data.addColumn('string', 'text1');";
-        
-		$Data .= "data.addColumn('number', 'nb questionsB');";
+        $Data .= "data.addColumn('number', 'nb questionsB');";
 		$Data .= "data.addColumn('string', 'title2');";
         $Data .= "data.addColumn('string', 'text2');";
         $Data .= "data.addRows(6);";
-		
 		$Data .= "data.setValue(0, 0, new Date(2008, 1 ,1));";
-		
 		$Data .= "data.setValue(0, 1, 3);";
         $Data .= "data.setValue(0, 4, 4);";
         $Data .= "data.setValue(1, 0, new Date(2008, 1 ,2));";
-        
-		$Data .= "data.setValue(1, 1, 4);";
+        $Data .= "data.setValue(1, 1, 4);";
         $Data .= "data.setValue(1, 4, 5);";
         $Data .= "data.setValue(2, 0, new Date(2008, 1 ,3));";
-        
-		$Data .= "data.setValue(2, 1, 5);";
+        $Data .= "data.setValue(2, 1, 5);";
         $Data .= "data.setValue(2, 4, 6);";
         $Data .= "data.setValue(3, 0, new Date(2008, 1 ,4));";
-        
-		$Data .= "data.setValue(3, 1, 6);";
+        $Data .= "data.setValue(3, 1, 6);";
         $Data .= "data.setValue(3, 4, 7);";
-        
-		
-		$Data .= "data.setValue(3, 5, 'Xavier Breton');";
-        
+        $Data .= "data.setValue(3, 5, 'Xavier Breton');";
         $Data .= "data.setValue(4, 0, new Date(2008, 1 ,5));";
-        
-		$Data .= "data.setValue(4, 1, 7);";
-        
-		$Data .= "data.setValue(4, 2, 'Michel Voisin');";
-        
+        $Data .= "data.setValue(4, 1, 7);";
+        $Data .= "data.setValue(4, 2, 'Michel Voisin');";
         $Data .= "data.setValue(4, 4, 8);";
         $Data .= "data.setValue(5, 0, new Date(2008, 1 ,6));";
-        
-		$Data .= "data.setValue(5, 1, 8);";
+        $Data .= "data.setValue(5, 1, 8);";
         $Data .= "data.setValue(5, 4, 9);";
 	
 	return $Data;
@@ -68,8 +53,7 @@ class Xul{
 	
 	function GetJson()
 	{
-		//$json = "Mehdi Touibi"; 
-		$json = "google.visualization.Query.setResponse({version:'0.5',reqId:'0',status:'ok',sig:'6700864051796921914',table:{cols:[{id:'A',label:'Release Date',type:'date',pattern:'M/d/yyyy'},{id:'B',label:'nb questions',type:'number',pattern:'#0.###############'},{id:'C',label:'nb mots-clefs',type:'number',pattern:'#0.###############'},{id:'D',label:'Nom Depute',type:'string',pattern:''}],rows:[{c:[{v:new Date(2008,10,1),f:'10/1/2008'},{v:10,f:'10'},{v:15,f:'15'},{v:'Xavier Breton'}]},{c:[{v:new Date(2008,11,1),f:'11/1/2008'},{v:13,f:'13'},{v:17,f:'17'}]},{c:[{v:new Date(2008,12,1),f:'12/1/2008'},{v:11,f:'11'},{v:25,f:'25'}]},{c:[{v:new Date(2009,1,1),f:'1/1/2009'},{v:8,f:'8'},{v:20,f:'20'}]},{c:[{v:new Date(2009,2,1),f:'2/1/2009'},{v:18,f:'18'},{v:31,f:'31'}]},{c:[{v:new Date(2009,3,1),f:'3/1/2009'},{v:2,f:'2'},{v:5,f:'5'}]},{c:[{v:new Date(2009,4,1),f:'4/1/2009'},{v:22,f:'22'},{v:30,f:'30'}]}]}});";
+		$json = "google.visualization.Query.setResponse({version:'0.5',reqId:'0',status:'ok',sig:'6700864051796921914',table:{cols:[{id:'A',label:'Release Date',type:'date',pattern:'M/d/yyyy'},{id:'B',label:'nb questionsA',type:'number',pattern:'#0.###############'},{id:'D',label:'Nom Depute',type:'string',pattern:''},{id:'F',label:'nb questionB',type:'number',pattern:'#0.###############'},{id:'G',label:'Nom Depute',type:'string',pattern:''}],rows:[{c:[{v:new Date(2008,10,1),f:'10/1/2008'},{v:10,f:'10'},{v:'Xavier Breton'},{v:15,f:'15'},{v:'Xavier Bertran'}]},{c:[{v:new Date(2008,11,1),f:'11/1/2008'},{v:13,f:'13'},,{v:23,f:'23'}]},{c:[{v:new Date(2008,12,1),f:'12/1/2008'},{v:11,f:'11'},,{v:31,f:'31'}]},{c:[{v:new Date(2009,1,1),f:'1/1/2009'},{v:8,f:'8'},,{v:18,f:'18'}]},{c:[{v:new Date(2009,2,1),f:'2/1/2009'},{v:18,f:'18'},,{v:8,f:'8'}]},{c:[{v:new Date(2009,3,1),f:'3/1/2009'},{v:2,f:'2'},,{v:12,f:'12'}]},{c:[{v:new Date(2009,4,1),f:'4/1/2009'},{v:22,f:'22'},,{v:20,f:'20'}]}]}});";
 	
 	
 	return $json;

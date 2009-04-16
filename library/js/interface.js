@@ -68,24 +68,16 @@ try {
    } catch(ex2){alert(":ChargelistFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
 	
 }
-
-
 function GetData() {
 	try {
 	var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
 	var url = urlExeAjax+"?f=GetData";
 	var doc = document.getElementById('chart_div');
-	//AppendResult(url,doc);
 	var result = AppendResult(url,doc);
-	//alert (result);
+	
 	//var string = (new XMLSerializer()).serializeToString(result);
-	//alert(string);
 	//var xmlobject = (new DOMParser()).parseFromString(result, "text/xml");
-	//alert(xmlobject);
 	//var string = (new XMLSerializer()).serializeToString(xmlobject);
-	//alert(string);
-	//var string1 = result.toString();
-	//alert(string1);
 	return result; 
 	
 	}
