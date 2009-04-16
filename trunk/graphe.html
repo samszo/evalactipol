@@ -14,13 +14,13 @@
 	var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
 	var url = urlExeAjax+"?f=GetJson";
 	function drawVisualization() {
-	new google.visualization.Query(
-	url).send(
-	function(response) {	
-	new google.visualization.AnnotatedTimeLine(
-	document.getElementById('chart_div')).
-	draw(response.getDataTable(), {'displayAnnotations': true});
-	});
+		new google.visualization.Query(url).send(
+			function(response) {	
+				new google.visualization.AnnotatedTimeLine(
+				document.getElementById('chart_div')).
+					draw(response.getDataTable(), {'displayAnnotations': true});
+			}
+		);
 	}
 	
 	/*function drawVisualization() {
@@ -46,6 +46,6 @@
   </head>
 
   <body>
-    <div id='chart_div' style='width: 700px; height: 240px;'></div>
+    <div id='chart_div' style='width: 800px; height: 800px;'></div>
   </body>
 </html>
