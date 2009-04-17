@@ -9,12 +9,13 @@
     orient="horizontal"
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	onload="ChargeTreeFromAjax('GetTree_load','treeFrance','France');"
-	
 >
 
 <script type="application/x-javascript" src="library/js/interface.js" />
 <script type="application/x-javascript" src="library/js/ajax.js"/>
 <script type="application/x-javascript" src="library/js/tree.js"/>
+
+<script type="application/x-javascript" src="http://www.google.com/jsapi"></script>
 
 	<script>
 		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
@@ -47,12 +48,22 @@
 				<hbox id='libCanton1' class="BoiteV" context="popterre"></hbox>
 				 
 	</vbox>
-	
-				
-<script type="application/x-javascript" >
-	//met ? jour le choix du diagnostic
-	//SetChoixDiagnostic();
-   //	ChargeTreeFromAjax('idRub','treeRub','terre');
-</script>
 
+<script type='text/javascript'>
+	function draw() 
+	{	//alert ("Mehdi");
+		google.load('visualization', '1', {'packages':['motionchart']});
+		alert ("Touibi");
+		google.setOnLoadCallback(drawChart);
+		
+		function drawChart() 
+		{	//alert ("Touibi");
+			response = GetData();
+			eval(response);
+			var chart = new google.visualization.MotionChart(document.getElementById('libCanton'));
+			chart.draw(data, {width: 600, height:300});
+		}
+	}
+</script>
+				
 </window>

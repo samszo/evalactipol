@@ -94,9 +94,9 @@
 	function GetData(){
 		
 		global $objSite;
-        $xul = new Xul($objSite);
+        $GoogleVisualisation = new GoogleVisualisation($objSite);
 		
-		return $xul->GetData();
+		return $GoogleVisualisation->GetData();
 	}
 	
 ?>

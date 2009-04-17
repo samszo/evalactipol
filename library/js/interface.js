@@ -3,8 +3,6 @@ var fichierCourant;
 var numFic = 0;
 var DELIM = "*";
 
-
-
 function ChargeTreeFromAjax(fonction,idDst,type)
 {
   try {
@@ -52,7 +50,7 @@ try {
 	document.getElementById(idDst).style.visibility='visible';
 	
    
-   } catch(ex2){alert(":ChargelistFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
+   } catch(ex2){alert(":setunhidden:");dump("::"+ex2);}	
 	
 }
 
@@ -65,7 +63,7 @@ try {
 	document.getElementById(idDst).style.visibility='hidden';
 	
    
-   } catch(ex2){alert(":ChargelistFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
+   } catch(ex2){alert(":sethidden:");dump("::"+ex2);}	
 	
 }
 function GetData() {
@@ -81,8 +79,25 @@ function GetData() {
 	return result; 
 	
 	}
-	catch(ex2){alert(":ChargelistFromAjax:");dump("::"+ex2);}	
+	catch(ex2){alert(":GetData:");dump("::"+ex2);}	
 	}
+
+/*function draw() 
+	{	alert ("Mehdi");
+		google.load('visualization', '1', {'packages':['motionchart']});
+		//alert ("Touibi");
+		google.setOnLoadCallback(drawChart);
+		
+		function drawChart() 
+		{	//alert ("Touibi");
+			response = GetData();
+			eval(response);
+			var chart = new google.visualization.MotionChart(document.getElementById('libCanton'));
+			chart.draw(data, {width: 600, height:300});
+		}
+	}*/
+	
+	
 
 
 
