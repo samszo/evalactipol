@@ -78,9 +78,6 @@
 				<LienAN>Lien AN</LienAN>
 				<NumDepartement>Num Departement</NumDepartement>
 				<Circonscription>Circonscription</Circonscription>
-				
-				
-				
 				<js evt="onselect" function="GetTreeSelect('tree','treeDepute',[0,1]);ChargelistFromAjax('treeDepute','depute');"/>
 			</GetTreeChildren>
 			
@@ -97,6 +94,33 @@
 			</GetTreeChildren>
 			
 		</GetTreeChildrens>	
+	</XmlParam>
+	
+	
+	
+	<XmlParam nom="GetDate">
+		<dates>
+				
+			<date fonction="GetDate_PlageDate1">
+				
+				<LimiteDate>2008,0,1</LimiteDate>
+				<date1>2007-01-02</date1>
+				<date2>2008-01-01</date2>
+			</date>
+			
+			<date fonction="GetDate_PlageDate2">
+				<LimiteDate>2009,0,1</LimiteDate>
+				<date1>2008-01-02</date1>
+				<date2>2009-01-01</date2>
+			</date>
+			
+			<date fonction="GetDate_PlageDate3">
+				<LimiteDate>2009,4,1</LimiteDate>
+				<date1>2009-01-02</date1>
+				<date2>2010-05-01</date2>
+			</date>
+			
+		</dates>	
 	</XmlParam>
 	
 </XmlParams>
