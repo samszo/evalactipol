@@ -38,7 +38,16 @@ class GoogleVisualisation{
 		
 		$type = 'PlageDate1';
 		
-		$Xpath = "/XmlParams/XmlParam/dates/date[@fonction='GetDate_".$type."']";
+		$Data .= $this->GetDataChildren($type,$depute,$infos_Departement,$numColonne);
+		$numColonne = $numColonne + 1;
+		
+		$Data .= $this->GetDataChildren('PlageDate2',$depute,$infos_Departement,$numColonne);
+		$numColonne = $numColonne + 1;
+		
+		$Data .= $this->GetDataChildren('PlageDate3',$depute,$infos_Departement,$numColonne);
+		$numColonne = $numColonne + 1;
+		
+		/*$Xpath = "/XmlParams/XmlParam/dates/date[@fonction='GetDate_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
 		
 		$NomPrenomDepute = html_entity_decode($depute[1])." ".html_entity_decode($depute[2]);
@@ -48,9 +57,9 @@ class GoogleVisualisation{
 		$Data .= 'data.setValue('.$numColonne.', 2, '.$nbQuestionsMC[0].');';
 		$Data .= 'data.setValue('.$numColonne.', 3, '.$nbQuestionsMC[1].');';
 		$Data .= 'data.setValue('.$numColonne.', 4, "'.$infos_Departement[1].'");';
-		$numColonne++;
+		$numColonne++;*/
 		
-		$nbQuestionsMC1 = $this->GetNbQuestionsMC1 ($depute[0]);
+		/*$nbQuestionsMC1 = $this->GetNbQuestionsMC1 ($depute[0]);
 		$Data .= 'data.setValue('.$numColonne.', 0, "'.$NomPrenomDepute.'");';
 		$Data .= 'data.setValue('.$numColonne.', 1, new Date (2009,0,1));';
 		$Data .= 'data.setValue('.$numColonne.', 2, '.$nbQuestionsMC1[0].');';
@@ -64,13 +73,13 @@ class GoogleVisualisation{
 		$Data .= 'data.setValue('.$numColonne.', 2, '.$nbQuestionsMC2[0].');';
 		$Data .= 'data.setValue('.$numColonne.', 3, '.$nbQuestionsMC2[1].');';
 		$Data .= 'data.setValue('.$numColonne.', 4, "'.$infos_Departement[1].'");';
-		$numColonne++;
+		$numColonne++;*/
 	}
 	
 	return $Data;
 	}
 	
-	function GetDataChildren($type,$depute,$numColonne)
+	function GetDataChildren($type,$depute,$infos_Departement,$numColonne)
 	{
 		$Xpath = "/XmlParams/XmlParam/dates/date[@fonction='GetDate_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
@@ -83,7 +92,19 @@ class GoogleVisualisation{
 		$Data .= 'data.setValue('.$numColonne.', 2, '.$nbQuestionsMC[0].');';
 		$Data .= 'data.setValue('.$numColonne.', 3, '.$nbQuestionsMC[1].');';
 		$Data .= 'data.setValue('.$numColonne.', 4, "'.$infos_Departement[1].'");';
-		$numColonne++;
+		//$numColonne = $numColonne++;
+		
+		/*if ($type = "PlageDate1")
+			{	echo "Mehdi";
+				$Data .= $this->GetDataChildren('PlageDate2',$depute,$infos_Departement,$numColonne);
+			}
+		if ($type = "PlageDate2")
+			{
+				$Data .= $this->GetDataChildren('PlageDate3',$depute,$infos_Departement,$numColonne);
+			}*/
+		
+		return $Data;
+		//return array ($Data,$numColonne);
 	}
 	
 	function GetJson()
