@@ -98,7 +98,38 @@
 	
 	
 	
-	<XmlParam nom="GetDate">
+	<XmlParam nom="GetData">
+		
+		<columns>
+				
+			<column>
+				
+				<type>'string'</type>
+				<value>'Depute'</value>
+				
+			</column>
+			
+			<column>
+				<type>'date'</type>
+				<value>'Date'</value>
+			</column>
+			
+			<column>
+				<type>'number'</type>
+				<value>'Questions'</value>
+			</column>
+			
+			<column>
+				<type>'number'</type>
+				<value>'Mots-Clefs'</value>
+			</column>
+			
+			<column>
+				<type>'string'</type>
+				<value>'Location'</value>
+			</column>
+			
+		</columns>
 		<dates>
 				
 			<date fonction="GetDate_PlageDate1">
@@ -106,12 +137,14 @@
 				<LimiteDate>2008,0,1</LimiteDate>
 				<date1>2007-01-02</date1>
 				<date2>2008-01-01</date2>
+				<nextPlageDate>PlageDate2</nextPlageDate>
 			</date>
 			
 			<date fonction="GetDate_PlageDate2">
 				<LimiteDate>2009,0,1</LimiteDate>
 				<date1>2008-01-02</date1>
 				<date2>2009-01-01</date2>
+				<nextPlageDate>PlageDate3</nextPlageDate>
 			</date>
 			
 			<date fonction="GetDate_PlageDate3">

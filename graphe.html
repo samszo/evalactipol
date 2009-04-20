@@ -1,41 +1,43 @@
 <html>
-  <head>
-    <script type='text/javascript' src='http://www.google.com/jsapi'></script>
-	
-	<script type="application/x-javascript" src="library/js/interface.js"></script>
-	<script type="application/x-javascript" src="library/js/ajax.js"></script>
-	<script type="application/x-javascript" src="library/js/tree.js"></script>
+	<head>
+		<script type='text/javascript' src='http://www.google.com/jsapi'></script>
 
-	<script type='text/javascript'>
-	
-	google.load('visualization', '1', {'packages':['motionchart']});
-	google.setOnLoadCallback(drawChart);
+		<script type="application/x-javascript" src="library/js/interface.js"></script>
+		<script type="application/x-javascript" src="library/js/ajax.js"></script>
+		<script type="application/x-javascript" src="library/js/tree.js"></script>
 
-	function drawChart() 
-	{
-		response = GetData();
-		eval(response);
-		var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
-		chart.draw(data, {width: 600, height:300});
-	}		
-	
-	/*
-	var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
-	var url = urlExeAjax+"?f=GetJson";
-	function drawVisualization() {
-		new google.visualization.Query(url).send(
-			function(response) {	
-				new google.visualization.AnnotatedTimeLine(
-				document.getElementById('chart_div')).
-					draw(response.getDataTable(), {'displayAnnotations': true});
-			}
-		);
-	}
-	*/	    
-    </script>
-  </head>
+		<script type='text/javascript'>
 
-  <body>
-    <div id='chart_div' style='width: 1200px; height: 700px;'></div>
-  </body>
+			google.load('visualization', '1', {'packages':['motionchart']});
+			google.setOnLoadCallback(drawChart);
+
+			function drawChart() 
+			{
+				response = GetData();
+				eval(response);
+				var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
+				chart.draw(data, {width: 600, height:300});
+			}		
+
+				/*
+				var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
+				var url = urlExeAjax+"?f=GetJson";
+				function drawVisualization() 
+				{
+					new google.visualization.Query(url).send(
+					function(response) 
+					{	
+						new google.visualization.AnnotatedTimeLine(
+						document.getElementById('chart_div')).
+						draw(response.getDataTable(), {'displayAnnotations': true});
+					}
+				);
+				}
+				*/	    
+		</script>
+	</head>
+
+	<body>
+		<div id='chart_div' style='width: 1200px; height: 700px;'></div>
+	</body>
 </html>
