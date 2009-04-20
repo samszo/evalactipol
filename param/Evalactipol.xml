@@ -100,13 +100,18 @@
 	
 	<XmlParam nom="GetData">
 		
+		<rows>
+				
+			<row>
+				<numRows>1683</numRows>
+				
+			</row>
+		</rows>
 		<columns>
 				
 			<column>
-				
 				<type>'string'</type>
 				<value>'Depute'</value>
-				
 			</column>
 			
 			<column>
@@ -125,6 +130,11 @@
 			</column>
 			
 			<column>
+				<type>'number'</type>
+				<value>'Rubriques'</value>
+			</column>
+			
+			<column>
 				<type>'string'</type>
 				<value>'Location'</value>
 			</column>
@@ -133,7 +143,6 @@
 		<dates>
 				
 			<date fonction="GetDate_PlageDate1">
-				
 				<LimiteDate>2008,0,1</LimiteDate>
 				<date1>2007-01-02</date1>
 				<date2>2008-01-01</date2>
