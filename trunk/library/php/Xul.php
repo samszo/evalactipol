@@ -252,11 +252,11 @@ class Xul{
         
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
-		
+		$GetSqlInfos = new GetSqlInfos ($this->site);
 		if ($type == "France")
 		{
 			$num = substr($id,12);
-			$result_depart_sql = $this->GetGeoname($num);
+			$result_depart_sql = $GetSqlInfos->GetGeoname($num);
 			$contexteTree = "Deputes de ".html_entity_decode($result_depart_sql[1]);
 			$titreTree = html_entity_decode($result_depart_sql[1]);
 		
@@ -267,10 +267,10 @@ class Xul{
 		else
 		{
 			$num = substr($id,7);
-			$result_depute_sql = $this->Getdepute($num);
-			$result_Quests_Depute = $this->GetQuestsDepute($num);
-			$result_MC_Depute = $this->GetMCDepute($num);
-			$result_Rubr_Depute = $this->GetRubDepute($num);
+			$result_depute_sql = $GetSqlInfos->Getdepute($num);
+			$result_Quests_Depute = $GetSqlInfos->GetQuestsDepute($num);
+			$result_MC_Depute = $GetSqlInfos->GetMCDepute($num);
+			$result_Rubr_Depute = $GetSqlInfos->GetRubDepute($num);
 		
 			$contexteTree = "Cantons de ".html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
 			$titreTree = html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
@@ -351,6 +351,14 @@ function GetListboxSimple($result_sql,$titreListe)
 		return $listbox; 
 	}
 
+function GetListItem($result_sql,$titreListe)
+	{
+		$listbox = '<listitem>';
+			$listbox .= '<listcell label="'.$titreListe.'"></listcell>';
+			$listbox .= '<listcell label="'.html_entity_decode($result_sql).'"></listcell>';
+		$listbox .= '</listitem>';
+	return $listbox;
+	}
 public function toASCII($ch) { 
 	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
 	$result=strtr($ch,$tableau_caracts_html);
@@ -363,97 +371,6 @@ public function NoASCII($ch) {
 	$result=strtr($ch,$tableau_caracts_Nonhtml);
 	return $result;  
 }
-
-function GetListItem($result_sql,$titreListe)
-	{
-		$listbox = '<listitem>';
-			$listbox .= '<listcell label="'.$titreListe.'"></listcell>';
-			$listbox .= '<listcell label="'.html_entity_decode($result_sql).'"></listcell>';
-		$listbox .= '</listitem>';
-	return $listbox;
-	}
 	
-function GetDepute($id)
-{	
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	$db->connect();
-	$sql = "SELECT * FROM `depute` WHERE `id_depute`=\"$id\" ";     
-	$result = $db->query(utf8_decode($sql));
-	$db->close();
-	return ($result1 = mysql_fetch_row( $result));
-}
-
-function GetGeoname($num_depart)
-{	
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	$db->connect();
-	$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_depart\" ";     
-	$result = $db->query(utf8_decode($sql));
-	$db->close();
-	return ($result1 = mysql_fetch_row( $result));
-}
-
-function GetQuestsDepute($num)
-{	
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	$db->connect();
-	
-	$sql = "SELECT num_question FROM `questions` WHERE `id_depute`=\"$num\" ";     
-	$result = $db->query(utf8_decode($sql));
-	$num1 = $db->num_rows($result);
-	$result3 = NULL;
-	for ($i=0;$i<=$num1-1;$i++)
-	{
-		$result2 = $db->fetch_row($result);
-		$result3[$i] = $result2[0];
-	}
-	$db->close();
-	return $result3;
-	
-}
-function GetMCDepute($num)
-{	
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	$db->connect();
-	$sql = "SELECT id_motclef FROM `depute-mc` WHERE `id_depute`=\"$num\" ";     
-	$result = $db->query(utf8_decode($sql));
-	
-	$num1 = $db->num_rows($result);
-	$result4 = NULL;
-	for ($i=0;$i<=$num1-1;$i++)
-	{
-		$result1 = $db->fetch_row($result);
-		$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$result1[0]\" ";     
-		$result2 = $db->query(utf8_decode($sql));
-		$result3 = $db->fetch_row($result2);
-		$result4[$i] = $result3[0];
-	}
-	$db->close();
-	return $result4;
-}
-
-function GetRubDepute($num)
-{	
-	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
-	$db->connect();
-	
-	$sql = "SELECT id_rubrique FROM `depute-rubr` WHERE `id_depute`=\"$num\" ";     
-	$result = $db->query(utf8_decode($sql));
-	
-	$num1 = $db->num_rows($result);
-	$result4 = NULL;
-	for ($i=0;$i<=$num1-1;$i++)
-	{
-		$result1 = $db->fetch_row($result);
-		$sql = "SELECT valeur_rubrique FROM `rubrique` WHERE `id_rubrique`=\"$result1[0]\" ";     
-		$result2 = $db->query(utf8_decode($sql));
-		$result3 = $db->fetch_row($result2);
-		$result4[$i] = $result3[0];
-	}
-	$db->close();
-	return $result4;
-}
-
-
 }
 ?>
