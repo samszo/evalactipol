@@ -76,9 +76,9 @@ function GetData()
 
 /*function draw() 
 {	
-	alert ("Mehdi");
+	
 	google.load('visualization', '1', {'packages':['motionchart']});
-	//alert ("Touibi");
+	
 	google.setOnLoadCallback(drawChart);
 
 	function drawChart() 

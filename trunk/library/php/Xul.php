@@ -318,7 +318,8 @@ function GetListbox($result_sql,$type,$Q)
 	return $listbox;
 	}
 function GetListboxSimple($result_sql,$titreListe)
-	{
+	{	
+		$GetSqlInfos = new GetSqlInfos ($this->site);
 		$listbox = '<listbox rows="3" width="10px">';
 		$listbox .= '<listhead>';
 		$listbox .= '<listheader label="'.$titreListe.'"/>';
@@ -331,8 +332,8 @@ function GetListboxSimple($result_sql,$titreListe)
 		{	
 			foreach ($result_sql as $valeur)
 			{	
-				//$y = $this->toASCII($valeur);
-				$valeur2 = $this->NoASCII($valeur);
+				//$y = $GetSqlInfos->toASCII($valeur);
+				$valeur2 = $GetSqlInfos->NoASCII($valeur);
 				//echo $valeur1;
 				//$valeur2 = htmlspecialchars($valeur);
 				//$valeur2 = htmlentities($valeur1,ENT_QUOTES,'UTF-8'); 
@@ -359,18 +360,7 @@ function GetListItem($result_sql,$titreListe)
 		$listbox .= '</listitem>';
 	return $listbox;
 	}
-public function toASCII($ch) { 
-	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
-	$result=strtr($ch,$tableau_caracts_html);
-	return $result;  
-}
 
-public function NoASCII($ch) { 
-	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
-	$tableau_caracts_Nonhtml = array_flip($tableau_caracts_html);
-	$result=strtr($ch,$tableau_caracts_Nonhtml);
-	return $result;  
-}
 	
 }
 ?>

@@ -27,7 +27,7 @@ function GetSqlDepute($num_departement)
 		$result2[$i] = $result1;
 	}
 	$db->close();
-	return $result2;
+	return array ($result2,$num1);
 }
 
 function GetSqlDepartement($num_departement)
@@ -41,6 +41,28 @@ function GetSqlDepartement($num_departement)
 
 }
 
+function GetSqlNumsDepartements()
+{	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	$sql = "SELECT `num_depart_geoname` FROM `geoname` WHERE `type_geoname` = \"Departement\"  ";     
+	$result = $db->query(utf8_decode($sql));
+	//$db->close();
+	//return ($result1 = mysql_fetch_row( $result));
+	
+	$num1 = $db->num_rows($result);
+	$result3 = NULL;
+	for ($i=0;$i<=$num1-1;$i++)
+	{
+		$result2 = $db->fetch_row($result);
+		$result3[$i] = $result2[0];
+	}
+	$db->close();
+	return $result3;
+
+}
+
+
 function GetSqlNbQuestionsMC($id_depute,$date1,$date2)
 {	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
@@ -50,6 +72,8 @@ function GetSqlNbQuestionsMC($id_depute,$date1,$date2)
 	$result = $db->query(utf8_decode($sql));
 	$num1 = $db->num_rows($result);
 	$num3 = 0;
+	$num5 = 0;
+	
 	for ($i=0;$i<=$num1-1;$i++)
 	{
 		$result1 = $db->fetch_row($result);
@@ -57,10 +81,15 @@ function GetSqlNbQuestionsMC($id_depute,$date1,$date2)
 		$result2 = $db->query(utf8_decode($sql));
 		$num2 = $db->num_rows($result2);
 		$num3 = $num3+$num2;
+		
+		$sql1 = "SELECT * FROM `quest-rubr` WHERE `id_question`=\"$result1[0]\" ";     
+		$result3 = $db->query(utf8_decode($sql1));
+		$num4 = $db->num_rows($result3);
+		$num5 = $num5+$num4;
 	}
 	
 	$db->close();
-	return array ($num1,$num3);
+	return array ($num1,$num3,$num5);
 }
 
 function GetDepute($id)
@@ -142,6 +171,19 @@ function GetRubDepute($num)
 	}
 	$db->close();
 	return $result4;
+}
+
+public function toASCII($ch) { 
+	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
+	$result=strtr($ch,$tableau_caracts_html);
+	return $result;  
+}
+
+public function NoASCII($ch) { 
+	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
+	$tableau_caracts_Nonhtml = array_flip($tableau_caracts_html);
+	$result=strtr($ch,$tableau_caracts_Nonhtml);
+	return $result;  
 }
 
 }	
