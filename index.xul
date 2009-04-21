@@ -45,9 +45,13 @@
 				
 				<hbox id='treeDepute' class="BoiteV" context="popterre"></hbox>
 				<hbox id='libCanton' class="BoiteV" context="popterre"></hbox>
-				<hbox id='libCanton1' class="BoiteV" context="popterre"></hbox>
-				 
+				<hbox id='libCanton1' class="BoiteV" context="popterre"></hbox>				 
 	</vbox>
+
+	<vbox flex="1" >
+		<iframe flex="1" src="graphe.html"  />
+	</vbox>
+
 
 <script type='text/javascript'>
 	function draw()
