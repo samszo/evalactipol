@@ -18,11 +18,8 @@ function GetData()
 	$Q = $this->site->XmlParam->GetElements($Xpath_columns);
 	$Q1 = $this->site->XmlParam->GetElements($Xpath_rows);
 	$GetSqlInfos = new GetSqlInfos ($this->site);
-	
-	$Data = 'var data = new google.visualization.DataTable();';
-	$Data .= 'data.addRows('.$Q1[0]->numRows.');';
-	
-	$Data .= 'data.addColumn('.$Q[0]->type."".','.$Q[0]->value."".');';
+		
+	$Data = 'data.addColumn('.$Q[0]->type."".','.$Q[0]->value."".');';
 	$Data .= 'data.addColumn('.$Q[1]->type."".','.$Q[1]->value."".');';
 	$Data .= 'data.addColumn('.$Q[2]->type."".','.$Q[2]->value."".');';
 	$Data .= 'data.addColumn('.$Q[3]->type."".','.$Q[3]->value."".');';
@@ -48,6 +45,12 @@ function GetData()
 		}
 		
 	}
+	
+	$initData = 'var data = new google.visualization.DataTable();';
+	$initData .= 'data.addRows('.$Q1[0]->numRows.');';
+	
+	$Data = $initData.$Data;
+	
 	return $Data;
 	
 }
