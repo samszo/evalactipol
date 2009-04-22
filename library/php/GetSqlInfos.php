@@ -17,7 +17,8 @@ function GetSqlDepute($num_departement)
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "SELECT * FROM `depute` WHERE `num_depart_depute`=\"$num_departement\" ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	
 	$num1 = $db->num_rows($result);
 	$result2 = NULL;
@@ -35,7 +36,8 @@ function GetSqlDepartement($num_departement)
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_departement\" AND `type_geoname` = \"Departement\"  ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	$db->close();
 	return ($result1 = mysql_fetch_row( $result));
 
@@ -46,7 +48,8 @@ function GetSqlNumsDepartements()
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "SELECT `num_depart_geoname` FROM `geoname` WHERE `type_geoname` = \"Departement\"  ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	//$db->close();
 	//return ($result1 = mysql_fetch_row( $result));
 	
@@ -69,7 +72,8 @@ function GetSqlNbQuestionsMC($id_depute,$date1,$date2)
 	$db->connect();
 	
 	$sql = "SELECT * FROM `questions` WHERE `id_depute`=\"$id_depute\" AND `date_publication`BETWEEN \"$date1\" AND \"$date2\"  ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	$num1 = $db->num_rows($result);
 	$num3 = 0;
 	$num5 = 0;
@@ -78,12 +82,14 @@ function GetSqlNbQuestionsMC($id_depute,$date1,$date2)
 	{
 		$result1 = $db->fetch_row($result);
 		$sql = "SELECT * FROM `quest-mc` WHERE `id_question`=\"$result1[0]\" ";     
-		$result2 = $db->query(utf8_decode($sql));
+		//$result2 = $db->query(utf8_decode($sql));
+		$result2 = $db->query($sql);
 		$num2 = $db->num_rows($result2);
 		$num3 = $num3+$num2;
 		
 		$sql1 = "SELECT * FROM `quest-rubr` WHERE `id_question`=\"$result1[0]\" ";     
-		$result3 = $db->query(utf8_decode($sql1));
+		//$result3 = $db->query(utf8_decode($sql1));
+		$result3 = $db->query($sql1);
 		$num4 = $db->num_rows($result3);
 		$num5 = $num5+$num4;
 	}
@@ -97,7 +103,8 @@ function GetDepute($id)
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "SELECT * FROM `depute` WHERE `id_depute`=\"$id\" ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	$db->close();
 	return ($result1 = mysql_fetch_row( $result));
 }
@@ -107,7 +114,8 @@ function GetGeoname($num_depart)
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "SELECT * FROM `geoname` WHERE `num_depart_geoname`=\"$num_depart\" ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	$db->close();
 	return ($result1 = mysql_fetch_row( $result));
 }
@@ -118,7 +126,8 @@ function GetQuestsDepute($num)
 	$db->connect();
 	
 	$sql = "SELECT num_question FROM `questions` WHERE `id_depute`=\"$num\" ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	$num1 = $db->num_rows($result);
 	$result3 = NULL;
 	for ($i=0;$i<=$num1-1;$i++)
@@ -135,7 +144,8 @@ function GetMCDepute($num)
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	$sql = "SELECT id_motclef FROM `depute-mc` WHERE `id_depute`=\"$num\" ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	
 	$num1 = $db->num_rows($result);
 	$result4 = NULL;
@@ -143,7 +153,8 @@ function GetMCDepute($num)
 	{
 		$result1 = $db->fetch_row($result);
 		$sql = "SELECT valeur_motclef FROM `mot-clef` WHERE `id_motclef`=\"$result1[0]\" ";     
-		$result2 = $db->query(utf8_decode($sql));
+		//$result2 = $db->query(utf8_decode($sql));
+		$result2 = $db->query($sql);
 		$result3 = $db->fetch_row($result2);
 		$result4[$i] = $result3[0];
 	}
@@ -157,7 +168,8 @@ function GetRubDepute($num)
 	$db->connect();
 	
 	$sql = "SELECT id_rubrique FROM `depute-rubr` WHERE `id_depute`=\"$num\" ";     
-	$result = $db->query(utf8_decode($sql));
+	//$result = $db->query(utf8_decode($sql));
+	$result = $db->query($sql);
 	
 	$num1 = $db->num_rows($result);
 	$result4 = NULL;
@@ -165,7 +177,8 @@ function GetRubDepute($num)
 	{
 		$result1 = $db->fetch_row($result);
 		$sql = "SELECT valeur_rubrique FROM `rubrique` WHERE `id_rubrique`=\"$result1[0]\" ";     
-		$result2 = $db->query(utf8_decode($sql));
+		//$result2 = $db->query(utf8_decode($sql));
+		$result2 = $db->query($sql);
 		$result3 = $db->fetch_row($result2);
 		$result4[$i] = $result3[0];
 	}

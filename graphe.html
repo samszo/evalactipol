@@ -16,24 +16,10 @@
 				response = GetData();
 				eval(response);
 				var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
-				chart.draw(data, {width: 900, height:600});
+				chart.draw(data, {width: 600, height:300});
 			}		
 
-				/*
-				var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
-				var url = urlExeAjax+"?f=GetJson";
-				function drawVisualization() 
-				{
-					new google.visualization.Query(url).send(
-					function(response) 
-					{	
-						new google.visualization.AnnotatedTimeLine(
-						document.getElementById('chart_div')).
-						draw(response.getDataTable(), {'displayAnnotations': true});
-					}
-				);
-				}
-				*/	    
+					    
 		</script>
 	</head>
 

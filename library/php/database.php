@@ -117,7 +117,8 @@
     * @Param string $qry => requête
     *******************************************************************/
     public function query ($qry) {
-        $this -> sql = $qry;
+        //$this -> sql = $qry;
+		$this -> sql = utf8_decode($qry);
         if (false === $this -> qryRes = $this -> private_query ()) {
             $this -> error (get_class ($this).' :: query ()',
             $this -> private_errno ().' : '.$this -> private_error (),

@@ -27,6 +27,11 @@
 		$type = $_GET['type'];
 	else
 		$type = -1;
+	
+	if(isset($_GET['numDepartement']))
+		$numDepartement = $_GET['numDepartement'];
+	else
+		$numDepartement = -1;
 
 
 	switch ($fonction) {
@@ -46,9 +51,13 @@
 		case 'GetJson':
 			$resultat= GetJson();
 		break;
+		case 'GetDataOneDepart':
+			$resultat= GetDataOneDepart($numDepartement);
+		break;
 		case 'GetData':
 			$resultat= GetData();
 		break;
+		
 	}
 
 	echo $resultat;  
@@ -88,6 +97,13 @@ function GetJson(){
 
 	return $xul->GetJson();
 }
+function GetDataOneDepart($numDepartement){
+
+	global $objSite;
+	$GoogleVisualisation = new GoogleVisualisation($objSite);
+
+	return $GoogleVisualisation->GetDataOneDepart($numDepartement);
+}
 function GetData(){
 
 	global $objSite;
@@ -95,5 +111,6 @@ function GetData(){
 
 	return $GoogleVisualisation->GetData();
 }
+
 
 ?>
