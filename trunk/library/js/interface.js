@@ -58,20 +58,52 @@ function sethidden(idDst)
 	} catch(ex2){alert(":sethidden:");dump("::"+ex2);}	
 
 }
+
 function GetData() 
 {
 	try 
-	{
+	{	
 		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
 		var url = urlExeAjax+"?f=GetData";
+		
 		var doc = document.getElementById('chart_div');
 		var result = GetResult(url);
-
-		//var string = (new XMLSerializer()).serializeToString(result);
-		//var xmlobject = (new DOMParser()).parseFromString(result, "text/xml");
-		//var string = (new XMLSerializer()).serializeToString(xmlobject);
+		
 		return result; 
 	}catch(ex2){alert(":GetData:");dump("::"+ex2);}	
+}
+
+function GetDataOneDepart(numDepartement) 
+{
+	try 
+	{	//alert(id);
+		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
+		//var url = urlExeAjax+"?f=GetData";
+		var url = urlExeAjax+"?f=GetDataOneDepart&numDepartement="+numDepartement;
+		
+		var doc = document.getElementById('chart_div');
+		var result = GetResult(url);
+		
+		return result; 
+	}catch(ex2){alert(":GetData:");dump("::"+ex2);}	
+}
+
+function GetGoogleVisualisation(idDst,idBox){
+	var id = document.getElementById(idDst).value;
+	var url = "library/php/graphe.php"+"?id="+id;
+	GoUrl(url,idBox);
+
+}
+
+function GoUrl(url,idBox){
+ 
+ box=document.getElementById(idBox);
+ box.removeChild(box.firstChild);
+ ifram=document.createElement("iframe");
+ ifram.setAttribute("src",url);
+ ifram.setAttribute("flex","1");
+ box.appendChild(ifram);
+ 
 }
 
 /*function draw() 
