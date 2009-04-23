@@ -54,8 +54,8 @@
 		case 'GetDataOneDepart':
 			$resultat= GetDataOneDepart($numDepartement);
 		break;
-		case 'GetData':
-			$resultat= GetData();
+		case 'GetDataAllDepart':
+			$resultat= GetDataAllDepart();
 		break;
 		
 	}
@@ -104,12 +104,12 @@ function GetDataOneDepart($numDepartement){
 
 	return $GoogleVisualisation->GetDataOneDepart($numDepartement);
 }
-function GetData(){
+function GetDataAllDepart(){
 
 	global $objSite;
 	$GoogleVisualisation = new GoogleVisualisation($objSite);
 
-	return $GoogleVisualisation->GetData();
+	return $GoogleVisualisation->GetDataAllDepart();
 }
 
 

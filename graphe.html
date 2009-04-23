@@ -13,7 +13,7 @@
 
 			function drawChart() 
 			{
-				response = GetData();
+				response = GetDataAllDepart();
 				eval(response);
 				var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
 				chart.draw(data, {width: 900, height:600});

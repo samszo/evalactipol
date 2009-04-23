@@ -49,25 +49,8 @@
 	</vbox>
 	
 	
-
-	
-
-
 <script type='text/javascript'>
-	function draw()
-	{	//alert ("Mehdi");
-		google.load('visualization', '1', {'packages':['motionchart']});
-		alert ("Touibi");
-		google.setOnLoadCallback(drawChart);
-		
-		function drawChart()
-		{	//alert ("Touibi");
-			response = GetData();
-			eval(response);
-			var chart = new google.visualization.MotionChart(document.getElementById('treeDepute'));
-			chart.draw(data, {width: 600, height:300});
-		}
-	}
+	
 </script>
 				
 </window>

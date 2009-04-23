@@ -59,18 +59,18 @@ function sethidden(idDst)
 
 }
 
-function GetData() 
+function GetDataAllDepart() 
 {
 	try 
 	{	
 		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
-		var url = urlExeAjax+"?f=GetData";
+		var url = urlExeAjax+"?f=GetDataAllDepart";
 		
 		var doc = document.getElementById('chart_div');
 		var result = GetResult(url);
 		
 		return result; 
-	}catch(ex2){alert(":GetData:");dump("::"+ex2);}	
+	}catch(ex2){alert(":GetDataAllDepart:");dump("::"+ex2);}	
 }
 
 function GetDataOneDepart(numDepartement) 
@@ -105,26 +105,3 @@ function GoUrl(url,idBox){
  box.appendChild(ifram);
  
 }
-
-/*function draw() 
-{	
-	
-	google.load('visualization', '1', {'packages':['motionchart']});
-	
-	google.setOnLoadCallback(drawChart);
-
-	function drawChart() 
-	{	//alert ("Touibi");
-		response = GetData();
-		eval(response);
-		var chart = new google.visualization.MotionChart(document.getElementById('libCanton'));
-		chart.draw(data, {width: 600, height:300});
-	}
-}*/
-	
-	
-
-
-
-
-

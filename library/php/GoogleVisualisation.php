@@ -29,8 +29,7 @@ function GetDataOneDepart($numDepartement)
 	$infos_num_departements = $GetSqlInfos->GetSqlNumsDepartements ();
 	
 	$numColonne = 0;
-	//foreach ($infos_num_departements as $num_departement)
-	//{
+	
 		//$num_departement = "01";
 		$num_departement = $numDepartement;
 		$infos_Departement = $GetSqlInfos->GetSqlDepartement ($num_departement);
@@ -45,13 +44,9 @@ function GetDataOneDepart($numDepartement)
 			$numColonne = $resultGetDataChildren[1] + 2;
 		}
 		
-	//}
-	
 	$initData = 'var data = new google.visualization.DataTable();';
-	$numRows = $infos_Deputes[1]*5;
+	$numRows = $infos_Deputes[1]*$Q1[0]->nbPlagesHoraires;
 	$initData .= 'data.addRows('.$numRows.');';
-	//$initData .= 'data.addRows('.$Q1[0]->numRows.');';
-	
 	$Data = $initData.$Data;
 	
 	return $Data;
@@ -74,20 +69,6 @@ function GetDataOneDepartChildren($type,$depute,$infos_Departement,$numColonne)
 	$Data .= 'data.setValue('.$numColonne.', 4, '.$nbQuestionsMC[2].');';
 	$Data .= 'data.setValue('.$numColonne.', 5, "'.html_entity_decode($infos_Departement[1]).'");';
 
-	/*if ($type == "PlageDate1")
-	{	
-		$numColonne = $numColonne + 1;
-		$Data1 = $this->GetDataChildren($Q[0]->nextPlageDate."",$depute,$infos_Departement,$numColonne);
-		$Data .= $Data1[0]; 
-	}
-	if ($type == "PlageDate2")
-	{	
-		$numColonne = $numColonne + 1;
-		$Data2 = $this->GetDataChildren($Q[0]->nextPlageDate."",$depute,$infos_Departement,$numColonne);
-		$Data .= $Data2[0];
-
-	}*/
-	
 	if ($Q[0]->nextPlageDate."" != NULL)
 	{	
 		$numColonne = $numColonne + 1;
@@ -96,12 +77,11 @@ function GetDataOneDepartChildren($type,$depute,$infos_Departement,$numColonne)
 		
 	}
 	$numColonne = $numColonne + 2;
-	//$numColonne = $Data1[1] + 1;
-
+	
 	return array ($Data,$numColonne);
 }
 
-function GetData()
+function GetDataAllDepart()
 {
 	$Xpath_columns = "/XmlParams/XmlParam/columns/column";
 	$Xpath_rows = "/XmlParams/XmlParam/rows/row";
@@ -131,7 +111,7 @@ function GetData()
 		{	
 			$type = 'PlageDate1';
 
-			$resultGetDataChildren = $this->GetDataChildren($type,$depute,$infos_Departement,$numColonne);
+			$resultGetDataChildren = $this->GetDataAllDepartChildren($type,$depute,$infos_Departement,$numColonne);
 			$Data .= $resultGetDataChildren[0];
 			$numColonne = $resultGetDataChildren[1] + 2;
 		}
@@ -139,8 +119,6 @@ function GetData()
 	}
 	
 	$initData = 'var data = new google.visualization.DataTable();';
-	//$numRows = $infos_Deputes[1]*5;
-	//$initData .= 'data.addRows('.$numRows.');';
 	//$initData .= 'data.addRows('.$Q1[0]->numRows.');';
 	$numRows = $nb_deputes * $Q1[0]->nbPlagesHoraires;    
 	$initData .= 'data.addRows('.$numRows.');';
@@ -150,7 +128,7 @@ function GetData()
 	
 }
 
-function GetDataChildren($type,$depute,$infos_Departement,$numColonne)
+function GetDataAllDepartChildren($type,$depute,$infos_Departement,$numColonne)
 {
 	$Xpath = "/XmlParams/XmlParam/dates/date[@fonction='GetDate_".$type."']";
 	$Q = $this->site->XmlParam->GetElements($Xpath);
@@ -166,24 +144,10 @@ function GetDataChildren($type,$depute,$infos_Departement,$numColonne)
 	$Data .= 'data.setValue('.$numColonne.', 4, '.$nbQuestionsMC[2].');';
 	$Data .= 'data.setValue('.$numColonne.', 5, "'.html_entity_decode($infos_Departement[1]).'");';
 
-	/*if ($type == "PlageDate1")
-	{	
-		$numColonne = $numColonne + 1;
-		$Data1 = $this->GetDataChildren($Q[0]->nextPlageDate."",$depute,$infos_Departement,$numColonne);
-		$Data .= $Data1[0]; 
-	}
-	if ($type == "PlageDate2")
-	{	
-		$numColonne = $numColonne + 1;
-		$Data2 = $this->GetDataChildren($Q[0]->nextPlageDate."",$depute,$infos_Departement,$numColonne);
-		$Data .= $Data2[0];
-
-	}*/
-	
 	if ($Q[0]->nextPlageDate."" != NULL)
 	{	
 		$numColonne = $numColonne + 1;
-		$Data1 = $this->GetDataChildren($Q[0]->nextPlageDate."",$depute,$infos_Departement,$numColonne);
+		$Data1 = $this->GetDataAllDepartChildren($Q[0]->nextPlageDate."",$depute,$infos_Departement,$numColonne);
 		$Data .= $Data1[0]; 
 		
 	}
