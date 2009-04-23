@@ -119,10 +119,11 @@ function GetData()
 	$infos_num_departements = $GetSqlInfos->GetSqlNumsDepartements ();
 	
 	$numColonne = 0;
-	//foreach ($infos_num_departements as $num_departement)
-	//{
-		$num_departement = "01";
-		//$num_departement = $numDepartement;
+	$nb_deputes = 0;
+	foreach ($infos_num_departements as $num_departement)
+	{
+		//$num_departement = "01";
+		
 		$infos_Departement = $GetSqlInfos->GetSqlDepartement ($num_departement);
 		$infos_Deputes = $GetSqlInfos->GetSqlDepute ($num_departement);
 	
@@ -134,16 +135,17 @@ function GetData()
 			$Data .= $resultGetDataChildren[0];
 			$numColonne = $resultGetDataChildren[1] + 2;
 		}
-		
-	//}
+		$nb_deputes = $nb_deputes + $infos_Deputes[1];
+	}
 	
 	$initData = 'var data = new google.visualization.DataTable();';
-	$numRows = $infos_Deputes[1]*5;
-	$initData .= 'data.addRows('.$numRows.');';
+	//$numRows = $infos_Deputes[1]*5;
+	//$initData .= 'data.addRows('.$numRows.');';
 	//$initData .= 'data.addRows('.$Q1[0]->numRows.');';
+	$numRows = $nb_deputes * $Q1[0]->nbPlagesHoraires;    
+	$initData .= 'data.addRows('.$numRows.');';
 	
 	$Data = $initData.$Data;
-	
 	return $Data;
 	
 }
