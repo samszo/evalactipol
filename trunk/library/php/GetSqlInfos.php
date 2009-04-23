@@ -50,8 +50,6 @@ function GetSqlNumsDepartements()
 	$sql = "SELECT `num_depart_geoname` FROM `geoname` WHERE `type_geoname` = \"Departement\"  ";     
 	//$result = $db->query(utf8_decode($sql));
 	$result = $db->query($sql);
-	//$db->close();
-	//return ($result1 = mysql_fetch_row( $result));
 	
 	$num1 = $db->num_rows($result);
 	$result3 = NULL;
