@@ -76,9 +76,9 @@ function GetData()
 function GetDataOneDepart(numDepartement) 
 {
 	try 
-	{	//alert(id);
+	{	
 		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
-		//var url = urlExeAjax+"?f=GetData";
+		
 		var url = urlExeAjax+"?f=GetDataOneDepart&numDepartement="+numDepartement;
 		
 		var doc = document.getElementById('chart_div');

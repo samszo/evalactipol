@@ -1,9 +1,5 @@
 <?php
-//$id = "02";
 
-//function GetGraphe($id){
-//return $id;
-//}
 if(isset($_GET['id']))
 		{$id = $_GET['id'];}
 		$numDepartement = substr($id,12);
