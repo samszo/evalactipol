@@ -17,9 +17,9 @@ Cette page présente à l’utilisateur une interface de navigation entre les di
 http://evalactipol.googlecode.com/svn/trunk/documentation/fireshot_rappot_stage/page_des_départements.png
 
 La sélection d’un département permet d’afficher l’ensemble des informations qui le concerne. Pour notre application, on s’intéresse à trois types d’informations :
-	*Les informations générales d’un département.
-	*La liste des députés d’un département.
-	*Les statistiques qui concernent l’activité politique des députés d’un département.
+	* Les informations générales d’un département.
+	* La liste des députés d’un département.
+	* Les statistiques qui concernent l’activité politique des députés d’un département.
 
 
 === I.1.1 Les informations générales concernant un département ===
@@ -40,7 +40,7 @@ L’application permet à l’intéressé d’obtenir une vision précise de l�
 
 http://evalactipol.googlecode.com/svn/trunk/documentation/fireshot_rappot_stage/graphe1.png 
 
-      *Présentation du graphe
+      * Présentation du graphe
 Les deux schémas ci-dessous permettent de représenter les différentes fonctionnalités offertes par le graphe d’évaluation de l’activité des députés.
 
 http://evalactipol.googlecode.com/svn/trunk/documentation/fireshot_rappot_stage/presentation_graphe.png
@@ -50,11 +50,11 @@ http://evalactipol.googlecode.com/svn/trunk/documentation/fireshot_rappot_stage/
       *	Définition des plages temporelles
 
 Pour permettre une meilleure visibilité de l’évolution de l’activité politique des députés au cours du temps, notre choix était de définir cinq plages temporelles du 01 Juillet 2007 au 01 Janvier 2010. Chaque plage temporelle s’étend sur six mois. Ces plages sont réparties comme suit :
-	•Première plage : du 01 Juillet 2007 au 01 Janvier 2008.<br>
-	•Deuxième plage : du 02 Janvier 2008 au 01 Juillet 2008.<br>
-	•Troisième plage : du 02 Juillet 2008 au 01 Janvier 2009.<br>
-	•Quatrième plage : du 02 Janvier 2009 au 01 Juillet 2009.<br>
-	•Cinquième plage : du 02 Juillet 2009 au 01 Janvier 2010.<br>
+	• Première plage : du 01 Juillet 2007 au 01 Janvier 2008.<br>
+	• Deuxième plage : du 02 Janvier 2008 au 01 Juillet 2008.<br>
+	• Troisième plage : du 02 Juillet 2008 au 01 Janvier 2009.<br>
+	• Quatrième plage : du 02 Janvier 2009 au 01 Juillet 2009.<br>
+	• Cinquième plage : du 02 Juillet 2009 au 01 Janvier 2010.<br>
 
 Remarque : Il est à noter que le calcul des nombres de critères d’évaluation (nombre de questions, nombre de mots-clefs, nombre de rubriques) s’effectue plage temporelle par plage temporelle. Le nombre de critères d’évaluation n’est pas cumulé d’une plage à une autre : pour chaque critère, on ne calcule que le nombre qui produit dans la période définie par chaque plage.
 
