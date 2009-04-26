@@ -121,6 +121,7 @@ La première page se propose, tout d’abord, de fournir les informations qui co
 Cette page renferme les informations suivantes, par un simple clic sur un député dans le tree des députés d’un département:
 
         * Les cantons sous sa responsabilité.
+        * Ses informations générales.
 	* Ses informations générales.
 	* Ses questions.
 	* Ses mots-clefs.
