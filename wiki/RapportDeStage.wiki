@@ -122,8 +122,8 @@ Cette page renferme les informations suivantes, par un simple clic sur un déput
 
         * Les cantons sous sa responsabilité.
 	* Ses informations générales.
-	* Ses questions.
+        * Ses questions.
         * Ses mots-clefs.
         * Ses rubriques.
-
+	
 http://evalactipol.googlecode.com/svn/trunk/documentation/fireshot_rappot_stage/page_infos_dun_député.png
