@@ -119,6 +119,9 @@ L’inconvénient majeur du graphe est que son temps de réponse dépend essenti
 
 La première page se propose, tout d’abord, de fournir les informations qui concernent les départements français, notamment les informations générales ainsi que les noms et les statistiques des députés par département. Ensuite, il est intéressant de se pencher sur les informations qui concernent chaque député. 
 Cette page renferme les informations suivantes, par un simple clic sur un député dans le tree des députés d’un département:
+        * Les informations générales d’un département.
+	* La liste des députés d’un département.
+	* Les statistiques qui concernent l’activité politique des députés d’un département.
 
         * Les cantons sous sa responsabilité.
 	* Ses informations générales.
