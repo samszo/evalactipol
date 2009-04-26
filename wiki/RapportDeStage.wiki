@@ -6,7 +6,7 @@
       • I.1.1. Les informations générales concernant un département<br>
       • I.1.2. La liste des députés d’un département<br>
       • I.1.3. Les statistiques des députés d’un département<br>
-    • I.2. Page des députés<br>
+    • I.2. Page d’informations sur les députés<br>
 
 = I. Manuel d’utilisation de Evalactipol =
 
@@ -122,10 +122,8 @@ Cette page renferme les informations suivantes, par un simple clic sur un déput
 
         * Les cantons sous sa responsabilité.
         * Ses informations générales.
-	* Ses informations générales.
-	* Ses questions.
-	* Ses mots-clefs.
+        * Ses questions.
+        * Ses mots-clefs.
         * Ses rubriques.
-        
-	
+		
 http://evalactipol.googlecode.com/svn/trunk/documentation/fireshot_rappot_stage/page_infos_dun_député.png
