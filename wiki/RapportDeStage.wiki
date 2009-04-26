@@ -115,6 +115,15 @@ Ainsi, il paraît clair que la richesse des informations et des critères d’é
 L’inconvénient majeur du graphe est que son temps de réponse dépend essentiellement des plages temporelles définies. En effet, à partir de plus de cinq plages temporelles, le temps de réponse se dégrade de façon visible. Cela nous amène à définir cinq plages temporelles sur deux ans, chacune s’étendant sur six mois.
 
   
-==I.2 Page des députés==
+==I.2 Page d’informations sur les députés==
 
- 
+La première page se propose, tout d’abord, de fournir les informations qui concernent les départements français, notamment les informations générales ainsi que les noms et les statistiques des députés par département. Ensuite, il est intéressant de se pencher sur les informations qui concernent chaque député. 
+Cette page renferme les informations suivantes, par un simple clic sur un député dans le tree des députés d’un département:
+
+        * Les cantons sous sa responsabilité.
+	* Ses informations générales.
+	* Ses questions.
+        * Ses mots-clefs.
+        * Ses rubriques.
+
+http://evalactipol.googlecode.com/svn/trunk/documentation/fireshot_rappot_stage/page_infos_dun_député.png
