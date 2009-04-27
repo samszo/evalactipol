@@ -22,7 +22,7 @@
 		var urlExeAjax2 = "http://localhost/evalactipol/library/php/ExeAjax.php";
 	</script>
 
-	<vbox  flex="1" style="overflow:auto" width="10px">
+	<vbox  flex="1" style="overflow:auto" >
 
 		<hbox id="nav-toolbar" hidden="true">
 			<label id="tbbterre" value="Afficher Geonames" class="text-link" onclick="ChargeTreeFromAjax('GetTree','treeFrance');"/>
@@ -31,21 +31,24 @@
 	
 		
 		<hbox class="global" id="global" flex="1">
-			<vbox class="BoiteV" flex="0" width="185px">
+			<vbox class="BoiteV" flex="1" >
 				<hbox id="RefId" >
-					<label id="titreRub" value="Selectionner un geoname" class="titre" />
+					<label id="titreRub" value="Selectionner un département" class="titre" />
 				</hbox>
-				<hbox id='treeFrance' class="BoiteV" context="popterre" ></hbox>
+				<hbox id='treeFrance' flex="1" class="BoiteV" context="popterre" ></hbox>
 				
 			</vbox>
 		</hbox>		
 	</vbox>
+	<splitter collapse="before" >
+		<grippy/>
+	</splitter>
 	
-	<vbox class="BoiteV" flex="1" width="100px" >
+	<vbox class="BoiteV" flex="6" >
 				
-				<hbox id='treeDepute' class="BoiteV" context="popterre"></hbox>
-				<hbox id='libCanton' class="BoiteV" context="popterre"></hbox>
-				<hbox id='libGoogleVisu' class="BoiteV" context="popterre"></hbox>				 
+				<hbox id='treeDepute' flex="1" class="BoiteV" context="popterre"></hbox>
+				<hbox id='libCanton' flex="1" class="BoiteV" context="popterre"></hbox>
+				<hbox id='libGoogleVisu' flex="1" class="BoiteV" context="popterre"></hbox>				 
 	</vbox>
 	
 	
