@@ -262,7 +262,7 @@ class Xul{
 		
 			$tree = $this->GetTree_load($Q[0]->nextfct."",'',$num,'',$contexteTree,$titreTree);
 			$listbox = $tree;
-			$listbox .= $this->GetListbox($result_depart_sql,$type,$Q);
+			//$listbox .= $this->GetListbox($result_depart_sql,$type,$Q);
 		}
 		else
 		{
@@ -278,9 +278,9 @@ class Xul{
 			$listbox = $tree;
 			$listbox .= $this->GetListbox($result_depute_sql,$type,$Q);
 		
-			$listbox .= $this->GetListboxSimple($result_Quests_Depute,$Q[0]->questions."");
-			$listbox .= $this->GetListboxSimple($result_MC_Depute,$Q[0]->mots."");
-			$listbox .= $this->GetListboxSimple($result_Rubr_Depute,$Q[0]->rubriques."");
+			//$listbox .= $this->GetListboxSimple($result_Quests_Depute,$Q[0]->questions."");
+			//$listbox .= $this->GetListboxSimple($result_MC_Depute,$Q[0]->mots."");
+			//$listbox .= $this->GetListboxSimple($result_Rubr_Depute,$Q[0]->rubriques."");
 		}
 		return $listbox;
 	}
@@ -288,6 +288,7 @@ class Xul{
 function GetListbox($result_sql,$type,$Q)
 	{	
 		$listbox = '<listbox width="400px" height="5px">';
+		//$listbox = '<listbox flex="2">';
 			$listbox .= '<listhead>';
 				$listbox .= '<listheader label="Informations"></listheader>';
 				$listbox .= '<listheader label="Valeurs"></listheader>';

@@ -10,9 +10,9 @@ if(isset($_GET['id']))
 	<head>
 		<script type='text/javascript' src='http://www.google.com/jsapi'></script>
 
-		<script type="application/x-javascript" src="../js/interface.js"></script>
-		<script type="application/x-javascript" src="../js/ajax.js"></script>
-		<script type="application/x-javascript" src="../js/tree.js"></script>
+		<script type="application/x-javascript" src="library/js/interface.js"></script>
+		<script type="application/x-javascript" src="library/js/ajax.js"></script>
+		<script type="application/x-javascript" src="library/js/tree.js"></script>
 
 		<script type='text/javascript'>
 
@@ -25,7 +25,7 @@ if(isset($_GET['id']))
 				response = GetDataOneDepart(numDepartement);
 				eval(response);
 				var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
-				chart.draw(data, {width: 800, height:300});
+				chart.draw(data, {width: 450, height:300});
 			}		
 
 					    
@@ -33,6 +33,6 @@ if(isset($_GET['id']))
 	</head>
 
 	<body>
-		<div id='chart_div' style='width: 1200px; height: 300px;'></div>
+		<div id='chart_div' style='width: 450px; height: 300px;'></div>
 	</body>
 </html>
