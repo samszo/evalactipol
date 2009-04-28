@@ -43,7 +43,8 @@
 			$resultat= GetTree_load($type,'','','','Departements','France');
 		break;
 		case 'Getlist':
-			$resultat= utf8_encode(Getlist($id,$type));
+			//$resultat= utf8_encode(Getlist($id,$type));
+			$resultat= Getlist($id,$type);
 		break;
 		case 'Getlist_depute':
 			$resultat= utf8_encode(Getlist_depute($id,$type));

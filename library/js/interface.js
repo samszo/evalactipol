@@ -7,11 +7,12 @@ function ChargeTreeFromAjax(fonction,idDst,type)
 {
 	try 
 	{
-
+		
 		var doc = document.getElementById(idDst);
 		var url = urlExeAjax+"?f="+fonction+"&type="+type;
 		AppendResult(url,doc);
 		dump("ChargeTreeFromAjax OUT\n");
+		
 
 	} catch(ex2){alert(":ChargeTreeFromAjax:"+ex2+" url="+url);dump("::"+ex2);}
 
@@ -24,6 +25,7 @@ function ChargelistFromAjax(idDst,type)
 	{
 		var doc = document.getElementById(idDst);
 		var id = document.getElementById(idDst).value;
+		//alert (id);
 		if (id != "1")
 		{
 			var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
@@ -90,7 +92,8 @@ function GetDataOneDepart(numDepartement)
 
 function GetGoogleVisualisation(idDst,idBox){
 	var id = document.getElementById(idDst).value;
-	var url = "library/php/graphe.php"+"?id="+id;
+	//var url = "library/php/graphe.php"+"?id="+id;
+	var url = "graphe.php"+"?id="+id;
 	GoUrl(url,idBox);
 
 }
