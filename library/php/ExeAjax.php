@@ -42,10 +42,21 @@
 		case 'GetTree_load':
 			$resultat= GetTree_load($type,'','','','Departements','France');
 		break;
-		case 'Getlist':
+		/*case 'Getlist':
 			//$resultat= utf8_encode(Getlist($id,$type));
 			$resultat= Getlist($id,$type);
+		break;*/
+		
+		case 'GetTrees':
+			//$resultat= utf8_encode(Getlist($id,$type));
+			$resultat= GetTrees($id,$type);
 		break;
+		
+		case 'GetListes':
+			//$resultat= utf8_encode(Getlist($id,$type));
+			$resultat= GetListes($id,$type);
+		break;
+		
 		case 'Getlist_depute':
 			$resultat= utf8_encode(Getlist_depute($id,$type));
 		break;
@@ -77,13 +88,30 @@ function GetTree_load($type,$niv=-1,$val1=-1,$val2=-1,$contexteTree,$titreTree){
 	return $xul->GetTree_load($type,$niv=-1,$val1=-1,$val2=-1,$contexteTree,$titreTree);
 }
 
-function Getlist($id,$type){
+/*function Getlist($id,$type){
 
 	global $objSite;
 	$xul = new Xul($objSite);
 
 	return $xul->Getlist($id,$type);
+}*/
+
+function GetTrees($id,$type){
+
+	global $objSite;
+	$xul = new Xul($objSite);
+
+	return $xul->GetTrees($id,$type);
 }
+function GetListes($id,$type){
+
+	global $objSite;
+	$xul = new Xul($objSite);
+
+	return $xul->GetListes($id,$type);
+}
+
+
 function Getlist_depute($id,$type){
 
 	global $objSite;

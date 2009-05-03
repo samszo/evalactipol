@@ -248,7 +248,8 @@ class Xul{
 	return $tree;
 	}
 	
-	function Getlist($id,$type){
+	//function Getlist($id,$type){
+	function GetTrees($id,$type){
         
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
 		$Q = $this->site->XmlParam->GetElements($Xpath);
@@ -276,8 +277,9 @@ class Xul{
 			$titreTree = html_entity_decode($result_depute_sql[1])." ".html_entity_decode($result_depute_sql[2]);
 			$tree = $this->GetTree_load($Q[0]->nextfct."",'',$result_depute_sql[7],$result_depute_sql[6],$contexteTree,$titreTree);
 			$listbox = $tree;
-			$listbox .= $this->GetListbox($result_depute_sql,$type,$Q);
+			//$listbox .= $this->GetListbox($result_depute_sql,$type,$Q);
 		
+			
 			//$listbox .= $this->GetListboxSimple($result_Quests_Depute,$Q[0]->questions."");
 			//$listbox .= $this->GetListboxSimple($result_MC_Depute,$Q[0]->mots."");
 			//$listbox .= $this->GetListboxSimple($result_Rubr_Depute,$Q[0]->rubriques."");
@@ -285,10 +287,23 @@ class Xul{
 		return $listbox;
 	}
 	
+	function GetListes($id,$type){
+        
+		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
+		$Q = $this->site->XmlParam->GetElements($Xpath);
+		$GetSqlInfos = new GetSqlInfos ($this->site);
+		
+			$num = substr($id,7);
+			$result_depute_sql = $GetSqlInfos->Getdepute($num);
+			$listbox = $this->GetListbox($result_depute_sql,$type,$Q);
+			
+		
+		return $listbox;
+	}
 function GetListbox($result_sql,$type,$Q)
 	{	
-		$listbox = '<listbox width="400px" height="5px">';
-		//$listbox = '<listbox flex="2">';
+		$listbox = '<listbox width="450px" height="5px">';
+		//$listbox = '<listbox flex="100">';
 			$listbox .= '<listhead>';
 				$listbox .= '<listheader label="Informations"></listheader>';
 				$listbox .= '<listheader label="Valeurs"></listheader>';

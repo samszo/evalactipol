@@ -18,7 +18,7 @@ function ChargeTreeFromAjax(fonction,idDst,type)
 
 }
 
-function ChargelistFromAjax(idDst,type)
+function ChargeListTreesFromAjax(idDst,type)
 {
 
 	try 
@@ -28,16 +28,45 @@ function ChargelistFromAjax(idDst,type)
 		//alert (id);
 		if (id != "1")
 		{
-			var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
+			//var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
+			var url = urlExeAjax2+"?f=GetTrees&id="+id+"&type="+type;
 			AppendResult(url,doc);
-			dump("ChargelistFromAjax OUT\n");
+			dump("ChargeListTreesFromAjax OUT\n");
 		}
 		if (type =="departement")
 		{
 			setunhidden('libCanton');
+			setunhidden('liste');
+			
 		}
 
-	} catch(ex2){alert(":ChargelistFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
+	} catch(ex2){alert(":ChargeListTreesFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
+
+}
+
+function ChargeListBoxFromAjax(idDst,type)
+{
+
+	try 
+	{
+		var doc = document.getElementById(idDst);
+		var id = document.getElementById(idDst).value;
+		//alert (id);
+		if (id != "1")
+		{
+			//var url = urlExeAjax2+"?f=Getlist&id="+id+"&type="+type;
+			var url = urlExeAjax2+"?f=GetListes&id="+id+"&type="+type;
+			AppendResult(url,doc);
+			dump("ChargeListBoxFromAjax OUT\n");
+		}
+		//if (type =="departement")
+		//{
+		//	setunhidden('libCanton');
+			
+			
+		//}
+
+	} catch(ex2){alert(":ChargeListBoxFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
 
 }
 
