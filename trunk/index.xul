@@ -29,35 +29,40 @@
 			<label id="tbbterre" value="Consulter BD" class="text-link" onclick="ChargeTreeFromAjax('GetTree_load','treeFrance','departement');"/>
 		</hbox>
 	
-		
 		<hbox class="global" id="global" flex="1">
 			<vbox class="BoiteV" flex="1" >
 				<hbox id="RefId" >
 					<label id="titreRub" value="Selectionner un département" class="titre" />
 				</hbox>
+				
 				<hbox id='treeFrance' flex="1" class="BoiteV" context="popterre" ></hbox>
 				
 			</vbox>
 		</hbox>		
 	</vbox>
+	
 	<splitter collapse="before" >
 		<grippy/>
 	</splitter>
 	
 	<vbox class="BoiteV" flex="6" >
 				
-			<hbox id='treeDepute' flex="1" class="BoiteV" context="popterre"></hbox>
-			<splitter collapse="before" >
-			<grippy/>
-			</splitter>
-			<hbox id='libGoogleVisu' flex="1" class="BoiteV" context="popterre"></hbox>
-			<splitter collapse="before" >
-			<grippy/>
-			</splitter>
-			<hbox id='tagcloud' flex="1" class="BoiteV" context="popterre"></hbox>
+		<hbox id='trees' flex="1" class="BoiteV" context="popterre">
+			<vbox class="BoiteV" flex="1" >
+				<hbox id='treeDepute' flex="1" class="BoiteV" context="popterre"></hbox>
+			</vbox>
+			<vbox class="BoiteV" flex="1" >
+				<hbox id='libCanton' flex="1" class="BoiteV" context="popterre"></hbox>
+			</vbox>
+		</hbox>
 			
-							 
-				
+			
+		<hbox id='liste' flex="1" class="BoiteV" context="popterre"></hbox>
+			<splitter collapse="before" >
+			<grippy/>
+			</splitter>
+		<hbox id='tagcloud' flex="1" class="BoiteV" context="popterre" hidden="true"></hbox>
+			
 	</vbox>
 	
 	<splitter collapse="before" >
@@ -65,9 +70,9 @@
 	</splitter>
 	
 	<vbox class="BoiteV" flex="6" >
-			<hbox id='libCanton' flex="1" class="BoiteV" context="popterre"></hbox>
-			<hbox id='carte' flex="1" class="BoiteV" context="popterre"></hbox>
-			<hbox id='carte' flex="1" class="BoiteV" context="popterre"></hbox>
+		<hbox id='libGoogleVisu' flex="1" class="BoiteV" context="popterre"></hbox>
+		<hbox id='carte' flex="1" class="BoiteV" context="popterre" hidden="true"></hbox>
+		<hbox id='carte' flex="1" class="BoiteV" context="popterre" hidden="true"></hbox>
 			
 	</vbox>
 	
