@@ -21,7 +21,9 @@
 		var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
 		var urlExeAjax2 = "http://localhost/evalactipol/library/php/ExeAjax.php";
 	</script>
-
+	
+	
+	
 	<vbox  flex="1" style="overflow:auto" >
 
 		<hbox id="nav-toolbar" hidden="true">
@@ -46,7 +48,11 @@
 	</splitter>
 	
 	<vbox class="BoiteV" flex="6" >
-				
+		
+		<splitter collapse="before" >
+			<grippy/>
+		</splitter>
+		
 		<hbox id='trees' flex="1" class="BoiteV" context="popterre">
 			<vbox class="BoiteV" flex="1" >
 				<hbox id='treeDepute' flex="1" class="BoiteV" context="popterre"></hbox>
@@ -56,28 +62,28 @@
 			</vbox>
 		</hbox>
 			
-			
 		<hbox id='liste' flex="1" class="BoiteV" context="popterre"></hbox>
-			<splitter collapse="before" >
-			<grippy/>
+			<splitter collapse="before" hidden="true">
+				<grippy/>
 			</splitter>
 		<hbox id='tagcloud' flex="1" class="BoiteV" context="popterre" hidden="true"></hbox>
 			
+	</vbox>
+	
+	<vbox class="BoiteV" width="500">
+		<splitter collapse="before" >
+			<grippy/>
+		</splitter>
+		<hbox id='carte' flex="1" class="BoiteV" context="popterre" hidden="false"></hbox>
+		<hbox id='libGoogleVisu' flex="1" class="BoiteV" context="popterre"></hbox>
+		
 	</vbox>
 	
 	<splitter collapse="before" >
 		<grippy/>
 	</splitter>
 	
-	<vbox class="BoiteV" width="500">
-		<hbox id='libGoogleVisu' flex="1" class="BoiteV" context="popterre"></hbox>
-		<hbox id='carte' flex="1" class="BoiteV" context="popterre" hidden="true"></hbox>
-		<hbox id='carte' flex="1" class="BoiteV" context="popterre" hidden="true"></hbox>
-			
-	</vbox>
-	
 <script type='text/javascript'>
-	
 </script>
 				
 </window>

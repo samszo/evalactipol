@@ -6,7 +6,7 @@
 				
 			<Query fonction="GetTreeChildren_France">
 				<nextfct>departement</nextfct>
-				<js evt="onselect" function="sethidden('libCanton');sethidden('liste');GetTreeSelect('tree','treeDepute',[0,1]);ChargeListTreesFromAjax('treeDepute','France');ChargeListTreesFromAjax('libGoogleVisu','France');GetGoogleVisualisation('treeDepute','libGoogleVisu');"/>
+				<js evt="onselect" function="sethidden('libCanton');sethidden('liste');GetTreeSelect('tree','treeDepute',[0,1]);ChargeListTreesFromAjax('treeDepute','France');ChargeListTreesFromAjax('libGoogleVisu','France');GetGoogleVisualisation('treeDepute','libGoogleVisu');ChargeListTreesFromAjax('carte','France');GetMapVisualisation('carte');"/>
 			</Query>
 			
 

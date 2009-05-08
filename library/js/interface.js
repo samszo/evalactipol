@@ -127,6 +127,14 @@ function GetGoogleVisualisation(idDst,idBox){
 
 }
 
+function GetMapVisualisation(idBox){
+	//var id = document.getElementById(idDst).value;
+	//var url = "library/php/graphe.php"+"?id="+id;
+	var url = "map.php";
+	GoUrl(url,idBox);
+
+}
+
 function GoUrl(url,idBox){
  
  box=document.getElementById(idBox);
