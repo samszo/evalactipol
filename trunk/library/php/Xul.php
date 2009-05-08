@@ -302,8 +302,8 @@ class Xul{
 	}
 function GetListbox($result_sql,$type,$Q)
 	{	
-		$listbox = '<listbox width="450px" height="5px">';
-		//$listbox = '<listbox flex="100">';
+		//$listbox = '<listbox width="450px" height="5px">';
+		$listbox = '<listbox flex="1">';
 			$listbox .= '<listhead>';
 				$listbox .= '<listheader label="Informations"></listheader>';
 				$listbox .= '<listheader label="Valeurs"></listheader>';

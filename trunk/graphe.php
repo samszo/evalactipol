@@ -25,7 +25,8 @@ if(isset($_GET['id']))
 				response = GetDataOneDepart(numDepartement);
 				eval(response);
 				var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
-				chart.draw(data, {width: 450, height:550});
+				//chart.draw(data, {width: 520, height:580});
+				chart.draw(data, {width: 500, height:281});
 			}		
 
 					    
@@ -33,6 +34,6 @@ if(isset($_GET['id']))
 	</head>
 
 	<body>
-		<div id='chart_div' style='width: 450px; height: 550px;'></div>
+		<div id='chart_div' style='width: 500px; height: 281px;'></div>
 	</body>
 </html>
