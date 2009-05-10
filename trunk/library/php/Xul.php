@@ -1,20 +1,83 @@
 <?php
+
+/**
+* Cette classe permet de construire, avec php, le code Xul pour les trees et les listbox
+* 
+* Cette classe permet de construire à partir des variables Ajax 
+* le contenu de l'interface Xul. Elle calcule la valeur des 
+* variables qui s'affichent dans l'interface de gestion de l'application. 
+* Ceci se fait en consultatnt la base de données pour extraire les informations,
+* les construire selon le format Xul et les faire retourner sous format Xul pour
+* l'affichage par la suite.
+*
+* @package Evalactipol_libraries
+* @version $Id: Xul.php,v 1 2009/05/10 16:03:55
+* @author Mehdi TOUIBI <touibimehdi@yahoo.fr>
+*/
+
 class Xul{
+    /**
+    * L'ientifiant de la branche sélectionnée de la tree dans l'interface principale
+    *
+	* @access public
+    * @var string $id
+    */
+
   public $id;
+    /**
+    * Le paramètre qui contient les traces
+    *
+	* @access public
+    * @var string $trace
+    */
+
   public $trace;
+    /**
+    * L'objet qui identifie le site sur lequel on travaille
+    *
+	* @access private
+    * @param object $site
+    */
+
   private $site;
  
     function __tostring() {
     return "Cette classe permet la création dynamique d'objet XUL.<br/>";
     }
-
-    function __construct($site, $id=-1, $complet=true) {
+ 
+	/**
+    * Constructeur
+    *
+    * C'est le constructeur de l'objet Xul. Il prend essentiellement 
+    * l'objet du site sur lequel on travaille ainsi que l'identifiant
+    * de la branche sélectionnée de la tree dans l'interface de gestion de l'application.  
+    * Ces paramètres sont transmises par Ajax et sont calculés dans la fonction ExeAjax.php. 
+    *
+    * @param object $site
+    * @param string $id	
+    * @access public
+    */
+    
+	function __construct($site, $id=-1, $complet=true) {
 	
   	$this->trace = TRACE;
 	$this->site = $site;
     $this->id = $id;
 	
 	}
+	
+	/**
+    * Cette fonction permet de construire le code des trees en Xul. 
+	*
+    * @param string $type 
+    * @param array $infosCantons contient des informations sur les cantons
+	* @param array $infosDepartement contient des informations sur les départements
+	* @param array $htmlDept le lien duquel on va extraire les informations sur les députés
+	* @param array $result_deput le résultat des informations sur les députés à partir de la base de données
+    * @return string $titreTree le titre de la tree ( tree des départements, des députés ou des cantons )
+    * @access public
+	* @return string $tree contient le code qui permet de construire la tree en Xul
+    */
 	
 	//GetTree($type,$infosCantons, $infosDepartement,$htmlDept,$x);
     //function GetTree(){
@@ -53,6 +116,18 @@ class Xul{
 		return $tree;
 		
 	}
+	
+	/**
+    * Cette fonction est appelée par GetTree () pour construire la balise <treechildren> du code des trees.
+	*
+    * @param string $type 
+    * @param array $infosCantons contient des informations sur les cantons
+	* @param array $infosDepartement contient des informations sur les départements
+	* @param array $htmlDept le lien duquel on va extraire les informations sur les députés
+	* @param array $result_deput le résultat des informations sur les députés à partir de la base de données
+    * @access public
+	* @return string $tree contient le code qui permet de construire la balise <treechildren>.
+    */
 	
 	function GetTreeChildren($type,$infosCantons,$infosDepartement,$htmlDept,$result_deput)
 	{	
@@ -138,6 +213,22 @@ class Xul{
 		return $tree;	
 	}
 	
+	/**
+    * Cette fonction permet de construire le code des trees, avec la syntaxe de Xul, pour 
+	* l'interface de gestion de l'appliation. Le Xul est construit au chargement 
+	* de la page et en cliquant sur n'importe quelle branche dans les trees existantes
+	* pour créer d'autres trees	
+	*
+    * @param string $type le type de la tree à construire  
+    * @param string $niv présente quelle tree à construire. Selon chaque niveau, il y a un traitement à faire. 
+	* @param string $val1 le numéro du département du député extrait de la BDD
+	* @param string $val2 le numéro du département extrait de la BDD des cantons d'un député  
+	* @param string $contexteTree 
+    * @return string $titreTree le titre de la tree ( tree des départements, des députés ou des cantons )
+    * @access public
+	* @return string $tree contient le code qui permet de construire la tree en Xul
+    */
+	
 	function GetTree_load($type,$niv=-1,$val1=-1,$val2=-1,$contexteTree,$titreTree){
 		
 		$id = "1";
@@ -184,6 +275,19 @@ class Xul{
 		
 		return $tree;
 	}
+	
+	/**
+    * Cette fonction est appelée par GetTree() pour construire la balise
+	* <treechildren> du code des trees.
+	*
+    * @param string $type 
+    * @param string $niv 
+	* @param string $val1 
+	* @param string $val2 
+	* @return string $titreTree 
+    * @access public
+	* @return string $tree contient le code qui permet de construire la balise <treechildren>.
+    */
 	
 	function GetTreeChildren_load($type,$niv=-1,$val1=-1,$val2=-1,$titreTree){
 		
@@ -248,6 +352,16 @@ class Xul{
 	return $tree;
 	}
 	
+	/**
+    * Cette fonction est appelée par la fonction ExeAjax.php. Elle permet
+	* de calculer les valeurs qui permettrent de construire les trees en xul.
+	*
+    * @param string $id l'identifiant de la branche de la tree en cours
+    * @param string $type le type de la tree en cours 
+	* @return string $listbox  le code xul écrit en php permettant de construire les trees 
+    * @access public
+    */
+	
 	//function Getlist($id,$type){
 	function GetTrees($id,$type){
         
@@ -287,6 +401,16 @@ class Xul{
 		return $listbox;
 	}
 	
+	/**
+    * Cette fonction est appelée par la fonction ExeAjax.php. Elle permet
+	* de calculer les valeurs qui permettrent de construire les listbox en xul.
+	*
+    * @param string $id l'identifiant de la branche de la tree en cours
+    * @param string $type le type de la tree en cours 
+	* @return string $listbox  le code xul écrit en php permettant de construire les listbox 
+    * @access public
+    */
+	
 	function GetListes($id,$type){
         
 		$Xpath = "/XmlParams/XmlParam/GetTreeChildrens/GetTreeChildren[@fonction='GetTreeChildren_".$type."']";
@@ -300,6 +424,17 @@ class Xul{
 		
 		return $listbox;
 	}
+	
+	/**
+    * Cette fonction est appelée par la fonction GetListes(). Elle permet
+	* de construire en php le code en xul des listbox.
+	*
+    * @param array $result_sql les informations sur les député extraites de la BDD
+    * @param string $type le type de la tree en cours
+	* @param object $Q le contenu extrait du fichier evalactipol.xml contenant les constantes et les requêtes sql pour traiter les députés.	
+	* @return string $listbox le code xul écrit en php permettant de construire les listbox 
+    * @access public
+    */
 function GetListbox($result_sql,$type,$Q)
 	{	
 		//$listbox = '<listbox width="450px" height="5px">';
@@ -367,7 +502,15 @@ function GetListboxSimple($result_sql,$titreListe)
 		$listbox .= '</listbox>';
 		return $listbox; 
 	}
-
+	/**
+    * Cette fonction est appelée par la fonction GetListebox(). Elle permet
+	* de construire les balises <listitem> des listbox.
+	*
+    * @param string $result_sql le contenu de la balise <listcell>
+    * @param string $titreListe le titre de la balise <listcell>
+	* @return string $listbox le code xul écrit en php des balises <listitem> des listbox 
+    * @access public
+    */
 function GetListItem($result_sql,$titreListe)
 	{
 		$listbox = '<listitem>';
