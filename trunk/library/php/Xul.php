@@ -432,7 +432,7 @@ class Xul{
     * @param array $result_sql les informations sur les député extraites de la BDD
     * @param string $type le type de la tree en cours
 	* @param object $Q le contenu extrait du fichier evalactipol.xml contenant les constantes et les requêtes sql pour traiter les députés.	
-	* @return string $listbox le code xul écrit en php permettant de construire les listbox 
+	* @return string listbox le code xul écrit en php permettant de construire les listbox 
     * @access public
     */
 function GetListbox($result_sql,$type,$Q)
