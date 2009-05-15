@@ -15,9 +15,11 @@ function GetResult(url) {
 
 	if (p.status != "200" ){
 	      alert("Réception erreur " + p.status);
+		  
 	}else{
 	    response = p.responseText;
 	}
+	
 	return response;
 	dump("GetResult OUT \n");
    } catch(ex2){alert(ex2);dump("::"+ex2);}
@@ -38,7 +40,9 @@ function AppendResult(url,doc,ajoute,cont) {
 	p.send(null);
 
 	if (p.status != "200" ){
-	      alert("Réception erreur " + p.status);
+		
+		alert("Réception erreur " + p.status);
+		  
 	}else{
 	    response = p.responseText;
 		xulData="<"+cont+" id='dataBox' flex='1'  " +
