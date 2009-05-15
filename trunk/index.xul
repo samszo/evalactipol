@@ -10,7 +10,6 @@
     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
 	onload="ChargeTreeFromAjax('GetTree_load','treeFrance','France');"
 >
-
 <script type="application/x-javascript" src="library/js/interface.js" />
 <script type="application/x-javascript" src="library/js/ajax.js"/>
 <script type="application/x-javascript" src="library/js/tree.js"/>
@@ -84,6 +83,7 @@
 	</splitter>
 	
 <script type='text/javascript'>
+
 </script>
 				
 </window>
