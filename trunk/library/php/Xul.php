@@ -74,7 +74,7 @@ class Xul{
 	* @param array $infosDepartement contient des informations sur les départements
 	* @param array $htmlDept le lien duquel on va extraire les informations sur les députés
 	* @param array $result_deput le résultat des informations sur les députés à partir de la base de données
-    * @return string $titreTree le titre de la tree ( tree des départements, des députés ou des cantons )
+    * @param string $titreTree le titre de la tree ( tree des départements, des députés ou des cantons )
     * @access public
 	* @return string $tree contient le code qui permet de construire la tree en Xul
     */
@@ -224,7 +224,7 @@ class Xul{
 	* @param string $val1 le numéro du département du député extrait de la BDD
 	* @param string $val2 le numéro du département extrait de la BDD des cantons d'un député  
 	* @param string $contexteTree 
-    * @return string $titreTree le titre de la tree ( tree des départements, des députés ou des cantons )
+    * @param string $titreTree le titre de la tree ( tree des départements, des députés ou des cantons )
     * @access public
 	* @return string $tree contient le code qui permet de construire la tree en Xul
     */
@@ -284,7 +284,7 @@ class Xul{
     * @param string $niv 
 	* @param string $val1 
 	* @param string $val2 
-	* @return string $titreTree 
+	* @param string $titreTree 
     * @access public
 	* @return string $tree contient le code qui permet de construire la balise <treechildren>.
     */
