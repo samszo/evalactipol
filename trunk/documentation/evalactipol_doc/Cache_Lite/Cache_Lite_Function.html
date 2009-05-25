@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<title>Docs For Class Cache_Lite_Function</title>
+	<link rel="stylesheet" type="text/css" id="layout" href="../media/layout.css" media="screen">
+	<link rel="stylesheet" type="text/css" href="../media/style.css" media="all">
+	<link rel="stylesheet" type="text/css" href="../media/print.css" media="print">
+</head>
+
+<body>
+<div id="header">
+	<div id="navLinks">
+        
+                                                        
+                                                	        [ <a href="../classtrees_Cache_Lite.html">Class Tree: Cache_Lite</a> ]
+            [ <a href="../elementindex_Cache_Lite.html">Index: Cache_Lite</a> ]
+        		[ <a href="../elementindex.html">All elements</a> ]		
+	</div>
+	<div id="packagePosition">
+		<div id="packageTitle2">Cache_Lite</div>
+		<div id="packageTitle">Cache_Lite</div>
+		<div id="elementPath"> &middot; </div>
+	</div>
+</div>
+
+<div id="nav" class="small">
+	<div id="packages">
+		Packages:
+					<p><a href="../li_default.html">default</a></p>
+					<p><a href="../li_Cache_Lite.html">Cache_Lite</a></p>
+					<p><a href="../li_Evalactipol_libraries.html">Evalactipol_libraries</a></p>
+			</div>
+
+				<div id="index">
+			<div id="files">
+								Files:<br>
+								<a href="../Cache_Lite/_CacheLite---Lite---File.php.html">		File.php
+		</a><br>
+			<a href="../Cache_Lite/_CacheLite---Lite---Function.php.html">		Function.php
+		</a><br>
+			<a href="../Cache_Lite/_CacheLite---Lite.php.html">		Lite.php
+		</a><br>
+			<a href="../Cache_Lite/_CacheLite---Lite---Output.php.html">		Output.php
+		</a><br>
+				</div>
+			<div id="interfaces">
+							</div>
+			<div id="classes">
+				Classes:<br>
+								<a href="../Cache_Lite/Cache_Lite.html">		Cache_Lite
+		</a><br>
+			<a href="../Cache_Lite/Cache_Lite_File.html">		Cache_Lite_File
+		</a><br>
+			<a href="../Cache_Lite/Cache_Lite_Function.html">		Cache_Lite_Function
+		</a><br>
+			<a href="../Cache_Lite/Cache_Lite_Output.html">		Cache_Lite_Output
+		</a><br>
+				</div>
+		</div>
+	</div>
+
+<div id="body">
+	    		<h1>Class: Cache_Lite_Function</h1>
+	<p style="margin: 0px;">Source Location: /CacheLite/Lite/Function.php</p>
+	
+
+<div class="leftcol">
+	<h3><a href="#class_details">Class Overview</a> <span class="smalllinenumber">[line 19]</span></h3>
+	<div id="classTree"><pre><a href="../Cache_Lite/Cache_Lite.html">Cache_Lite</a>
+   |
+   --Cache_Lite_Function</pre>
+</div>
+	<div class="small">
+	<p>This class extends Cache_Lite and can be used to cache the result and output of functions/methods</p>
+		<h4>Author(s):</h4>
+	<ul>
+								<li>Sebastian BERGMANN &lt;<a href="mailto:sb@sebastian-bergmann.de">sb@sebastian-bergmann.de</a>&gt;</li>
+											<li>Fabien MARTY &lt;<a href="mailto:fab@php.net">fab@php.net</a>&gt;</li>
+											</ul>
+	<h4>Version:</h4>
+	<ul>
+																		<li>$Id: Function.php,v 1.10 2006/02/04 18:36:36 fab Exp $</li>
+						</ul>
+
+	<h4>Copyright:</h4>
+	<ul>
+																		</li>
+	</div>
+</div>
+
+<div class="middlecol">
+	<h3><a href="#class_vars">Variables</a></h3>
+	<ul class="small">
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#var$_debugCacheLiteFunction">$_debugCacheLiteFunction</a></li>
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#var$_defaultGroup">$_defaultGroup</a></li>
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#var$_dontCacheWhenTheOutputContainsNOCACHE">$_dontCacheWhenTheOutputContainsNOCACHE</a></li>
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#var$_dontCacheWhenTheResultIsFalse">$_dontCacheWhenTheResultIsFalse</a></li>
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#var$_dontCacheWhenTheResultIsNull">$_dontCacheWhenTheResultIsNull</a></li>
+			</ul>
+	<h3><a href="#class_consts">Constants</a></h3>
+	<ul class="small">
+			</ul>
+</div>
+<div class="rightcol">
+	<h3><a href="#class_methods">Methods</a></h3>
+	<ul class="small">
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#methodCache_Lite_Function">Cache_Lite_Function</a></li>
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#methodcall">call</a></li>
+				<li><a href="../Cache_Lite/Cache_Lite_Function.html#methoddrop">drop</a></li>
+			</ul>
+</div>
+
+<div id="content">
+<hr>
+	<div class="contents">
+	</div>
+
+	<div class="leftCol">
+    	<h2>Inherited Variables</h2>
+			<div class="indent">
+		<h3>Class: <a href="../Cache_Lite/Cache_Lite.html">Cache_Lite</a></h3>
+		<div class="small">
+			<dl>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_automaticCleaningFactor">Cache_Lite::$_automaticCleaningFactor</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_automaticSerialization">Cache_Lite::$_automaticSerialization</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_cacheDir">Cache_Lite::$_cacheDir</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_caching">Cache_Lite::$_caching</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_errorHandlingAPIBreak">Cache_Lite::$_errorHandlingAPIBreak</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_file">Cache_Lite::$_file</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_fileLocking">Cache_Lite::$_fileLocking</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_fileName">Cache_Lite::$_fileName</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_fileNameProtection">Cache_Lite::$_fileNameProtection</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_group">Cache_Lite::$_group</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_hashedDirectoryLevel">Cache_Lite::$_hashedDirectoryLevel</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_hashedDirectoryUmask">Cache_Lite::$_hashedDirectoryUmask</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_id">Cache_Lite::$_id</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_lifeTime">Cache_Lite::$_lifeTime</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_memoryCaching">Cache_Lite::$_memoryCaching</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_memoryCachingArray">Cache_Lite::$_memoryCachingArray</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_memoryCachingCounter">Cache_Lite::$_memoryCachingCounter</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_memoryCachingLimit">Cache_Lite::$_memoryCachingLimit</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_onlyMemoryCaching">Cache_Lite::$_onlyMemoryCaching</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_pearErrorMode">Cache_Lite::$_pearErrorMode</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_readControl">Cache_Lite::$_readControl</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_readControlType">Cache_Lite::$_readControlType</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_refreshTime">Cache_Lite::$_refreshTime</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#var$_writeControl">Cache_Lite::$_writeControl</a>
+			</dt>
+			<dd>
+				 
+			</dd>
+						</dl>
+		</div>
+		</div>
+		<h2>Inherited Constants</h2>
+		</div>
+
+	<div class="rightCol">
+	<h2>Inherited Methods</h2>
+			<div class="indent">
+		<h3>Class: <a href="../Cache_Lite/Cache_Lite.html">Cache_Lite</a></h3>
+		<dl class="small">
+						<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodCache_Lite">Cache_Lite::Cache_Lite()</a>
+			</dt>
+			<dd>
+				Constructor
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodclean">Cache_Lite::clean()</a>
+			</dt>
+			<dd>
+				Clean the cache
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodextendLife">Cache_Lite::extendLife()</a>
+			</dt>
+			<dd>
+				Extend the life of a valid cache file
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodget">Cache_Lite::get()</a>
+			</dt>
+			<dd>
+				Test if a cache is available and (if yes) return it
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodgetMemoryCachingState">Cache_Lite::getMemoryCachingState()</a>
+			</dt>
+			<dd>
+				Load the state of the caching memory array from a given cache file cache
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodlastModified">Cache_Lite::lastModified()</a>
+			</dt>
+			<dd>
+				Return the cache last modification time
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodraiseError">Cache_Lite::raiseError()</a>
+			</dt>
+			<dd>
+				Trigger a PEAR error
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodremove">Cache_Lite::remove()</a>
+			</dt>
+			<dd>
+				Remove a cache file
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodsave">Cache_Lite::save()</a>
+			</dt>
+			<dd>
+				Save some data in a cache file
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodsaveMemoryCachingState">Cache_Lite::saveMemoryCachingState()</a>
+			</dt>
+			<dd>
+				Save the state of the caching memory array into a cache file cache
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodsetLifeTime">Cache_Lite::setLifeTime()</a>
+			</dt>
+			<dd>
+				Set a new life time
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodsetOption">Cache_Lite::setOption()</a>
+			</dt>
+			<dd>
+				Generic way to set a Cache_Lite option
+			</dd>
+					<dt>
+				<a href="../Cache_Lite/Cache_Lite.html#methodsetToDebug">Cache_Lite::setToDebug()</a>
+			</dt>
+			<dd>
+				Set to debug mode
+			</dd>
+				</dl>
+		</div>
+		</div>
+	<br clear="all">
+	<hr>
+
+	<a name="class_details"></a>
+	<h2>Class Details</h2>
+	<p align="center"><strong>This class extends Cache_Lite and can be used to cache the result and output of functions/methods
+</strong></p>
+<p>This class is completly inspired from Sebastian Bergmann's  PEAR/Cache_Function class. This is only an adaptation to  Cache_Lite</p><p>There are some examples in the 'docs/examples' file  Technical choices are described in the 'docs/technical' file</p><h4>Tags:</h4>
+<ul>
+	<li><b>author</b> - Sebastian BERGMANN &lt;<a href="mailto:sb@sebastian-bergmann.de">sb@sebastian-bergmann.de</a>&gt;</li>
+	<li><b>author</b> - Fabien MARTY &lt;<a href="mailto:fab@php.net">fab@php.net</a>&gt;</li>
+	<li><b>version</b> - $Id: Function.php,v 1.10 2006/02/04 18:36:36 fab Exp $</li>
+</ul>
+	<p class="small" style="color: #334B66;">[ <a href="#top">Top</a> ]</p>
+
+	<hr>
+	<a name="class_vars"></a>
+	<h2>Class Variables</h2>
+		<a name="var$_debugCacheLiteFunction"></a>
+	<p></p>
+	<h4>$_debugCacheLiteFunction = <span class="value">&nbsp;false</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 60]</p>
+		<p align="center"><strong>Debug the Cache_Lite_Function caching process
+</strong></p>
+		<p><b>Type:</b> boolean</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$_defaultGroup"></a>
+	<p></p>
+	<h4>$_defaultGroup = <span class="value">&nbsp;'Cache_Lite_Function'</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 29]</p>
+		<p align="center"><strong>Default cache group for function caching
+</strong></p>
+		<p><b>Type:</b> string</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$_dontCacheWhenTheOutputContainsNOCACHE"></a>
+	<p></p>
+	<h4>$_dontCacheWhenTheOutputContainsNOCACHE = <span class="value">&nbsp;false</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 39]</p>
+		<p align="center"><strong>Don't cache the method call when its output contains the string &quot;NOCACHE&quot;
+</strong></p>
+<p>if set to true, the output of the method will never be displayed (because the output is used  to control the cache)</p>		<p><b>Type:</b> boolean</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$_dontCacheWhenTheResultIsFalse"></a>
+	<p></p>
+	<h4>$_dontCacheWhenTheResultIsFalse = <span class="value">&nbsp;false</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 46]</p>
+		<p align="center"><strong>Don't cache the method call when its result is false
+</strong></p>
+		<p><b>Type:</b> boolean</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="var$_dontCacheWhenTheResultIsNull"></a>
+	<p></p>
+	<h4>$_dontCacheWhenTheResultIsNull = <span class="value">&nbsp;false</span></h4>
+	<div class="indent">
+		<p class="linenumber">[line 53]</p>
+		<p align="center"><strong>Don't cache the method call when its result is null
+</strong></p>
+		<p><b>Type:</b> boolean</p>
+		<p><b>Overrides:</b> </p>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+
+	<hr>
+	<a name="class_methods"></a>
+	<h2>Class Methods</h2>
+	
+	<a name="methodCache_Lite_Function"></a>
+	<p></p>
+	<h3>Cache_Lite_Function</h3>
+	<div class="indent">
+		<p>
+		<code>Cache_Lite_Function Cache_Lite_Function(
+[array
+$options = array(NULL)])</code>
+		</p>
+	
+		<p class="linenumber">[line 83]</p>
+		<p align="center"><strong>Constructor
+</strong></p>
+<p>$options is an assoc. To have a look at availables options,  see the constructor of the Cache_Lite class in 'Cache_Lite.php'</p><p>Comparing to Cache_Lite constructor, there is another option :  $options = array(      (...) see Cache_Lite constructor      'debugCacheLiteFunction' =&gt; (bool) debug the caching process,      'defaultGroup' =&gt; default cache group for function caching (string),      'dontCacheWhenTheOutputContainsNOCACHE' =&gt; (bool) don't cache when the function output contains &quot;NOCACHE&quot;,      'dontCacheWhenTheResultIsFalse' =&gt; (bool) don't cache when the function result is false,      'dontCacheWhenTheResultIsNull' =&gt; (bool don't cache when the function result is null  );</p><h4>Tags:</h4>
+<ul>
+	<li><b>access</b> - public</li>
+</ul>
+		
+	
+	<h4>Parameters:</h4>
+	<ul>
+			<li>
+		<span class="type">array</span>
+		<b>$options</b> 
+		- 
+		options</li>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methodcall"></a>
+	<p></p>
+	<h3>call</h3>
+	<div class="indent">
+		<p>
+		<code>mixed call(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 107]</p>
+		<p align="center"><strong>Calls a cacheable function or method (or not if there is already a cache for it)
+</strong></p>
+<p>Arguments of this method are read with func_get_args. So it doesn't appear  in the function definition. Synopsis :  call('functionName', $arg1, $arg2, ...)  (arg1, arg2... are arguments of 'functionName')</p><h4>Tags:</h4>
+<ul>
+	<li><b>return</b> - result of the function/method</li>
+	<li><b>access</b> - public</li>
+</ul>
+		
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+	<a name="methoddrop"></a>
+	<p></p>
+	<h3>drop</h3>
+	<div class="indent">
+		<p>
+		<code>boolean drop(
+)</code>
+		</p>
+	
+		<p class="linenumber">[line 183]</p>
+		<p align="center"><strong>Drop a cache file
+</strong></p>
+<p>Arguments of this method are read with func_get_args. So it doesn't appear  in the function definition. Synopsis :  remove('functionName', $arg1, $arg2, ...)  (arg1, arg2... are arguments of 'functionName')</p><h4>Tags:</h4>
+<ul>
+	<li><b>return</b> - true if no problem</li>
+	<li><b>access</b> - public</li>
+</ul>
+		
+	
+	<h4>Parameters:</h4>
+	<ul>
+		</ul>
+	</div>
+	<p class="top">[ <a href="#top">Top</a> ]</p>
+
+	<hr>
+	<a name="class_consts"></a>
+	<h2>Class Constants</h2>
+	</div>
+	<div id="credit">
+		<hr>
+		Documentation generated on Mon, 25 May 2009 22:18:00 +0200 by <a href="http://www.phpdoc.org">phpDocumentor 1.4.1</a>
+	</div>
+</div>
+</body>
+</html>
