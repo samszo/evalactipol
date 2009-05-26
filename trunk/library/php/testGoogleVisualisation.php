@@ -1,7 +1,7 @@
 <?php
 
 require_once ('../../param/ParamPage.php');
-require_once('simpletests/autorun.php');
+require_once('simpletest/autorun.php');
 require_once('GoogleVisualisation.php');
 
 class TestOfGoogleVisualisation extends UnitTestCase {
