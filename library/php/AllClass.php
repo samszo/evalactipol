@@ -11,5 +11,6 @@ require_once(CLASS_BASE.'Xul.php');
 require_once(CLASS_BASE.'ExeAjax.php');
 require_once(CLASS_BASE.'GoogleVisualisation.php');
 require_once(CLASS_BASE.'GetSqlInfos.php');
+require_once(CLASS_BASE.'testGoogleVisualisation.php');
 
 ?>
