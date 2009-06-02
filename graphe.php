@@ -8,9 +8,6 @@ if(isset($_GET['id']))
 ?>
 <html>
 	<head>
-	
-		
-		<script type="text/javascript" src="./../jsunit/app/jsUnitCore.js"></script>
 		<script type='text/javascript' src='http://www.google.com/jsapi'></script>
 
 		<script type="application/x-javascript" src="library/js/interface.js"></script>
@@ -30,14 +27,7 @@ if(isset($_GET['id']))
 				var chart = new google.visualization.MotionChart(document.getElementById('chart_div'));
 				//chart.draw(data, {width: 520, height:580});
 				chart.draw(data, {width: 500, height:281});
-			}
-
-			function testdrawChart() 
-			{	
-				//assertTrue(true);
-				assertEquals("01", numDepartement);
-
-			}
+			}		
 
 					    
 		</script>
