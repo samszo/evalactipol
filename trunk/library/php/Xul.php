@@ -325,7 +325,15 @@ class Xul{
 				
 				if ($type == "departement")
 				{
-				$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" >'.EOL;
+				//$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="-1" lng="-1" zoom="10">'.EOL;
+					if ($r[5] == "0.0000000000" && $r[6] == "0.0000000000")
+					{
+					$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="-1" lng="-1" zoom="10">'.EOL;
+					}
+					else
+					{
+					$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="'.$r[5].'" lng="'.$r[6].'" zoom= "10">'.EOL;
+					}
 				}
 				else
 				{
