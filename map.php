@@ -10,6 +10,16 @@ if(isset($_GET['id']))
 else
 	$id = 1;
 
+if(isset($_GET['lat']))
+	$lat = $_GET['lat'];
+else
+	$lat = 1;
+
+if(isset($_GET['lng']))
+	$lng = $_GET['lng'];
+else
+	$lng = 1;
+
 if(isset($_GET['zoom']))
 	$zoom = $_GET['zoom'];
 else
@@ -29,19 +39,36 @@ else
 	var map;
 	var geocoder;
 	var adresse = <?php echo "\"".$adresse."\""; ?>;
-	var id = <?php echo $id; ?>;
+	//var id = <?php echo $id; ?>;
+	var id = <?php echo "\"".$id."\""; ?>;
+	var lat = <?php echo $lat; ?>;
+	var lng = <?php echo $lng; ?>;
 	var zoom = <?php echo $zoom; ?>;
+	
+	//alert (lat);
 	
     function initialize() {
       if (GBrowserIsCompatible()) {
         map = new GMap2(document.getElementById("map_canvas"));
         geocoder = new GClientGeocoder();
- 		showAddress(adresse,id);       
-        map.setUIToDefault();
+ 		
+		if (lat == "-1" || lat == "1" && lng == "-1" || lng == "1")
+		{
+		alert ("if");
+		showAddress(adresse,id);
+		}
+		else
+		{
+		alert ("else");
+		GetMarker(lat,lng,id)
+		}
+        
+		map.setUIToDefault();
       }
     }
 
 	function showAddress(address, id) {
+	
 	  if (geocoder) {
 		  var lat;
 		  var lng;
@@ -54,7 +81,20 @@ else
 			} else {
 			  lat = point.lat();
 			  lng = point.lng();
-			  GetMarker(lat,lng,id)
+			  
+			
+			var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
+			var url = urlExeAjax+"?f=GetLatLngZoom&id="+id+"&lat="+lat+"&lng="+lng+"&zoom="+zoom;
+			
+			p = new XMLHttpRequest();
+			p.onload = null;
+			p.open("GET", url, false);
+			p.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			p.send(null);
+			
+			
+			  
+			GetMarker(lat,lng,id)
 			}
 		  }
 		);
