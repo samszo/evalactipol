@@ -32,7 +32,21 @@
 		$numDepartement = $_GET['numDepartement'];
 	else
 		$numDepartement = -1;
-
+	
+	//Début Partie ajoutée par MTO	
+	if(isset($_GET['lat']))
+		$lat = $_GET['lat'];
+	else
+		$lat = -1;
+	if(isset($_GET['lng']))
+		$lng = $_GET['lng'];
+	else
+		$lng = -1;
+	if(isset($_GET['zoom']))
+		$zoom = $_GET['zoom'];
+	else
+		$zoom = -1;
+	//Fin de la partie ajoutée par MTO
 
 	switch ($fonction) {
 
@@ -69,6 +83,12 @@
 		case 'GetDataAllDepart':
 			$resultat= GetDataAllDepart();
 		break;
+		
+		//Début Partie ajoutée par MTO	
+		case 'GetLatLngZoom':
+			$resultat= GetLatLngZoom($id,$lat,$lng,$zoom);
+		break;
+		//Fin Partie ajoutée par MTO	
 		
 	}
 
@@ -140,6 +160,17 @@ function GetDataAllDepart(){
 
 	return $GoogleVisualisation->GetDataAllDepart();
 }
+
+//Début Partie ajoutée par MTO	
+	function GetLatLngZoom($id,$lat,$lng,$zoom){
+	echo ($id);
+	global $objSite;
+	$GetSqlInfos = new GetSqlInfos ($objSite);
+	//$GoogleVisualisation = new GoogleVisualisation($objSite);
+	$numDepartement = substr ($id,12);
+	return $GetSqlInfos->GetLatLngZoom($numDepartement,$lat,$lng,$zoom);
+}
+//Fin Partie ajoutée par MTO	
 
 
 ?>

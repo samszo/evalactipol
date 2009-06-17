@@ -184,6 +184,18 @@ function GetRubDepute($num)
 	return $result4;
 }
 
+function GetLatLngZoom($numDepartement,$lat,$lng,$zoom)
+{	
+	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+	$db->connect();
+	
+	$sql = "UPDATE geoname SET `lat_geoname`= \"$lat\", `lng_geoname` = \"$lng\", `alt_geoname` = \"$zoom\" WHERE `num_depart_geoname`=\"$numDepartement\" AND `type_geoname`=\"Departement\"  ";
+	
+	$result = $db->query($sql);
+	$db->close();
+	return $result;
+}
+
 public function toASCII($ch) { 
 	$tableau_caracts_html=get_html_translation_table(HTML_ENTITIES);
 	$result=strtr($ch,$tableau_caracts_html);

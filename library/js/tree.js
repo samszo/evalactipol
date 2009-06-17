@@ -21,6 +21,7 @@ function GetTreeSelect(idTree,idTrace,colTrace){
 				c = tree.treeBoxObject.columns[colTrace[0]];
 				
 				//document.getElementById(idTrace).value=tree.view.getCellText(v,c);
+				//alert (v);
 				document.getElementById(idTrace).value = tree.view.getItemAtIndex(v).id;
 				
 				var y = tree.view.getItemAtIndex(v).id;
