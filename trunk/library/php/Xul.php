@@ -335,11 +335,26 @@ class Xul{
 					$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="'.$r[5].'" lng="'.$r[6].'" zoom= "10">'.EOL;
 					}
 				}
+				
+				else if ($type == "depute")
+				{
+				$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false">'.EOL;	
+				}
+				
 				else
 				{
+					
+					if ($r[5] == "0.0000000000" && $r[6] == "0.0000000000")
+					{
+					$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" lat="-1" lng="-1" zoom="10">'.EOL;
+					}
+					else
+					{
+					$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" lat="'.$r[5].'" lng="'.$r[6].'" zoom= "10">'.EOL;
+					}
 				
-				$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" >'.EOL;	
 				}
+				
 				$tree .= '<treerow>'.EOL;
 				$tree .= '<treecell label="'.$valXul.'"/>'.EOL;
 				$tree .= '</treerow>'.EOL;
