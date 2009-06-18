@@ -127,15 +127,6 @@ function GetGoogleVisualisation(idDst,idBox){
 
 }
 
-/*function GetMapVisualisation(idBox){
-	
-	//var url = "map.php";
-	var url = "map.php?adresse=Amiens,France&id=2&zoom=10"; 
-	GoUrl(url,idBox);
-
-}*/
-
-
 function GetMapVisualisation(idDst,idBox){
 	
 	
@@ -145,25 +136,21 @@ function GetMapVisualisation(idDst,idBox){
 		tree.view.selection.getRangeAt(t,start,end);
 		for (var v = start.value; v <= end.value; v++){
 			
-			
 			var id = tree.view.getItemAtIndex(v).id;
-			
 			var ElementTag = document.getElementById(id).getElementsByTagName("treecell")[0];
 			var dptname = ElementTag.getAttribute("label");
 			var latitude = document.getElementById(id).getAttribute("lat");
 			var longitude = document.getElementById(id).getAttribute("lng");
 			var zoom = document.getElementById(id).getAttribute("zoom");
-			//alert (longitude);
+			
 		}
 	}
-	
-	//var url = "map.php";
-	//var url = "map.php?adresse="+dptname+",France&id=2&zoom=10"; 
-	//var url = "map.php?adresse="+dptname+",France&id=2&zoom="+zoom;
-		var url = "map.php?adresse="+dptname+",France&id="+id+"&lat="+latitude+"&lng="+longitude+"&zoom="+zoom; 
-		//alert (url);
-	
+	if (id != "1")
+	{
+	var url = "map.php?adresse="+dptname+",France&id="+id+"&lat="+latitude+"&lng="+longitude+"&zoom="+zoom; 
 	GoUrl(url,idBox);
+	}
+	
 
 }
 
