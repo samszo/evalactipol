@@ -48,10 +48,6 @@
 	
 	<vbox class="BoiteV" flex="6" >
 		
-		<splitter collapse="before" >
-			<grippy/>
-		</splitter>
-		
 		<hbox id='trees' flex="1" class="BoiteV" context="popterre">
 			<vbox class="BoiteV" flex="1" >
 				<hbox id='treeDepute' flex="1" class="BoiteV" context="popterre"></hbox>
@@ -60,20 +56,28 @@
 				<hbox id='libCanton' flex="1" class="BoiteV" context="popterre"></hbox>
 			</vbox>
 		</hbox>
-			
+		
+		<splitter collapse="before" >
+			<grippy/>
+		</splitter>	
+		
 		<hbox id='liste' flex="1" class="BoiteV" context="popterre"></hbox>
-			<splitter collapse="before" hidden="true">
-				<grippy/>
-			</splitter>
+		
+		<splitter collapse="before" hidden="true">
+			<grippy/>
+		</splitter>
+		
 		<hbox id='tagcloud' flex="1" class="BoiteV" context="popterre" hidden="true"></hbox>
 			
 	</vbox>
 	
+	
 	<vbox class="BoiteV" width="500">
+		
+		<hbox id='carte' flex="1" class="BoiteV" context="popterre" hidden="false"></hbox>
 		<splitter collapse="before" >
 			<grippy/>
 		</splitter>
-		<hbox id='carte' flex="1" class="BoiteV" context="popterre" hidden="false"></hbox>
 		<hbox id='libGoogleVisu' flex="1" class="BoiteV" context="popterre"></hbox>
 		
 	</vbox>
