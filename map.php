@@ -51,15 +51,15 @@ else
       if (GBrowserIsCompatible()) {
         map = new GMap2(document.getElementById("map_canvas"));
         geocoder = new GClientGeocoder();
- 		
+ 		//Si on a pas la lat et la lng dans la BD, on les calcule en donnant l'adresse 
+		//du géoname à la fct showAddress().
 		if (lat == "-1" || lat == "1" && lng == "-1" || lng == "1")
 		{
-		alert ("if");
 		showAddress(adresse,id);
 		}
+		//Sinon, on affiche la map selon les lat, lng et zoom extrait de la BD
 		else
 		{
-		alert ("else");
 		GetMarker(lat,lng,id)
 		}
         
@@ -82,7 +82,8 @@ else
 			  lat = point.lat();
 			  lng = point.lng();
 			  
-			
+			//Une fois les lat, lng calculées par showadress(), on les envoie
+			//à la fct GetLatLngZoom() qui va les insérer dans la BD selon l'id
 			var urlExeAjax = "http://localhost/evalactipol/library/php/ExeAjax.php";
 			var url = urlExeAjax+"?f=GetLatLngZoom&id="+id+"&lat="+lat+"&lng="+lng+"&zoom="+zoom;
 			
@@ -92,8 +93,7 @@ else
 			p.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 			p.send(null);
 			
-			
-			  
+			//Affichage de la map selon les lat, lng et zoom  
 			GetMarker(lat,lng,id)
 			}
 		  }
