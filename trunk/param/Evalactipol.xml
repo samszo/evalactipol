@@ -32,15 +32,16 @@
 				<from>  FROM `depute`
 				</from>
 				<where def="1942">  WHERE `num_depart_depute`= "-parent-" </where>
+				<js evt="onselect" function="GetTreeSelect('tree2','tree2',[0,1]);GetMapVisualisation('tree2','carte');"/>
 				
 				
 			</Query>
 			
 			<Query fonction="GetTreeChildren_cantons">
-				<!-- récupère par rapport au parent les rubriques qui ont un mot clef type de territoire-->
+				
 				<col tag="id" parse="Integer"/>
 				<col tag="titre"/>
-				<select>SELECT `id_geoname`,`nom_geoname`</select>
+				<select>SELECT *,-1</select>
 				<from> FROM `geoname`
 				</from>
 				<where def="1942"> WHERE `type_geoname` = "Canton" AND `circonscriptions_geoname`= "-parent-" AND `num_depart_geoname`= "-parent_depart-" </where>
