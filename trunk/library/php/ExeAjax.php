@@ -163,12 +163,26 @@ function GetDataAllDepart(){
 
 //Début Partie ajoutée par MTO	
 	function GetLatLngZoom($id,$lat,$lng,$zoom){
-	echo ($id);
+	
 	global $objSite;
 	$GetSqlInfos = new GetSqlInfos ($objSite);
-	//$GoogleVisualisation = new GoogleVisualisation($objSite);
-	$numDepartement = substr ($id,12);
-	return $GetSqlInfos->GetLatLngZoom($numDepartement,$lat,$lng,$zoom);
+	//Le type peut être de la forme departement_(num de département) ou cantons_(l'id du canton dans la BD).
+	//Donc, il faut extraire le type.
+	$type = $GetSqlInfos->extractBetweenDelimeters($id,"","_");
+	if ($type == "departement")
+	{
+	//Si le type est departement, on extrait le num de département
+	$identifiant = substr ($id,12);
+	}
+	else
+	{
+	//Si le type est un canton, on extrait le l'id du canton dans la BD
+	$identifiant = substr ($id,8);
+	}
+	//On appelle la fct GetLatLngZoom qui va insérer la lat,lng et zoom selon le type
+	return $GetSqlInfos->GetLatLngZoom($identifiant,$lat,$lng,$zoom,$type);
+	/*$numDepartement = substr ($id,12);
+	return $GetSqlInfos->GetLatLngZoom($numDepartement,$lat,$lng,$zoom);*/
 }
 //Fin Partie ajoutée par MTO	
 
