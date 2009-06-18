@@ -184,12 +184,19 @@ function GetRubDepute($num)
 	return $result4;
 }
 
-function GetLatLngZoom($numDepartement,$lat,$lng,$zoom)
+function GetLatLngZoom($identifiant,$lat,$lng,$zoom,$type)
 {	
 	$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
 	$db->connect();
 	
-	$sql = "UPDATE geoname SET `lat_geoname`= \"$lat\", `lng_geoname` = \"$lng\", `alt_geoname` = \"$zoom\" WHERE `num_depart_geoname`=\"$numDepartement\" AND `type_geoname`=\"Departement\"  ";
+	if ($type == "departement")
+	{
+	$sql = "UPDATE geoname SET `lat_geoname`= \"$lat\", `lng_geoname` = \"$lng\", `alt_geoname` = \"$zoom\" WHERE `num_depart_geoname`=\"$identifiant\" AND `type_geoname`=\"Departement\"  ";
+	}
+	else
+	{
+	$sql = "UPDATE geoname SET `lat_geoname`= \"$lat\", `lng_geoname` = \"$lng\", `alt_geoname` = \"$zoom\" WHERE `id_geoname`=\"$identifiant\" AND `type_geoname`=\"canton\" ";
+	}
 	
 	$result = $db->query($sql);
 	$db->close();
@@ -207,6 +214,12 @@ public function NoASCII($ch) {
 	$tableau_caracts_Nonhtml = array_flip($tableau_caracts_html);
 	$result=strtr($ch,$tableau_caracts_Nonhtml);
 	return $result;  
+}
+public function extractBetweenDelimeters($inputstr,$delimeterLeft,$delimeterRight)
+{
+	$posLeft  = stripos($inputstr,$delimeterLeft)+strlen($delimeterLeft);
+	$posRight = stripos($inputstr,$delimeterRight,$posLeft+1);
+	return  substr($inputstr,$posLeft,$posRight-$posLeft);
 }
 
 }	
