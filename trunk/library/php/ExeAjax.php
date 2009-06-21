@@ -46,6 +46,10 @@
 		$zoom = $_GET['zoom'];
 	else
 		$zoom = -1;
+	if(isset($_GET['id_depute']))
+		$id_depute = $_GET['id_depute'];
+	else
+		$id_depute = -1;
 	//Fin de la partie ajoutée par MTO
 
 	switch ($fonction) {
@@ -89,7 +93,9 @@
 			$resultat= GetLatLngZoom($id,$lat,$lng,$zoom);
 		break;
 		//Fin Partie ajoutée par MTO	
-		
+		case 'GetTagcloud':
+			$resultat= GetTagcloud($id_depute);
+		break;
 	}
 
 	echo $resultat;  
@@ -181,10 +187,26 @@ function GetDataAllDepart(){
 	}
 	//On appelle la fct GetLatLngZoom qui va insérer la lat,lng et zoom selon le type
 	return $GetSqlInfos->GetLatLngZoom($identifiant,$lat,$lng,$zoom,$type);
-	/*$numDepartement = substr ($id,12);
-	return $GetSqlInfos->GetLatLngZoom($numDepartement,$lat,$lng,$zoom);*/
+	
 }
-//Fin Partie ajoutée par MTO	
+//Fin Partie ajoutée par MTO
+
+function GetTagcloud ($id_depute){
+	global $objSite;
+	$identifiant = substr ($id_depute,7);
+	
+	//$oTC = new TagCloud($objSite,$oDelicious,$lang,$_GET['login']);
+	$oTC = new TagCloud($objSite,$oDelicious,$lang,$identifiant);
+	header("Content-type: image/svg+xml");
+
+	$TC=="posts";
+		//$oTC->GetSvgPost($_GET['login'],$ShowAll,$TempsVide,$DateDeb,$DateFin,$NbDeb,$NbFin);
+		return $oTC->GetPosts($identifiant);
+	
+	//$identifiant = substr ($id_depute,7);
+	//return GetPosts($id_depute);
+}
+
 
 
 ?>
