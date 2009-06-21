@@ -37,6 +37,7 @@ function ChargeListTreesFromAjax(idDst,type)
 		{
 			setunhidden('libCanton');
 			setunhidden('liste');
+			setunhidden('tagcloud');
 			
 		}
 
@@ -69,7 +70,26 @@ function ChargeListBoxFromAjax(idDst,type)
 	} catch(ex2){alert(":ChargeListBoxFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
 
 }
+function ChargeTagcloudFromAjax(idDst,type)
+{
 
+	try 
+	{
+		var doc = document.getElementById(idDst);
+		var id_depute = document.getElementById(idDst).value;
+		//alert (id_depute);
+		//if (id_depute != "1")
+		//{	
+			//var url = "http://localhost/evalactipol/library/php/tagcloud1.php?login="+id;
+			var url = urlExeAjax2+"?f=GetTagcloud&id_depute="+id_depute;
+			//alert (url);
+			AppendResult(url,doc);
+			dump("ChargeTagcloudFromAjax OUT\n");
+		//}
+		
+	} catch(ex2){alert(":ChargeTagcloudFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
+
+}
 function setunhidden(idDst)
 {
 
