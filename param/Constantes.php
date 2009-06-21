@@ -8,14 +8,19 @@
 
 
   // *** chemin de toutes les bases et les spip en service ***
-  define("CLASS_BASE", PathRoot."/library/php/");
+	define("CLASS_BASE", PathRoot."/library/php/");
+  // *** Define the path to the SVG class dir. ***
+	define("SVG_CLASS_BASE", PathRoot."/library/svg/");
   // Include the class files.
   require_once(CLASS_BASE."AllClass.php");
+  
 
   define("LIFETIME",10000);
   define("CACHEPATH",PathRoot."/bdd/extract/");
   
   define ("DEFSITE", "local");
+  define ("CACHETIME", 100000000);
+  define('CACHE_PATH', PathRoot.'/bdd/extract/');   
   define ("TRACE", false);
   
   $dbOptions = array (
