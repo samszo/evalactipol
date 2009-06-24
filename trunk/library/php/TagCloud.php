@@ -73,6 +73,7 @@ class TagCloud {
 	{
 		//r?cup?re les Posts
 		$Posts = $this->GetPosts($login);
+		
 		if($Posts) {
         	if($this->trace)
 		    	echo "TagCloud:GetSvgPost:book".print_r($Posts)."<br/>";
@@ -731,12 +732,23 @@ class TagCloud {
 			$result1 = $db->fetch_row($result);
 			$result2[$i] = $result1;
 			
-			$result3["titre"] = $result2[$i][2];
+			$result3["titre"][$i] = $result2[$i][5];
+			$result3["pubdate"][$i] = $result2[$i][6];
+			$result3["category"][$i] = array ("value" => html_entity_decode($result2[$i][2]), "nb" => $result2[$i][0]);
+			
 		}
+		
+		/*while ($row = $db->fetch_assoc($result)) {
+		$result3["titre"] = $row["num_question"];
+		$result3["pubdate"] = $row["date_publication"];
+		$result3["category"] = $row["valeur_motclef"];
+		}*/
 		$db->close();
-		//echo $result2[0][3];
-		//return array ($result2,$num1);
-		return $result3["titre"];
+		
+		//return $result3["titre"][2];
+		//return $result3;
+		//print_r ($result3);
+		return $result3["category"][2]["value"];
 		
 	}
 	
