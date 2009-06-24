@@ -201,7 +201,6 @@ function GetTagcloud ($id_depute){
 	$NbDeb = 0;
 	$NbFin = 10;
 	
-	
 	//$oTC = new TagCloud($objSite,$oDelicious,$lang,$_GET['login']);
 	$oTC = new TagCloud($objSite,$oDelicious,$lang,$identifiant);
 	header("Content-type: image/svg+xml");
@@ -209,7 +208,7 @@ function GetTagcloud ($id_depute){
 	$TC=="posts";
 		//$oTC->GetSvgPost($_GET['login'],$ShowAll,$TempsVide,$DateDeb,$DateFin,$NbDeb,$NbFin);
 		return $oTC->GetPosts($identifiant);
-	//return $oTC->GetSvgPost($identifiant,$ShowAll,$TempsVide,$DateDeb,$DateFin,$NbDeb,$NbFin);
+		//return $oTC->GetSvgPost($identifiant,$ShowAll,$TempsVide,$DateDeb,$DateFin,$NbDeb,$NbFin);
 	
 }
 
