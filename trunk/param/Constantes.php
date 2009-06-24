@@ -42,6 +42,10 @@
   $SITES = array(
 	"local" => $Site
     );
+	
+	define ("PathWeb",$SITES[DEFSITE]["PATH_WEB"]);
+	define ("jsPathWeb",PathWeb."library/js/");
+	define ("ajaxPathWeb",PathWeb."library/php/ExeAjax.php");
 
   
 ?>
