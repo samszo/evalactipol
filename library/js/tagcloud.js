@@ -2,7 +2,7 @@
     //tag pour ne pas recharger le svg pendant qu'on initialise les paramètres des outils
 	var urlTagCloud = "tagcloud.php";
     var SetParamOutil;
-    var UrlExaSvg = urlAjax+"library/php/ExeAjax.php?f=GetExaIEML&codeIeml=";
+    //var UrlExaSvg = urlAjax+"library/php/ExeAjax.php?f=GetExaIEML&codeIeml=";
 
 	function VoirTrad(){
 		try {
