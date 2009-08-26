@@ -17,7 +17,7 @@
 
 class Xul{
     /**
-    * L'ientifiant de la branche sélectionnée de la tree dans l'interface principale
+    * L'identifiant de la branche sélectionnée de la tree dans l'interface principale
     *
 	* @access public
     * @var string $id
@@ -215,7 +215,7 @@ class Xul{
 	
 	/**
     * Cette fonction permet de construire le code des trees, avec la syntaxe de Xul, pour 
-	* l'interface de gestion de l'appliation. Le Xul est construit au chargement 
+	* l'interface de gestion de l'application. Le Xul est construit au chargement 
 	* de la page et en cliquant sur n'importe quelle branche dans les trees existantes
 	* pour créer d'autres trees	
 	*
@@ -277,7 +277,7 @@ class Xul{
 	}
 	
 	/**
-    * Cette fonction est appelée par GetTree() pour construire la balise
+    * Cette fonction est appelée par GetTree_load() pour construire la balise
 	* <treechildren> du code des trees.
 	*
     * @param string $type 
@@ -326,13 +326,13 @@ class Xul{
 				if ($type == "departement")
 				{
 				//$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="-1" lng="-1" zoom="10">'.EOL;
-					if ($r[5] == "0.0000000000" && $r[6] == "0.0000000000")
+					if ($r[5] == "0.00000000000000" && $r[6] == "0.00000000000000" && $r[7] == "0.00000000000000")
 					{
 					$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="-1" lng="-1" zoom="10">'.EOL;
 					}
 					else
 					{
-					$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="'.$r[5].'" lng="'.$r[6].'" zoom= "10">'.EOL;
+					$tree .= '<treeitem id="'.$type."_".$r[3].'" container="true" open="false" lat="'.$r[5].'" lng="'.$r[6].'" zoom= "'.$r[7].'">'.EOL;
 					}
 				}
 				
@@ -344,13 +344,13 @@ class Xul{
 				else
 				{
 					
-					if ($r[5] == "0.0000000000" && $r[6] == "0.0000000000")
+					if ($r[5] == "0.00000000000000" && $r[6] == "0.00000000000000" && $r[7] == "0.00000000000000")
 					{
 					$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" lat="-1" lng="-1" zoom="10">'.EOL;
 					}
 					else
 					{
-					$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" lat="'.$r[5].'" lng="'.$r[6].'" zoom= "10">'.EOL;
+					$tree .= '<treeitem id="'.$type."_".$r[0].'" container="true" open="false" lat="'.$r[5].'" lng="'.$r[6].'" zoom= "'.$r[7].'">'.EOL;
 					}
 				
 				}
@@ -377,7 +377,7 @@ class Xul{
 	
 	/**
     * Cette fonction est appelée par la fonction ExeAjax.php. Elle permet
-	* de calculer les valeurs qui permettrent de construire les trees en xul.
+	* de calculer les valeurs qui permettent de construire les trees en xul.
 	*
     * @param string $id l'identifiant de la branche de la tree en cours
     * @param string $type le type de la tree en cours 
@@ -426,7 +426,7 @@ class Xul{
 	
 	/**
     * Cette fonction est appelée par la fonction ExeAjax.php. Elle permet
-	* de calculer les valeurs qui permettrent de construire les listbox en xul.
+	* de calculer les valeurs qui permettent de construire les listbox en xul.
 	*
     * @param string $id l'identifiant de la branche de la tree en cours
     * @param string $type le type de la tree en cours 
@@ -461,6 +461,7 @@ class Xul{
 function GetListbox($result_sql,$type,$Q)
 	{	
 		//$listbox = '<listbox width="450px" height="5px">';
+		
 		$listbox = '<listbox flex="1">';
 			$listbox .= '<listhead>';
 				$listbox .= '<listheader label="Informations"></listheader>';
@@ -489,6 +490,8 @@ function GetListbox($result_sql,$type,$Q)
 				$listbox .= $this->GetListItem($result_sql[7],$Q[0]->Circonscription."");
 		}
 		$listbox .= '</listbox>';
+		//$listbox = '<img id="foo" src="smiley.jpg"/>';
+		 	
 	return $listbox;
 	}
 function GetListboxSimple($result_sql,$titreListe)
@@ -539,7 +542,10 @@ function GetListItem($result_sql,$titreListe)
 		$listbox = '<listitem>';
 			$listbox .= '<listcell label="'.$titreListe.'"></listcell>';
 			$listbox .= '<listcell label="'.html_entity_decode($result_sql).'"></listcell>';
+			
 		$listbox .= '</listitem>';
+		
+		
 	return $listbox;
 	}
 

@@ -73,6 +73,7 @@ class TagCloud {
 	{
 		//r?cup?re les Posts
 		$Posts = $this->GetPosts($login);
+		//return; 
 		
 		if($Posts) {
         	if($this->trace)
@@ -255,8 +256,16 @@ class TagCloud {
 			}						
 		}
 	}
-	
-	function CalculStyle($ieml){
+	function CalculStyle(){
+		
+			$color = $this->rgb2hex(array(rand(0, 255),rand(0, 255),rand(0, 255)));
+			//$style = "fill:#".$color.";fill-opacity:0.3;";
+			$style = "fill:forestgreen;fill-opacity:0.3;";
+		
+		
+		return $style;
+	}
+	/*function CalculStyle($ieml){
 		//vérifie la langue
 		if($this->lang=="ieml"){
 			if($ieml!=""){
@@ -277,9 +286,9 @@ class TagCloud {
 		}
 		
 		return $style;
-	}
+	}*/
 
-	function CalculScript($ieml){
+	/*function CalculScript($ieml){
 		if($ieml!=""){
 			$script = "onclick=\"";
 			$trad = "no";
@@ -305,11 +314,51 @@ class TagCloud {
 		//ajoute le type de traduction
 		$trad = " trad='".$trad."' ";
 		return $script.$trad;
-	}
-	
+	}*/
 	function CalculTags($tags,$NbDeb,$NbFin){
 		
-		$sem = new Sem($this->site);
+		//$sem = new Sem($this->site);
+		
+		//calcul les intervales
+		$this->nbTag=0;
+		$this->arrTags=array();
+		foreach($tags as  $tag)
+		{
+			//$nb = $tag->description+0;//+0 : g?rer des nombres
+			$nb = $tag["description"]+0;//+0 : g?rer des nombres
+			//v?rifie que le nb est dans l'interval
+			if($nb>=$NbDeb && $nb<=$NbFin){
+				$this->nbTag ++;
+				
+				//récupère toute les traductions ieml
+				//$ieml = $sem->GetIemlTrad($tag->title); 
+				
+				//calcul le style
+				//$style = $this->CalculStyle($ieml);
+				$style = $this->CalculStyle();
+				
+				//array_push($this->arrTags, array("tag"=>$tag->title,"nb"=>$nb,"style"=>$style,"ieml"=>$ieml));
+				array_push($this->arrTags, array("tag"=>$tag["title"],"nb"=>$nb,"style"=>$style));
+		    	$this->TagNbTot += $nb;
+				//enregistre les intervalles d'occurence
+		    	if($this->TagNbMax < $nb)
+					$this->TagNbMax = $nb;
+				if($this->TagNbMin > $nb  || !$this->TagNbMin)
+					$this->TagNbMin=$nb;				
+				//calcul le nb de caract?re maximum d'une ligne
+				//$nbCar = $this->GetLargeurBoiteTexte($tag->title);
+				$nbCar = $this->GetLargeurBoiteTexte($tag["title"]);	
+				if($this->PostCarMax < $nbCar){
+					$this->PostCarMax = $nbCar;
+				}
+			}
+		}
+		$this->IntVals[0] = ($this->TagNbMax-$this->TagNbMin)/3;
+		$this->IntVals[1] = ($this->TagNbMax-$this->TagNbMin)/1.5;		
+	}
+	/*function CalculTags($tags,$NbDeb,$NbFin){
+		
+		//$sem = new Sem($this->site);
 		
 		//calcul les intervales
 		$this->nbTag=0;
@@ -322,12 +371,12 @@ class TagCloud {
 				$this->nbTag ++;
 				
 				//récupère toute les traductions ieml
-				$ieml = $sem->GetIemlTrad($tag->title); 
+				//$ieml = $sem->GetIemlTrad($tag->title); 
 				
 				//calcul le style
-				$style = $this->CalculStyle($ieml);
+				//$style = $this->CalculStyle($ieml);
 				
-				array_push($this->arrTags, array("tag"=>$tag->title,"nb"=>$nb,"style"=>$style,"ieml"=>$ieml));
+				//array_push($this->arrTags, array("tag"=>$tag->title,"nb"=>$nb,"style"=>$style,"ieml"=>$ieml));
 		    	$this->TagNbTot += $nb;
 				//enregistre les intervalles d'occurence
 		    	if($this->TagNbMax < $nb)
@@ -343,11 +392,11 @@ class TagCloud {
 		}
 		$this->IntVals[0] = ($this->TagNbMax-$this->TagNbMin)/3;
 		$this->IntVals[1] = ($this->TagNbMax-$this->TagNbMin)/1.5;		
-	}
+	}*/
 	
 	function CalculPosts($Posts,$DateDeb,$DateFin,$NbDeb,$NbFin){
-
-		$sem = new Sem($this->site);
+	//print_r ($Posts);
+		//$sem = new Sem($this->site);
 		
 		//calcul les dates et les max
 		$this->PostNb=0;
@@ -364,7 +413,9 @@ class TagCloud {
 		foreach($Posts as  $post)
 		{
 			//http://fr2.php.net/manual/fr/book.datetime.php#84699
-			$dPost = new DateTime($post->pubDate);
+			//$dPost = new DateTime($post->pubDate);
+			$dPost = new DateTime($post["pubDate"]);
+			
 			//v?rifie les dates
 			if($this->VerifInDate($dPost,$dDeb,$dFin)){
 				//incr?mente le nombre de post
@@ -377,25 +428,27 @@ class TagCloud {
 	    		if($this->PostNb==1)
 					$this->TagDateDeb = $dPost;
 	    		
-				array_push($arrPosts, array("post"=>$post,"date"=>$dPost,"diff"=>$dDiff,"tags"=>$post->category));
-				foreach($post->category as $cat){
-										
+				array_push($arrPosts, array("post"=>$post,"date"=>$dPost,"diff"=>$dDiff,"tags"=>$post["category"]));
+				//foreach($post->category as $cat){
+				foreach($post["category"] as $cat){
+					
 					//construction de la clef
 					$keyTag = $this->strtokey($cat."");
 					//v?rifie si le tag est d?j? conserv?
-					if (!$arrTags[$keyTag]) {
+					//if (!$arrTags[$keyTag]) {
 						//récupère la traduction ieml
-						$ieml = $sem->GetIemlTrad($cat[0]); 
+						//$ieml = $sem->GetIemlTrad($cat[0]); 
 						
 						//calcul le style
-						$style = $this->CalculStyle($ieml);
+						//$style = $this->CalculStyle($ieml);
 
 						//conserve le tag
-						$arrTags[$keyTag]= array("tag"=>$cat,"nb"=>1,"style"=>$style,"ieml"=>$ieml);
-					}else{
+						//$arrTags[$keyTag]= array("tag"=>$cat,"nb"=>1,"style"=>$style,"ieml"=>$ieml);
+					//}else{
 						//incr?mente le nombre de tag 
+						
 						$arrTags[$keyTag]["nb"]++;
-					}
+					//}
 				}
 			}
 		}
@@ -418,10 +471,12 @@ class TagCloud {
 			$nbCar = 0;
 			$nb = 0;
 			$PostLargMax=0;
-			foreach($post["post"]->category as $cat){
+			//foreach($post["post"]->category as $cat){
+			//echo $post["category"];
+			foreach($post["category"] as $cat){
 				foreach($arrTags as  $tag)
 				{
-					if($cat.""==$tag["tag"].""){
+					if($cat["value"].""==$tag["tag"].""){
 						if($tag["nb"]>=$NbDeb && $tag["nb"]<=$NbFin){
 							$TagIn = true;
 							//calcul la taille max de la ligne
@@ -543,14 +598,14 @@ class TagCloud {
 		$lib = $this->SVG_entities($tag["tag"]);
 		
 		//calcul le script
-		$script = $this->CalculScript($tag["ieml"]);
+		//$script = $this->CalculScript($tag["ieml"]);
 		//$script = "onclick=\"alert('".$lib." (".$nb.") ".str_replace("'","\'",$tag["ieml"])." ')\"";
 		//$script = " onmouseover=\"GrossiMaigriTag(evt)\"";
 		//$script .= " onmouseleave=\"MaigriTag(evt)\"";
 		//$script .= " grossi='non'";
 		
 		//ajoute le cercle
-		$g->addChild(new SvgCircle($this->xTC,$this->yTC,$r,$style,"",$script,$tag["ieml"]["idFlux"]));
+		//$g->addChild(new SvgCircle($this->xTC,$this->yTC,$r,$style,"",$script,$tag["ieml"]["idFlux"]));
 		
 	  	//ajoute le texte
 		$s = "fill:black;font-size:".$fontsize."px;";
@@ -559,12 +614,12 @@ class TagCloud {
   		
   		
 		//ajoute si la langue est ieml
-  		if($this->lang=="ieml"){
+  		/*if($this->lang=="ieml"){
   			//les traduction proposées
 	  		$g->addChild($this->AddTagTrad($j, $tag["ieml"], $r, $fontsize));
   			//l'exagramme 
   			$g->addChild($this->AddTagExa($j, $tag["ieml"], $r));
-  		}
+  		}*/
   		
 		//enregistre la largeur maximale
 		$maxLarg = $this->xTC+($r*2);
@@ -702,11 +757,79 @@ class TagCloud {
 	
 	function GetTags($login) {
 
-		//r?cup?re le boobkmark
-    	$xml = simplexml_load_string($this->oDlcs->GetUserTags($login));
-    	//recup?re les tags
-        $tags = $xml->xpath('/rss/channel/item');        
-        return $tags;
+		
+    	/*$xml = simplexml_load_string($this->oDlcs->GetUserTags($login));
+    	$tags = $xml->xpath('/rss/channel/item');        
+        return $tags;*/
+		
+		/*$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+		$db->connect();
+		$sql = "SELECT COUNT( * ) nb, mc.id_motclef, valeur_motclef, nom_depute, prenom_depute, num_question, date_publication FROM `mot-clef` mc INNER JOIN `quest-mc` qmc ON qmc.id_motclef = mc.id_motclef INNER JOIN `questions` q ON q.id_question = qmc.id_question INNER JOIN depute d ON d.id_depute = q.id_depute AND d.id_depute =".$login." GROUP BY mc.id_motclef";     
+		//$result = $db->query(utf8_decode($sql));
+		$result = $db->query($sql);
+		$num1 = $db->num_rows($result);
+		
+		$arrResult = array();
+		while ($r = $db->fetch_assoc($result)) {
+			$arrResult[] = array(
+				
+				"description"=> $r["nb"],	
+				"title"=> html_entity_decode($r["valeur_motclef"])
+				//"category"=> array ("value" => html_entity_decode($r["valeur_motclef"]), "nb" => $r["nb"]  )		
+				);
+		}
+		$db->close();
+		return $arrResult;*/
+		
+		$db=new mysql ($this->site->infos["SQL_HOST"],$this->site->infos["SQL_LOGIN"],$this->site->infos["SQL_PWD"],$this->site->infos["SQL_DB"]);
+		$db->connect();
+		$sql = "SELECT COUNT( * ) nb, mc.id_motclef, valeur_motclef, nom_depute, prenom_depute, num_question, date_publication FROM `mot-clef` mc INNER JOIN `quest-mc` qmc ON qmc.id_motclef = mc.id_motclef INNER JOIN `questions` q ON q.id_question = qmc.id_question INNER JOIN depute d ON d.id_depute = q.id_depute AND d.id_depute =".$login." GROUP BY mc.id_motclef";     
+		//$result = $db->query(utf8_decode($sql));
+		$result = $db->query($sql);
+		$num1 = $db->num_rows($result);
+		
+		$arrResult = array();
+		while ($r = $db->fetch_assoc($result)) {
+			/*$arrResult[] = array(
+				
+				"description"=> $r["nb"],	
+				"title"=> html_entity_decode($r["valeur_motclef"])
+						
+				);*/
+				$x = html_entity_decode($r["valeur_motclef"]);
+				$y = $r["nb"];
+			$sql1 = "INSERT INTO `tags` ( `id` , `tags`, `item_id` ) VALUES ('', \"$x\", \"$y\")";
+			$result1 = $db->query($sql1);
+			
+		}
+		
+		define("MIN_SIZE", 9);
+		define("MAX_SIZE", 36);
+
+		$result = mysql_query("SELECT tags, count(*) as number FROM tags GROUP BY tags ORDER BY tags") or die(mysql_error());
+
+		$min = MAX_INT;
+		$max = -MAX_INT;
+
+		while ($tag = mysql_fetch_assoc($result)) {
+			//if ($tag['number'] < $min) $min = $tag['number'];
+			//if ($tag['number'] > $max) $max = $tag['number'];
+			$min = 1;
+			$max = 2;
+			$tags[] = $tag;
+		}
+
+		$min_size = MIN_SIZE;
+		$max_size = MAX_SIZE;
+
+		foreach ($tags as $tag) {
+			$tag['size'] = intval($min_size + (($tag['number'] - $min) * (($max_size - $min_size) / ($max - $min))));
+			$tags_extended[] = $tag;
+		}
+		
+		$db->close();
+		return $tags_extended;
+		//return $arrResult;	
 		
 	}
 
@@ -726,29 +849,17 @@ class TagCloud {
 		$result = $db->query($sql);
 		$num1 = $db->num_rows($result);
 		
-		$result2 = NULL;
-		for ($i=0;$i<=$num1-1;$i++)
-		{
-			$result1 = $db->fetch_row($result);
-			$result2[$i] = $result1;
-			
-			$result3["titre"][$i] = $result2[$i][5];
-			$result3["pubdate"][$i] = $result2[$i][6];
-			$result3["category"][$i] = array ("value" => html_entity_decode($result2[$i][2]), "nb" => $result2[$i][0]);
-			
+		$arrResult = array();
+		while ($r = $db->fetch_assoc($result)) {
+			$arrResult[] = array(
+				"titre"=> $r["num_question"],	
+				"pubDate"=> $r["date_publication"],
+				"category"=> array ("value" => html_entity_decode($r["valeur_motclef"]), "nb" => $r["nb"]  )
+				
+				);
 		}
-		
-		/*while ($row = $db->fetch_assoc($result)) {
-		$result3["titre"] = $row["num_question"];
-		$result3["pubdate"] = $row["date_publication"];
-		$result3["category"] = $row["valeur_motclef"];
-		}*/
 		$db->close();
-		
-		//return $result3["titre"][2];
-		//return $result3;
-		//print_r ($result3);
-		return $result3["category"][2]["value"];
+		return $arrResult;     
 		
 	}
 	

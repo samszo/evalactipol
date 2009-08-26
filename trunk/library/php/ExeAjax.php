@@ -194,7 +194,7 @@ function GetDataAllDepart(){
 function GetTagcloud ($id_depute){
 	global $objSite;
 	$identifiant = substr ($id_depute,7);
-	$ShowAll = true;
+	$ShowAll = false;
 	$TempsVide = true;
 	$DateDeb = false;
 	$DateFin = false;
@@ -203,13 +203,15 @@ function GetTagcloud ($id_depute){
 	
 	//$oTC = new TagCloud($objSite,$oDelicious,$lang,$_GET['login']);
 	$oTC = new TagCloud($objSite,$oDelicious,$lang,$identifiant);
-	header("Content-type: image/svg+xml");
+	//header("Content-type: image/svg+xml");
 
 	$TC=="posts";
 		//$oTC->GetSvgPost($_GET['login'],$ShowAll,$TempsVide,$DateDeb,$DateFin,$NbDeb,$NbFin);
-		return $oTC->GetPosts($identifiant);
-		//return $oTC->GetSvgPost($identifiant,$ShowAll,$TempsVide,$DateDeb,$DateFin,$NbDeb,$NbFin);
-	
+		//return $oTC->GetPosts($identifiant);
+		//return utf8_encode($oTC->GetSvgPost($identifiant,$ShowAll,$TempsVide,$DateDeb,$DateFin,$NbDeb,$NbFin));
+		
+		//return $oTC->GetSvgTag($identifiant,$ShowAll,$NbDeb,$NbFin);
+		return $oTC->GetTags($identifiant);
 }
 
 
