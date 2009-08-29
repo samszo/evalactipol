@@ -66,8 +66,8 @@
 		<splitter collapse="before" hidden="false">
 			<grippy/>
 		</splitter>
-		
 		<hbox id='tagcloud' flex="1" class="BoiteV" context="popterre" hidden="false"></hbox>
+		
 			
 	</vbox>
 	

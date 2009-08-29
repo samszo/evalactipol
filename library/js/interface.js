@@ -70,7 +70,7 @@ function ChargeListBoxFromAjax(idDst,type)
 	} catch(ex2){alert(":ChargeListBoxFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
 
 }
-function ChargeTagcloudFromAjax(idDst,type)
+/*function ChargeTagcloudFromAjax(idDst,type)
 {
 
 	try 
@@ -85,7 +85,32 @@ function ChargeTagcloudFromAjax(idDst,type)
 		
 	} catch(ex2){alert(":ChargeTagcloudFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	
 
+}*/
+
+function ChargeTagcloudFromAjax(idDst,idBox)
+{
+
+	/*try 
+	{
+		var doc = document.getElementById(idDst);
+		var id_depute = document.getElementById(idDst).value;
+		
+		var url = urlExeAjax2+"?f=GetTagcloud&id_depute="+id_depute;
+		AppendResult(url,doc);
+		dump("ChargeTagcloudFromAjax OUT\n");
+		
+		
+	} catch(ex2){alert(":ChargeTagcloudFromAjax:"+ex2+" url="+url);dump("::"+ex2);}	*/
+	
+	//var url = "map.php?adresse="+dptname+",France&id="+id+"&lat="+latitude+"&lng="+longitude+"&zoom="+zoom; 
+	var id = document.getElementById(idDst).value;
+	
+	//var url = "library/php/nuagemot-floptwo.php"; 
+	var url = "library/php/nuagemot-floptwo.php"+"?id="+id;
+	GoUrl(url,idBox);
+
 }
+
 function setunhidden(idDst)
 {
 
@@ -166,8 +191,6 @@ function GetMapVisualisation(idDst,idBox){
 	var url = "map.php?adresse="+dptname+",France&id="+id+"&lat="+latitude+"&lng="+longitude+"&zoom="+zoom; 
 	GoUrl(url,idBox);
 	}
-	
-
 }
 
 function GoUrl(url,idBox){
