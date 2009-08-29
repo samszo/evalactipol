@@ -19,7 +19,7 @@
 				</from>
 				<nextfct>depute</nextfct>
 				<where def="1942"> WHERE `type_geoname`= "Departement" </where>
-				<js evt="onselect" function="GetTreeSelect('tree1','libCanton',[0,1]);ChargeListTreesFromAjax('libCanton','departement');GetTreeSelect('tree1','liste',[0,1]);ChargeListBoxFromAjax('liste','departement');GetTreeSelect('tree1','tagcloud',[0,1]);ChargeTagcloudFromAjax('tagcloud','departement');"/>
+				<js evt="onselect" function="GetTreeSelect('tree1','libCanton',[0,1]);ChargeListTreesFromAjax('libCanton','departement');GetTreeSelect('tree1','liste',[0,1]);ChargeListBoxFromAjax('liste','departement');ChargeListBoxFromAjax('tagcloud','departement');GetTreeSelect('tree1','tagcloud',[0,1]);ChargeTagcloudFromAjax('tagcloud','tagcloud');"/>
 				
 			</Query>
 			
