@@ -73,7 +73,8 @@ foreach ($element_liste_result as $element_nom => $element_result)
 	echo $element_nom;
 	
 	echo '</span>';
-	echo '<br/>';
+	//echo '<br/>';
+	echo ' - ';
 }
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * 

@@ -3,8 +3,8 @@
   // Fichier contenant les definitions de constantes
   
   //pour le débubbage
-	//define ("PathRoot","C:/wamp/www/evalactipol");
-	define ("PathRoot","C:/Program Files/EasyPHP 2.0b1/www/evalactipol");
+	define ("PathRoot","C:/wamp/www/evalactipol");
+	//define ("PathRoot","C:/Program Files/EasyPHP 2.0b1/www/evalactipol");
 
 
   // *** chemin de toutes les bases et les spip en service ***
