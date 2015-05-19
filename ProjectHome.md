@@ -1,0 +1,1 @@
+Il s'agit de mettre en place un processus d'extraction automatique d'informations contenues dans des pages HTML (La Quadrature du Net, Assemblée Nationale Française) afin d'évaluer géographiquement, historiquement et sémantiquement les discours des députés à l'assemblée.
